@@ -16,8 +16,11 @@ class Canvas {
    * @param  {Number} y2 The y coordinate of the bot-right point
    * @return {Canvas}    This Canvas instance
    */
-  fillRect (x1, y1, x2, y2) {
+  fillRect (x1, y1, x2, y2, c) {
+    const origColor = this.getColor();
+    this.setColor (c ? c : origColor);
     this.ctx.fillRect(x1, y1, x2-x1, y2-y1);
+    this.setColor (origColor);
     return this;
   }
 
@@ -50,10 +53,13 @@ class Canvas {
     return this;
   }
 
-  fillCircle (x, y, r) {
+  fillCircle (x, y, r, c) {
+    const origColor = this.getColor();
+    this.setColor (c ? c : origColor);
     this.ctx.beginPath();
     this.ctx.arc(x, y, r, 0, 2 * Math.PI);
     this.ctx.fill();
+    this.setColor (origColor);
     return this;
   }
 
@@ -105,20 +111,20 @@ class Canvas {
   }
 
   setColor (color) {
-    this.fillStyle = color;
+    this.ctx.fillStyle = color;
     return this;
   }
 
   getColor () {
-    return this.fillStyle;
+    return this.ctx.fillStyle;
   }
 
   setStrokeStyle (color) {
-    this.strokeStyle = color;
+    this.ctx.strokeStyle = color;
     return this;
   }
 
   getStrokeStyle () {
-    return this.strokeStyle;
+    return this.ctx.strokeStyle;
   }
 }
