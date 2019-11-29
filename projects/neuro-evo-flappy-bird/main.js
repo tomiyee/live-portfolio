@@ -7,7 +7,7 @@ const G = 15;
 let FPS = 60;
 const BIRD_COLOR = "yellow";
 const BIRD_RADIUS = 10;
-const JUMP_SPEED = 8;
+const JUMP_SPEED = 7;
 const PIPE_GAP = 150;
 const PIPE_COLOR = "green";
 const PIPE_SPEED = 150;
@@ -87,11 +87,13 @@ class Bird {
         if (pipe.collides(this)) {
           console.log("It Hit");
           this.dead = true;
+          this.v = 0;
           break;
         }
       }
       if (this.y < this.r || this.y > HEIGHT - this.r) {
         this.dead = true;
+        this.v = 0;
       }
     }
 
@@ -138,7 +140,7 @@ class Pipe {
    * @return {Boolean}      True if collides, false otherwise
    */
   collides (bird){
-    if (bird.x >= this.x-bird.r && this.x <= this.x+PIPE_WIDTH+bird.r) {
+    if (bird.x >= this.x-bird.r && bird.x <= this.x+PIPE_WIDTH+bird.r) {
       if (bird.y <= HEIGHT-this.height-PIPE_GAP+bird.r || bird.y >= HEIGHT-this.height-bird.r) {
         return true;
       }
