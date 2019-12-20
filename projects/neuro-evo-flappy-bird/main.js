@@ -6,27 +6,35 @@ const BG_COLOR = "lightblue"
 const G = 15;
 let FPS = 60;
 const LIVE_BIRD_COLOR = "rgba(255,255,  0, 0.25)";
-const DEAD_BIRD_COLOR = "rgba(100,100,100, 0.25)";
+const DEAD_BIRD_COLOR = "rgba(100,100,100, 0.05)";
 const BIRD_RADIUS = 10;
-const JUMP_SPEED = 7;
-const PIPE_GAP = 150;
+const BIRD_X = WIDTH / 10;
+const JUMP_SPEED = 5;
+const MAX_PIPE_GAP = 200;
+const MIN_PIPE_GAP = 120;
 const PIPE_COLOR = "green";
 const PIPE_SPEED = 150;
 const PIPE_WIDTH = 60;
-const MAX_MUTATION = 0.15;
+const MAX_MUTATION = 0.5;
+const MUTATION_RATE = 0.1
+const TOP_FRACTION = 0.1;
+const INIT_WEIGHT_MAX = 4;
 let pipes = [];
 let birds = [];
+let liveBirds = [];
 let ticks = 0;
-let numBirds = 100;
+let genNum = 0;
+let numBirds = 300;
 let numDead = 0;
+let intervalId = null;
+let score = 0;
 let KEYS_HELD = [];
 
 window.onload = start;
 
-
-function sortBirds () {
-  // sort in descending order
-  birds = birds.sort((bird1, bird2) => bird2.fitness - bird1.fitness);
+function updateGenNum () {
+  genNum += 1;
+  document.getElementById("generation-number").innerHTML = genNum;
 }
 
 function start () {
@@ -36,13 +44,36 @@ function start () {
   c.setColor (BG_COLOR);
   c.fillRect(0,0, WIDTH, HEIGHT);
 
-  for (let i = 0; i < numBirds; i++)
-    birds.push(new Bird());
+  if (JSON.parse(localStorage.autoSave) && isValidSaveData(localStorage.saveData)) {
+    loadCheckpoint(localStorage.saveData);
+  }
+  else{
+    for (let i = 0; i < numBirds; i++){
+      const bird = new Bird();
+      birds.push(bird);
+      liveBirds.push(bird);
+    }
+  }
   pipes.push(new Pipe());
 
-  setInterval(update, 1000/FPS)
+  updateGenNum();
+  intervalId = setInterval(update, 1000/FPS)
   window.addEventListener("keydown", keyDownHandler);
   window.addEventListener("keyup", keyUpHandler);
+}
+
+function isValidSaveData (str) {
+  try {
+    let data = JSON.parse (str);
+    if (!data.hasOwnProperty("genNum"))
+      return false;
+    if (!data.hasOwnProperty("population"))
+      return false;
+  } catch (e) {
+    console.warn("LocalStorage Save Data is invalid: \n",e.message)
+    return false;
+  }
+  return true;
 }
 
 /**
@@ -51,6 +82,28 @@ function start () {
  * @param  {Object} e Event Data object
  */
 function keyDownHandler(e) {
+  switch (e.keyCode) {
+    // Pause and Resume
+    case 32:
+    case 80:
+      if (intervalId == null)
+        resumeGame ();
+      else
+        pauseGame ();
+      break;
+    // [D]elete Save
+    case 68:
+      clearSave();
+      break;
+  }
+  if(e.keyCode == 32) {
+  }
+  if (e.keyCode == 80) {
+    pauseGame();
+  }
+  if (e.keyCode == 68) {
+    clearSave();
+  }
   if (KEYS_HELD.indexOf(e.keyCode) == -1)
     KEYS_HELD.push(e.keyCode);
 }
@@ -78,6 +131,11 @@ function update () {
   if (ticks % 150 == 0) {
     pipes.push(new Pipe());
   }
+  
+  if ((ticks + Math.round((WIDTH - BIRD_X) / (PIPE_SPEED/FPS))) % 150 == 0) {
+    score += 1;
+  }
+
   for (let i = pipes.length-1; i >= 0; i--) {
     const p = pipes[i];
     // If the pipe is off screen, remove it
@@ -88,23 +146,115 @@ function update () {
   }
 
   let worldData = {};
-  let pipe = pipes[0]
+  let pipe = pipes[0];
+  if (pipe.x+PIPE_WIDTH+BIRD_RADIUS < BIRD_X) {
+    pipe = pipes[1];
+  }
   worldData.botPipeY = HEIGHT - pipe.height;
-  worldData.topPipeY = HEIGHT - pipe.height - PIPE_GAP;
+  worldData.topPipeY = HEIGHT - pipe.height - pipe.gap;
   worldData.pipeX = pipe.x+PIPE_WIDTH;
 
-  for (let i in birds) {
-    const b = birds[i];
+  for (let i = liveBirds.length-1; i >= 0; i --) {
+    const b = liveBirds[i];
     b.update(worldData);
     b.draw(c);
   }
 
+  if (numDead >= numBirds) {
+    newGeneration();
+  }
 }
+
+function pauseGame () {
+  clearInterval (intervalId);
+  intervalId = null;
+}
+
+function resumeGame (newFPS) {
+  if (intervalId == null) {
+    intervalId = setInterval (update, 1000 / (newFPS || FPS));
+  }
+}
+
+function newGeneration () {
+  if (localStorage.autoSave) {
+    localStorage.saveData = saveCheckpoint ();
+  }
+  updateGenNum();
+  // Reset some of the variables
+  pipes = [];
+  pipes.push(new Pipe());
+  ticks = 0;
+  numDead = 0;
+
+  // Sort the Population
+  birds = birds.sort((bird1, bird2) => bird2.fitness - bird1.fitness);
+  let avg = 0
+  for (let i in birds) {
+    avg += birds[i].fitness / birds.length;
+  }
+  console.log(`Gen Num ${genNum} Avg: ${avg}`);
+
+  // Select the Best ones and copy them
+  newBirds = [];
+  liveBirds = [];
+  for (let i = 0; i < TOP_FRACTION*numBirds; i++) {
+    newBirds.push(birds[i].copy());
+    liveBirds.push(birds[i].copy());
+  }
+  // Breed for the rest of them
+  while (newBirds.length < numBirds) {
+    const parent = newBirds[Math.floor(Math.random()*TOP_FRACTION*numBirds)];
+    let child = parent.copy().mutate();
+    newBirds.push(child);
+    liveBirds.push(child);
+  }
+  birds = newBirds;
+}
+
+function saveCheckpoint () {
+  let data = {}
+  data.genNum = genNum;
+  data.population = [];
+  for (let i in birds) {
+    data.population.push(birds[i].export());
+  }
+  return JSON.stringify(data);
+}
+
+function loadCheckpoint(dataString) {
+  let data = JSON.parse(dataString);
+  genNum = data.genNum;
+  birds = []
+  liveBirds = []
+  for (let i in data.population) {
+    const bird = (new Bird()).import(data.population[i]);
+    birds.push(bird)
+    liveBirds.push(bird)
+  }
+  numBirds = birds.length;
+}
+
+function clearSave () {
+  if (confirm("Are you sure you would like to delete your save data?")) {
+    localStorage.saveData = null;
+  }
+}
+
+function toggleAutoSave () {
+  localStorage.autoSave = !localStorage.autoSave;
+}
+
+function setSpeed (multiplier) {
+  pauseGame ();
+  resumeGame (multiplier * FPS)
+}
+
 
 
 class Bird {
   constructor (w1, w2) {
-    this.x = WIDTH / 10;
+    this.x = BIRD_X;
     this.y = HEIGHT / 2;
     this.r = BIRD_RADIUS;
     this.v = 0;
@@ -116,13 +266,13 @@ class Bird {
       this.w1 = w1
     else {
       this.w1 = new Matrix (8, 5);
-      this.w1.randomize();
+      this.w1.randomize(INIT_WEIGHT_MAX);
     }
     if (w2 instanceof Matrix)
       this.w2 = w2;
     else {
       this.w2 = w2 instanceof Matrix ? w2 : new Matrix (1, 8);
-      this.w2.randomize();
+      this.w2.randomize(INIT_WEIGHT_MAX);
     }
   }
 
@@ -151,7 +301,7 @@ class Bird {
 
     let pred = this.feedForward(gameData);
 
-    if (!this.dead && Math.random() < pred)
+    if (!this.dead && this.jumpDelay == 0 && Math.random() < pred)
       this.jump()
     else
       this.v += G / FPS
@@ -171,6 +321,8 @@ class Bird {
     this.v = 0;
     this.fitness = ticks;
     numDead ++;
+    // Removes myself from the list of living birds;
+    liveBirds.splice(liveBirds.indexOf(this), 1)
   }
 
   /**
@@ -192,6 +344,9 @@ class Bird {
     else
       canvas.setColor (LIVE_BIRD_COLOR);
     canvas.fillCircle (this.x, this.y, this.r);
+    canvas.setStrokeStyle ("gray");
+    if (!this.dead)
+      canvas.drawCircle (this.x, this.y, this.r);
   }
 
   copy () {
@@ -200,14 +355,32 @@ class Bird {
 
   mutate () {
     for (let i in this.w1.data) {
-      this.w1[i] += Math.random()*(2*MAX_MUTATION) - MAX_MUTATION
+      if (Math.random() < MUTATION_RATE)
+        this.w1[i] += Math.random()*(2*MAX_MUTATION) - MAX_MUTATION;
     }
+    return this;
+  }
+
+  export () {
+    return {
+      w1: this.w1.stringify(),
+      w2: this.w2.stringify()
+    };
+  }
+
+  import (modelData) {
+    let w1 = JSON.parse(modelData.w1)
+    let w2 = JSON.parse(modelData.w2)
+    this.w1 = new Matrix (w1.rows, w1.cols, w1.data);
+    this.w2 = new Matrix (w2.rows, w2.cols, w2.data);
+    return this;
   }
 }
 
 class Pipe {
   constructor () {
-    this.height = Math.random()*(HEIGHT - PIPE_GAP);
+    this.gap = Math.random() * (MAX_PIPE_GAP - MIN_PIPE_GAP) + MIN_PIPE_GAP;
+    this.height = Math.random()*(HEIGHT - this.gap);
     this.x = WIDTH;
   }
 
@@ -229,7 +402,7 @@ class Pipe {
    */
   collides (bird){
     if (bird.x >= this.x-bird.r && bird.x <= this.x+PIPE_WIDTH+bird.r) {
-      if (bird.y <= HEIGHT-this.height-PIPE_GAP+bird.r || bird.y >= HEIGHT-this.height-bird.r) {
+      if (bird.y <= HEIGHT-this.height-this.gap+bird.r || bird.y >= HEIGHT-this.height-bird.r) {
         return true;
       }
     }
@@ -243,7 +416,7 @@ class Pipe {
    */
   draw (c) {
     c.fillRect(this.x, HEIGHT - this.height, this.x+PIPE_WIDTH, HEIGHT, PIPE_COLOR);
-    c.fillRect(this.x, 0, this.x+PIPE_WIDTH, HEIGHT-this.height-PIPE_GAP, PIPE_COLOR);
+    c.fillRect(this.x, 0, this.x+PIPE_WIDTH, HEIGHT-this.height-this.gap, PIPE_COLOR);
   }
 }
 
@@ -254,9 +427,10 @@ class Matrix {
     this.data = data instanceof Array ? data : new Array(rows*cols);
   }
 
-  randomize () {
+  randomize (mag) {
+    mag = mag || 1;
     for (let i = 0; i < this.rows * this.cols; i++) {
-      this.data[i] = Math.random()*2 - 1;
+      this.data[i] = Math.random()*(2*mag) - mag;
     }
   }
 
@@ -300,6 +474,10 @@ class Matrix {
 
   copy () {
     return new Matrix (this.rows, this.cols, JSON.parse(JSON.stringify(this.data)));
+  }
+
+  stringify () {
+    return JSON.stringify ({rows:this.rows, cols: this.cols, data:this.data});
   }
 }
 
