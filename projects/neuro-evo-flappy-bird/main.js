@@ -24,7 +24,7 @@ let birds = [];
 let liveBirds = [];
 let ticks = 0;
 let genNum = 0;
-let numBirds = 300;
+let numBirds = 200;
 let numDead = 0;
 let intervalId = null;
 let score = -1;
@@ -154,7 +154,8 @@ function update () {
   for (let i = liveBirds.length-1; i >= 0; i --) {
     const b = liveBirds[i];
     b.update(worldData);
-    b.draw(c);
+    if (i < 50)
+      b.draw(c);
   }
 
   if ((ticks + Math.round((WIDTH - BIRD_X) / (PIPE_SPEED/FPS))) % 150 == 0) {
