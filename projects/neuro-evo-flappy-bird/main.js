@@ -27,7 +27,7 @@ let genNum = 0;
 let numBirds = 300;
 let numDead = 0;
 let intervalId = null;
-let score = 0;
+let score = -1;
 let KEYS_HELD = [];
 
 window.onload = start;
@@ -131,10 +131,7 @@ function update () {
   if (ticks % 150 == 0) {
     pipes.push(new Pipe());
   }
-  
-  if ((ticks + Math.round((WIDTH - BIRD_X) / (PIPE_SPEED/FPS))) % 150 == 0) {
-    score += 1;
-  }
+
 
   for (let i = pipes.length-1; i >= 0; i--) {
     const p = pipes[i];
@@ -160,6 +157,14 @@ function update () {
     b.draw(c);
   }
 
+  if ((ticks + Math.round((WIDTH - BIRD_X) / (PIPE_SPEED/FPS))) % 150 == 0) {
+    if (ticks + Math.round((WIDTH - BIRD_X) / (PIPE_SPEED/FPS)) != 150)
+      score += 1;
+  }
+  c.ctx.scale (10, 10);
+  c.ctx.fillStyle = "White";
+  c.ctx.fillText(score>0?score:0, 25,10);
+  c.ctx.scale (0.1, 0.1);
   if (numDead >= numBirds) {
     newGeneration();
   }
@@ -180,6 +185,7 @@ function newGeneration () {
   if (localStorage.autoSave) {
     localStorage.saveData = saveCheckpoint ();
   }
+  score = -1;
   updateGenNum();
   // Reset some of the variables
   pipes = [];
