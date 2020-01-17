@@ -1,5 +1,4 @@
-
-
+// Constants for the colors
 let COLORS = {
   BG: "#bbada0",
   FONT: "#776e65",
@@ -20,17 +19,16 @@ let COLORS = {
 let rows = 4;
 let cols = 4;
 let paddingWidth = 0.1/rows; // Percentage of Canvas Size
-let score = 0;
 let game;
 let canvas;
 let intervalId = null;
-let mouseDown = false;
 
 let scores = {
   manual: [],
   ldrd: [],
   dr: []
 };
+
 window.onload = start;
 
 /**
@@ -56,7 +54,7 @@ function start () {
   $("#input-cols").val(cols);
   $("#restart").bind("click", () => {game.restart(); stopSimulation()})
   $("#start").bind("click", startSimulation)
-  $("#strategy").bind("change", stopSimulation);
+  $("#strategy").bind("change", strategyChangeHandler);
   $("#speed").bind("change", speedChangeHandler).bind("mousemove", displaySpeed);
   displaySpeed();
   // Add The event listeners
@@ -64,7 +62,7 @@ function start () {
 }
 
 /**
- * keyDownHandler - Checks for keyboard inputs for 2048
+ * @function keyDownHandler - Checks for keyboard inputs for 2048
  *
  * @param  {Object} e Window Event Data
  */
@@ -92,10 +90,10 @@ function keyDownHandler (e) {
 class Game2048 {
 
   /**
-   * constructor - description
+   * constructor - Constructs an instance of the game 2048.
    *
-   * @param  {Integer} rows description
-   * @param  {Integer} cols description
+   * @param  {Integer} rows The number of rows in this instance of 2048
+   * @param  {Integer} cols The number of cols in this instance of 2048
    */
   constructor (rows, cols) {
     this.rows = rows || 4;
@@ -111,7 +109,7 @@ class Game2048 {
   }
 
   /**
-   * keyDownHandler - description
+   * keyDownHandler - Self Explanatory
    *
    * @param  {KeyboardEvent} e Window keyboard event
    * @return {Boolean}   True if state changed, false otherwise
@@ -177,7 +175,7 @@ class Game2048 {
   /**
    * score - Returns the sum of all of the tiles as the score.
    *
-   * @return {type}  description
+   * @return {Integer}  The sum of the tiles
    */
   score () {
     let sum = 0;
@@ -255,7 +253,7 @@ class Game2048 {
   }
 
   /**
-   * @function toString - Returns a string representation of the current
+   * toString - Returns a string representation of the current
    * game state
    *
    * @return {String}  A strng representation of the current game state
@@ -482,8 +480,7 @@ class Game2048 {
  * @function leftDownRightDown - Begins a timer that clicks left, down, right,
  * and down repeatedly. If it every get's stuck, it will click up.
  *
- * @param  {type} delay description
- * @return {type}       description
+ * @param  {Integer} delay The number of ms between moves, determined by the strategy
  */
 function leftDownRightDown (delay) {
   let moves = [Keys.LEFT, Keys.DOWN, Keys.RIGHT, Keys.DOWN];
@@ -565,6 +562,13 @@ function downRight (delay) {
   intervalId = setInterval (strategy, delay);
 }
 
+/**
+ * @function updateScores - Adds the given score to the table of strategy scores
+ * next to the canvas. It then recomputes the average score for that strategy.
+ *
+ * @param  {String} category The strategy to update the score of.
+ * @param  {Integer} newScore The new score to add.
+ */
 function updateScores (category, newScore) {
   // Updates the global dictionary with the list of all the scores
   scores[category].push(newScore);
@@ -579,7 +583,7 @@ function updateScores (category, newScore) {
 
 /**
  * @function startSimulation - Begins the simulation selected in the drop down
- * menu
+ * menu. Fetches the strategy and runs that strategy's start function
  */
 function startSimulation () {
   if (intervalId != null)
@@ -599,9 +603,8 @@ function startSimulation () {
 }
 
 /**
- * stopSimulation - Stops the current simulation
- *
- * @return {type}  description
+ * @function stopSimulation - Pauses the current simulation if there is an
+ * interval currently in progress. It then clears the intervalId variable.
  */
 function stopSimulation () {
   if (intervalId != null)
@@ -610,9 +613,9 @@ function stopSimulation () {
 }
 
 /**
- * speedChangeHandler - description
- *
- * @return {type}  description
+ * @function speedChangeHandler - Called whenever the slider is updated. It
+ * updates the display for the current simulation speed. It then stops the
+ * current simulation and resumes the simulation at the new speed.
  */
 function speedChangeHandler () {
   displaySpeed();
@@ -622,17 +625,46 @@ function speedChangeHandler () {
   startSimulation();
 }
 
-function displaySpeed () {
-  const delay = parseInt($("#speed").val())
-  $(".speed-value").text(delay > 1000 ? "INSTANT" : Math.round((1000 / (1000 - delay+1))*10)/10 + " per second");
-}
-
 /**
- * updateGame - description
+ * @function strategyChangeHandler - Handles any actions that are triggered
+ * whenever the strategy dropdown menu is changed. It stops the current
+ * simulation and toggles the start button if necessary.
  *
  * @return {type}  description
  */
+function strategyChangeHandler () {
+  stopSimulation();
+  // Disables the start button if we enter manual mode
+  if (parseInt($("#strategy").val()) == 1)
+    $("#start").attr("disabled", true);
+  else
+    $("#start").removeAttr("disabled")
+}
+
+/**
+ * @function displaySpeed - Calculates the actual speed that the simulation would
+ * run at with the given delay (1000 - val). If the slider results in a negative
+ * delay, that is coded to run the simulation without an interval. If the slider
+ * results in a delay of 0, the simulation is actually running with a delay of
+ * 1 ms. Otherwise, we calculate the speed as normal.
+ */
+function displaySpeed () {
+  const delay = 1000 - parseInt($("#speed").val());
+  if (delay < 0)
+    return $(".speed-value").text ("INSTANT");
+  if (delay == 0)
+    return $(".speed-value").text (1000 + " moves per sec");
+  else
+    return $(".speed-value").text (round(1000/delay, 2) + " moves per sec");
+}
+
+/**
+ * @function updateGame - Called whenever the number of rows and cols changes.
+ * We need to recreate the Game2048 object in order to incorporate the new number
+ * of rows and cols
+ */
 function updateGame () {
+  // Fetches the new values for row and col
   rows = parseInt($("#input-rows").val());
   cols = parseInt($("#input-cols").val());
   paddingWidth = 0.1/rows;
@@ -640,25 +672,4 @@ function updateGame () {
   game = new Game2048(rows, cols);
   game.addNewPieces();
   game.display(canvas);
-}
-
-/**
- * avg - Returns the average value of the list. The elements in the list
- * must support addition and division.
- *
- * @param  {Object[]} l The list of values we want to get the average of.
- * @return {Number}   The average value of each of the items in the list.
- */
-function avg (l) {
-  let a = 0;
-  for (let i = 0; i < l.length; i++)
-    a += l[i]/l.length;
-  return a;
-}
-
-function min () {
-  let m = Number.POSITIVE_INFINITY;
-  for (let i = 0; i < arguments.length; i++)
-    m = arguments[i] < m ? arguments[i] : m;
-  return m
 }
