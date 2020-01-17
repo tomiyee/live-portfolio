@@ -57,7 +57,7 @@ function start () {
   $("#restart").bind("click", () => {game.restart(); stopSimulation()})
   $("#start").bind("click", startSimulation)
   $("#strategy").bind("change", stopSimulation);
-  $("#speed").bind("change", speedChangeHandler);
+  $("#speed").bind("change", speedChangeHandler).bind("mousemove", displaySpeed);
   displaySpeed();
   // Add The event listeners
   window.addEventListener("keydown", keyDownHandler);
@@ -592,10 +592,10 @@ function startSimulation () {
     return;
 
   if (strategy == 2)
-    return leftDownRightDown(1000 - delay);
+    return downRight (1000 - delay);
 
   if (strategy == 3)
-    return downRight (1000 - delay);
+    return leftDownRightDown(1000 - delay);
 }
 
 /**
