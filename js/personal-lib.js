@@ -142,3 +142,17 @@ function max () {
     max = max > list[i] ? max : list[i];
   return max;
 }
+
+/**
+ * @function round - Rounds the given number to the given number of decimal
+ * places
+ *
+ * @param  {Number} number   The number we are rounding
+ * @param  {Integer} decimals The number of decimal places we wish to round to.
+ * @return {Number}          The rounded number
+ */
+function round (number, decimals) {
+  if (isNaN(decimals))
+    decimals = 0;
+  return Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);
+}
