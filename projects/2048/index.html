@@ -100,6 +100,83 @@
           <div class="col-lg-12 pt-60">
             <p>A brief description of the project</p>
             <p>Probably some more stuff can go here too.</p>
+            <center>
+              <div class="simulation-settings">
+                <table>
+                  <tr>
+                    <th>Rows</th>
+                    <th>Cols</th>
+                    <th>Strategy</th>
+                  </tr>
+                  <tr>
+                    <td>
+                      <input id="input-rows" style="font-size: 2em; width:50px;" type="number" name="rows" value="6" onchange="updateGame()">
+                    </td>
+                    <td>
+                      <input id="input-cols" style="font-size: 2em; width:50px;" width="30px" type="number" name="cols" value="6" onchange="updateGame()">
+                    </td>
+                    <td>
+                      <select name="strategy" id="strategy" style="font-size:2em;">
+                        <option value=1 selected="selected">Manual</option>
+                        <option value=2>Left Down Right Down</option>
+                        <option value=3>Down Right</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th colspan=3>
+                      <center>Strategy Simulation Speed (<span class='speed-value'>0</span>)</center>
+                    </th>
+                  </tr>
+                  <tr>
+                    <td colspan=3>
+                      <center>
+                        <input type="range" min=0 max=1050 step=50 value=500 class="slider" id="speed">
+                      </center>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan=3>
+                      <center>
+                        <button type="button" name="button" style="width:45%" id="restart">Restart</button>
+                        <button type="button" name="button" style="width:45%" id="start" >Start</button>
+                      </center>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </center>
+            <!-- The canvas and the data to the right -->
+            <center>
+              <table>
+                <tr>
+                  <td>
+                    <canvas id="canvas" width="300" height="300"></canvas>
+                  </td>
+                  <td valign="top">
+                    <div class="sim-data-container">
+                      <table class="simulation-data">
+                        <tr height=1em>
+                          <th>Manual</th>
+                          <th>LDRD</th>
+                          <th>DoRi</th>
+                        </tr>
+                        <tr height=1em class="avg">
+                          <td class='avg-manual'>0</td>
+                          <td class='avg-ldrd'>0</td>
+                          <td class='avg-dr'>0</td>
+                        </tr>
+                        <tr valign=top  >
+                          <td class="scores-manual"></td>
+                          <td class="scores-ldrd"></td>
+                          <td class="scores-dr"></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </center>
           </div>
         </div>
       </div>
@@ -168,6 +245,8 @@
     <script src="../../js/owl.carousel.min.js"></script>
     <script src="../../js/mail-script.js"></script>
     <script src="../../js/main.js"></script>
+    <script src="../../js/personal-lib.js"></script>
     <script src="./main.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="./style.css">
   </body>
 </html>
