@@ -57,4 +57,88 @@ const Keys = {
 const rgb = (r,g,b) => `rgb(${r},${g},${b})`;
 const rgba = (r,g,b,a) => `rgba(${r}, ${g}, ${b}, ${a})`;
 
-const randInt = (min, max) => Math.round(Math.random()*(max-min)+min);
+/**
+ * @function randInt - Returns a random number between the integers min and max,
+ * both inclusive.
+ *
+ * @param  {Integer} min The minimum number on the range
+ * @param  {Integer} max The maximum number on the range
+ * @return {Integer}     A random integer on the range [min, max]
+ */
+function randInt (min, max) {
+  Math.floor(Math.random()*(max-min+1)+min);
+}
+
+/**
+ * @function rand - Returns a random number between min (inclusive) and max
+ * (exclusive)
+ *
+ * @param  {Number} min The minimum number on the range
+ * @param  {Number} max The maximum number on the range
+ * @return {Number}     A random number on the range [min, max)
+ */
+function rand (min, max) {
+    return Math.random() * (max-min) + min;
+}
+
+/**
+ * @function avg - Returns the average value of the elements in the list. If
+ * given only a list, it will return the average value of the list. Otherwise,
+ * it will return the average value of all of it's parameters
+ *
+ * @return {Number} The average value in the list / all parameters
+ */
+function avg () {
+  if (arguments.length == 0)
+    throw new Error("The Average function requires at least one input.");
+
+  let list;
+  if (arguments.length == 1 && Array.isArray(arguments[0]))
+    list = arguments[0];
+  else
+    list = arguments;
+
+  const len = list.length;
+  let avg = 0;
+  for (let i = 0; i < len; i++)
+    avg += list[i]/len;
+  return avg;
+}
+
+/**
+ * @function min - Returns the minimum value of the elements in the list
+ *
+ * @return {Number}  The minimum value of the elements in the list.
+ */
+function min () {
+  let list;
+  if (arguments.length == 1 && Array.isArray(arguments[0]))
+    list = arguments[0];
+  else
+    list = arguments;
+
+  const len = list.length;
+  let min = Number.POSITIVE_INFINITY;
+  for (let i = 0; i < len; i++)
+    min = min < list[i] ? min : list[i];
+  return min;
+}
+
+/**
+ * @function max - Returns the maximum value of the elements inside of the list
+ *
+ * @return {Number}  The minimum value of the elements in the list
+ */
+function max () {
+  let list;
+  if (arguments.length == 1 && Array.isArray(arguments[0]))
+    list = arguments[0];
+  else
+    list = arguments;
+
+  const len = list.length;
+  let max = Number.NEGATIVE_INFINITY;
+  for (let i = 0; i < len; i++)
+    max = max > list[i] ? max : list[i];
+  return max;
+}
