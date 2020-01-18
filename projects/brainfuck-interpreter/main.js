@@ -20,9 +20,17 @@ window.onload = start;
 function start () {
   loadCode();
 
+  $(".context-tabs").width(700).tabs({
+    collapsible:true,
+  });
+  // The input is disabled by default
+  $('#console-input').attr('disabled', true);
+
   const textarea = document.getElementById("editor");
   textarea.addEventListener("keydown", textareaKeyDownHandler);
-  window.addEventListener ("keydown", keyDownHandler)
+  window.addEventListener ("keydown", keyDownHandler);
+  // Handles whenever you enter something into the input
+  $('#console-input').bind('keydown', consoleInputHandler);
 }
 
 /**
@@ -35,6 +43,13 @@ function keyDownHandler (e) {
   if (e.ctrlKey && e.keyCode == Keys.S) {
     e.preventDefault();
     saveCode();
+  }
+  // Interrupt
+  if (e.ctrlKey && e.keyCode == Keys.C) {
+    e.preventDefault();
+    stopInterpretation();
+    disableConsoleInput();
+    $(".output")[0].innerHTML += "<br/> Code Interrupted";
   }
 }
 
@@ -51,7 +66,59 @@ function textareaKeyDownHandler (e) {
   }
 }
 
+/**
+ * consoleInputHandler - description
+ *
+ * @param  {type} e description
+ * @return {type}   description
+ */
+function consoleInputHandler (e) {
+  if (e.keyCode == Keys.ENTER){
+    stopInterpretation();
+    // Gets the value and empties the input
+    let val = $('#console-input').val();
+    disableConsoleInput();
 
+    // If no input given, assume 0
+    if (val.length == 0)
+      val = 0;
+    // Take only the first character, if it is a number, use it
+    else if (!isNaN(parseInt(val[0])))
+      val = parseInt(val[0]);
+    // If the first character is not a number, use its ASCII code
+    else
+      val = val.charCodeAt(0);
+
+    if (memoryPointer >= 0)
+      memory[memoryPointer] = val % 255;
+    codePosition += 1;
+
+    resumeInterpretation();
+  }
+}
+
+/**
+ * disableConsoleInput - description
+ *
+ * @return {type}  description
+ */
+function disableConsoleInput() {
+  $('#console-input')
+    .attr('disabled', true)
+    .val("");
+}
+
+/**
+ * requestInput - description
+ *
+ * @return {type}  description
+ */
+function requestInput () {
+  $('#console-input')
+    .attr('disabled', false)
+    .focus();
+  stopInterpretation();
+}
 
 /**
  * codeInterval - description
@@ -138,21 +205,13 @@ function codeInterval () {
 
       // Take Input
       case ',':
+        stopInterpretation();
+
+        requestInput();
+        return;
         let val = prompt ("Input:");
 
-        // If no input given, assume 0
-        if (val.length == 0)
-          val = 0;
-        // Take only the first character, if it is a number, use it
-        else if (!isNaN(parseInt(val[0])))
-          val = parseInt(val[0]);
-        // If the first character is not a number, use its ASCII code
-        else
-          val = val.charCodeAt(0);
 
-        if (memoryPointer >= 0)
-          memory[memoryPointer] = val % 255;
-        codePosition += 1;
         break;
 
       // Memory Dump

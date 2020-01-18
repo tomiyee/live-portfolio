@@ -94,28 +94,60 @@
 		<!-- End Title Area -->
 
     <!-- Start Contents -->
-    <section class="home-about-area section-gap">
+    <section class="home-about-area">
       <div class="container" align=center>
         <div class="row align-items-center justify-content-between">
-          <div class="col-lg-12 pt-60">
-            
-            <table class="editor-container">
-              <tr>
-                <td>
-                  <div class="code-lines">
+          <div class="col-lg-12 pb-60 pt-60">
+            <div class="context-tabs" align=left>
+              <ul>
+                <li><a href="#tab-context">Context</a></li>
+                <li><a href="#tab-usage">Usage</a></li>
+                <li><a href="#tab-about">About Brainfuck</a></li>
+              </ul>
+              <div id="tab-context">
+                <p>
+                  In the beginning of my Freshman Spring Semester, a couple of my
+                  friends and I decided to challenge each other to make an
+                  interpretter for the Brainfuck programming language, since its
+                  simple syntax seemed like something we could tackle.
+                </p>
+                <p>
+                  Originally, I had written this in Python, since I wanted to get
+                  more familiar with it for my programming class that semester, 6.009.
+                  I later converted the logic into Javascript, my first language.
+                </p>
+              </div>
+              <div id="tab-usage">
+                <p>
+                  The top text area is where you enter the brainfuck code.
+                </p>
+                <p>
+                  The bottom window is the "Terminal," where the code's output
+                  can be seen, and inputs can be entered.
+                </p>
+                <p>
+                  <ul>
+                    <li><b>Run Code: </b> Shift + Enter</li>
+                    <li><b>Save Code: </b> Ctrl + S </li>
+                    <li><b>Interrupt: </b> Ctrl + C </li>
+                  </ul>
+                </p>
+              </div>
+              <div id="tab-about">
+                Brainfuck
+              </div>
+            </div>
+            <br/>
 
-                  </div>
-                </td>
-                <td>
-                  <textarea id="editor"></textarea>
-                </td>
-              </tr>
+            <table class="editor-container">
+              <td><div class="code-lines"></div></td>
+              <td><textarea id="editor"></textarea></td>
             </table>
 
             <div class="output"></div>
-              <div class="input-container">
-                <input id="console-input" type="text" value="">
-              </div>
+            <div class="input-container">
+              <input id="console-input" type="text" value="">
+            </div>
           </div>
         </div>
       </div>

@@ -24,6 +24,7 @@
 .output {
   height: 200px;
   text-align: left;
+  overflow:scroll;
 }
 
 .output, #editor {
