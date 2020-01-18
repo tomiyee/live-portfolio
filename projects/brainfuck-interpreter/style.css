@@ -1,0 +1,46 @@
+#editor {
+  height: 300px;
+  width:660px;
+  padding:0;
+  margin:0;
+  border-width:0;
+}
+
+.editor-container {
+  margin-bottom: 2em;
+  padding:0;
+  margin:0;
+}
+
+.code-lines {
+  width: 40px;
+  height:300px;
+  background-color: #45443C;
+  color: #E1B41F;
+  padding:0;
+  margin:0;
+}
+
+.output {
+  height: 200px;
+  text-align: left;
+}
+
+.output, #editor {
+  background-color: #1E1916;
+  color: #fff;
+  font-family:'Lucida Console', Monaco, monospace;
+  font-size: 1.5em;
+}
+
+.output, .editor-contianer, .input-container, #console-input {
+  width: 700px;
+  font-family:'Lucida Console', Monaco, monospace;
+  font-size: 1.5em;
+}
+
+table,tr,td {
+  padding:0;
+  margin:0;
+  vertical-align: top;
+}

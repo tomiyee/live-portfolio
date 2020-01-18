@@ -82,7 +82,7 @@ def interpret (code):
             code_position = last_brack
             continue
         if char == ',':
-            val = input('  Input: ')
+            val = str(input('  Input: '))
             if len(val) == 0:
                 val = 0
             else:
@@ -97,7 +97,7 @@ def interpret (code):
             continue
     print(output)
 
-
+interpret(",>>+<<-[->[->>+<<]>[->+>+<<]>[-<+>]>[-<<<+>>>]<<<<]>>[-<<+>>]<<.*")
 
 
 
