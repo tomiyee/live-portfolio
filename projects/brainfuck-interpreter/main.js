@@ -13,9 +13,7 @@ let stepDelay = 2;
 window.onload = start;
 
 /**
- * start - description
- *
- * @return {type}  description
+ * @function start - Initializes global variables, UI, and event handlers.
  */
 function start () {
   loadCode();
@@ -34,10 +32,11 @@ function start () {
 }
 
 /**
- * keyDownHandler -
+ * @function keyDownHandler - Handles commands that are not tied to a particular
+ * HTML element. Saving and interupting code for example are not tied to any
+ * element in particular.
  *
- * @param  {type} e description
- * @return {type}   description
+ * @param  {KeyboardEvent} e Keyboard Event Data
  */
 function keyDownHandler (e) {
   if (e.ctrlKey && e.keyCode == Keys.S) {
@@ -54,10 +53,10 @@ function keyDownHandler (e) {
 }
 
 /**
- * keyDownHandler - description
+ * @function keyDownHandler - Handles commands that are tied to the code textarea,
+ * such as running the code.
  *
- * @param  {type} e description
- * @return {type}   description
+ * @param  {KeyboardEvent} e Keyboard Event Data
  */
 function textareaKeyDownHandler (e) {
   if (e.shiftKey &&  e.keyCode == Keys.ENTER && $("#editor").is(":focus")) {
@@ -67,10 +66,10 @@ function textareaKeyDownHandler (e) {
 }
 
 /**
- * consoleInputHandler - description
+ * @function consoleInputHandler - Handles Key down events triggered in the
+ * console input. Mainly handles whenever the user clicks enter.
  *
- * @param  {type} e description
- * @return {type}   description
+ * @param  {KeyboardEvent} e Keyboard Event Data
  */
 function consoleInputHandler (e) {
   if (e.keyCode == Keys.ENTER){
@@ -98,9 +97,7 @@ function consoleInputHandler (e) {
 }
 
 /**
- * disableConsoleInput - description
- *
- * @return {type}  description
+ * @function disableConsoleInput - Empties and disables the console input
  */
 function disableConsoleInput() {
   $('#console-input')
@@ -109,9 +106,8 @@ function disableConsoleInput() {
 }
 
 /**
- * requestInput - description
- *
- * @return {type}  description
+ * @function requestInput - Enables and sets the focus to the input. Pauses the
+ * interpretation until the user enters their input.
  */
 function requestInput () {
   $('#console-input')
@@ -121,12 +117,10 @@ function requestInput () {
 }
 
 /**
- * codeInterval - description
- *
- * @return {type}  description
+ * @function codeInterval - The function that is called every interval call, and
+ * handles the work done at each step
  */
 function codeInterval () {
-  for (let i = 0; i < numStepsPerInterval; i ++) {
     const char = code[codePosition];
     switch (char) {
       // Add to the memory
@@ -234,14 +228,15 @@ function codeInterval () {
       intervalId = null;
       return;
     }
-  }
+
 }
 
 /**
- * interpret - description
+ * @function interpret - Given the brainfuck code we wish to run, it will begin
+ * simulating the code on an interval of n steps every 2 ms, where n is the
+ * value of numStepsPerInterval. We use an interval to allow for interrupts.
  *
- * @param  {type} code description
- * @return {type}      description
+ * @param  {String} code Brainfuck code to interpret
  */
 function interpret (c) {
   saveCode()
@@ -255,15 +250,19 @@ function interpret (c) {
   memoryPointer = 0;
   $(".output").text("")
   code = c;
-
-  stopInterpretation()
-  intervalId = setInterval(codeInterval, stepDelay);
+  // Stops existing interval if there is one still going
+  stopInterpretation();
+  // Begins the next interval
+  intervalId = setInterval(() => {
+    for (let i = 0; i < numStepsPerInterval; i ++)
+      codeInterval();
+  }, stepDelay);
 }
 
 /**
- * stopInterpretation - description
- *
- * @return {type}  description
+ * @function stopInterpretation - Stops the ongoing interval simulating the
+ * brainfuck code. Does NOT clear all the variables tracking the memory or
+ * position in the code so that the interpretation can be resumed.
  */
 function stopInterpretation () {
   clearInterval (intervalId);
@@ -271,27 +270,24 @@ function stopInterpretation () {
 }
 
 /**
- * resumeInterpretation - description
- *
- * @return {type}  description
+ * @function resumeInterpretation - Starts the interval for simulating the
+ * brainfuck code again. Assumes that the variables tracking memory and code
+ * position are still intact.
  */
 function resumeInterpretation () {
   intervalId = setInterval (codeInterval, stepDelay);
 }
 
 /**
- * saveCode - description
- *
- * @return {type}  description
+ * @function saveCode - Saves the current content of the code development
+ * window to HTML Local Storage, to be loaded next time this webpage is visited.
  */
 function saveCode () {
   window.localStorage.setItem("code", $("#editor").val());
 }
 
 /**
- * loadCode - description
- *
- * @return {type}  description
+ * @function loadCode - Loads the last saved code from HTML Local Storage.
  */
 function loadCode () {
   $("#editor").text(window.localStorage.getItem("code"));
