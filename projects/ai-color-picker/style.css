@@ -1,0 +1,22 @@
+.color-option {
+  width:300px;
+  height:300px;
+  border-radius:50px;
+  text-align:center;
+  padding-top:140px;
+  padding-bottom:140px;
+  padding:auto;
+  font-size:4em;
+  font-weight:bold;
+}
+
+.left-option {
+  color:white;
+}
+.right-option {
+  color:black;
+}
+
+.color-option:hover {
+  cursor:pointer;
+}

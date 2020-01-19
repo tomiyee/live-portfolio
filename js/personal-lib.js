@@ -66,7 +66,7 @@ const rgba = (r,g,b,a) => `rgba(${r}, ${g}, ${b}, ${a})`;
  * @return {Integer}     A random integer on the range [min, max]
  */
 function randInt (min, max) {
-  Math.floor(Math.random()*(max-min+1)+min);
+  return Math.floor(Math.random()*(max-min+1)+min);
 }
 
 /**
