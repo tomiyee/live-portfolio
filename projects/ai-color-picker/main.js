@@ -75,3 +75,21 @@ function trainModel () {
 function predict () {
   return Math.random();
 }
+
+
+function printData () {
+  let x = '[';
+  let y = '[';
+  for (let i in data) {
+    x += `(${data[i][0][0]},${data[i][0][1]},${data[i][0][2]})`;
+    if (i < data.length-1)
+      x += ',';
+
+    y += `[${data[i][1]}]`;
+    if (i < data.length-1)
+      y += ',';
+  }
+  x += ']';
+  y += ']';
+  console.log(x,'\n',y);
+}
