@@ -101,7 +101,7 @@
             <p>Click on the text color you think is easier to read on the provided background color.</p>
             <p>With every color, an AI will attempt to guess the ideal text color. However,</p>
 
-            <table>
+            <table class='decision-space'>
               <tr>
                 <td><div class="color-option left-option">WHITE TEXT</div></td>
                 <td colspan=2 width=100px align=center style="font-weight:bold;font-size:40px">OR</td>
@@ -109,7 +109,12 @@
               </tr>
               <tr>
                 <td colspan=1 class="chose-white model-prediction" align=center>
-                  <img class="model-pred" src="arrow.png" width=100 alt="">
+                  <div class="model-pred">
+                    <img src="arrow.png" width=100 alt="">
+                    <div>
+                      The model is <span class="model-confidence">0</span>% sure.
+                    </div>
+                  </div>
                 </td>
                 <td colspan=2></td>
                 <td colspan=1 class='chose-black model-prediction' align=center></td>

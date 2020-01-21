@@ -1,8 +1,6 @@
 const Dense = tf.layers.dense;
 const Sequential = tf.sequential;
-const Adam = tf.train.adam;
-const loss = tf.losses.softmaxCrossEntropy;
-
+const SHOW_TRAINING = true;
 
 let data = [];
 let currCol = [];
@@ -10,6 +8,11 @@ let model;
 
 window.onload = start;
 
+/**
+ * start - description
+ *
+ * @return {type}  description
+ */
 function start () {
   if (localStorage["ai-color-picker:data"].length > 0)
     data = JSON.parse(localStorage["ai-color-picker:data"]);
@@ -17,6 +20,7 @@ function start () {
     localStorage.setItem("ai-color-picker:data",JSON.stringify([]))
   initModel ();
   currCol = randomColor();
+  updateModelGuess();
   $('.color-option').css('background-color', rgb(currCol[0], currCol[1], currCol[2]) );
   $('.left-option').bind('click', () => clickHandler('left'));
   $('.right-option').bind('click', () => clickHandler('right'));
@@ -29,7 +33,7 @@ function start () {
  * @return {Integer[]} List of rgb values
  */
 function randomColor () {
-  return [randInt(0,255), randInt(0,255), randInt(0,255)];
+  return [Math.random(), Math.random(), Math.random()];
 }
 
 /**
@@ -46,20 +50,32 @@ async function clickHandler (opt) {
   localStorage["ai-color-picker:data"] = JSON.stringify(data)
   // 2. Display a new random background color
   currCol = randomColor();
-  $('.color-option').css('background-color', rgb(currCol[0], currCol[1], currCol[2]));
+  $('.color-option').css('background-color', rgb(currCol[0]*255, currCol[1]*255, currCol[2]*255));
 
   // 3. Train the model on new data
   if (data.length % 10 == 0){
     let t = convertToTensor(data);
+    $('.decision-space').hide();
     await trainModel(t.input, t.labels);
+    $('.decision-space').show();
   }
 
   // 4. Predict using the model and show its guess.
+  updateModelGuess();
+}
+
+/**
+ * updateModelGuess - description
+ *
+ * @return {type}  description
+ */
+function updateModelGuess() {
   let guess = predict ();
   if (guess < 0.5)
     $('.chose-white').append($(".model-pred"));
   else
     $('.chose-black').append($(".model-pred"));
+  $('.model-confidence').text(round((guess>0.5?guess:1-guess)*100,1));
 }
 
 /**
@@ -77,8 +93,8 @@ function initModel () {
   model.add(layer2);
   // Compile the model
   model.compile({
-    optimizer: Adam(),
-    loss:tf.losses.meanSquaredError,
+    optimizer: 'adam',
+    loss: 'binaryCrossentropy',
     metrics:['accuracy']
   });
 }
@@ -89,20 +105,34 @@ function initModel () {
 async function trainModel (inputs, labels, e) {
 
   const batchSize = 10;
-  const epochs = e || 100;
+  const epochs = e || 20;
 
-  return await model.fit(inputs, labels, {
+  let callbacks = {}
+  if (SHOW_TRAINING) {
+    callbacks = {
+      callbacks: tfvis.show.fitCallbacks(
+        { name: 'Training Performance' },
+          ['acc'],
+        { height: 200, callbacks: ['onEpochEnd']})
+    }
+  }
+
+  await model.fit(inputs, labels, {
     batchSize,
     epochs,
     shuffle:true,
-    callbacks: tfvis.show.fitCallbacks(
-      { name: 'Training Performance' },
-        ['acc'],
-      { height: 200, callbacks: ['onEpochEnd'] }
-    )
+    ...callbacks
   });
+
+  console.log("Finished Training");
 }
 
+/**
+ * convertToTensor - description
+ *
+ * @param  {type} data description
+ * @return {type}      description
+ */
 function convertToTensor (data) {
   // Wrapping the following calculations in tf.tidy
   return tf.tidy(() => {
@@ -130,13 +160,16 @@ function convertToTensor (data) {
  * @return {Number}  Float, confidence it is red
  */
 function predict () {
-  // return tf.tidy (() => {
-  //
-  // });
-  return Math.random();
+  return tf.tidy (() => {
+    return model.predict( tf.tensor2d([currCol]) ).dataSync()[0];
+  });
 }
 
-
+/**
+ * printData - description
+ *
+ * @return {type}  description
+ */
 function printData () {
   let x = '[';
   let y = '[';
