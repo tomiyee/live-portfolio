@@ -52,15 +52,18 @@
   width:30px;
   height:30px;
   border-radius:4px;
+  margin:2px;
   display: inline-block;
 }
 
-td {
+.data-visualization tr td {
   vertical-align: top;
   text-align:left;
 }
 
 .classified-colors-label {
   text-align:center;
+  align:center;
+  padding:10px;
   font-weight:bold;
 }

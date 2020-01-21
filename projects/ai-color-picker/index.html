@@ -84,9 +84,9 @@
 				<div class="row d-flex align-items-center justify-content-center">
 					<div class="about-content col-lg-12">
 						<h1 class="text-white">
-							Project Title
+							AI Color Picker
 						</h1>
-						<p class="text-white">Date</p>
+						<p class="text-white">Jan 20 - Jan 22, 2020</p>
 					</div>
 				</div>
 			</div>
@@ -114,7 +114,7 @@
                       <div class='training-progress-bar-space' align=center>
                         <h2>The Neural Network is Training on your Inputs!</h2>
                         <br/>
-                        <img src="learning.gif" alt="">
+                        <img style='display:none' src="learning.gif" alt="">
                         <br/>
                         <br/>
                         <div class="training-progress-bar" style='width:300px'></div>
@@ -144,22 +144,12 @@
                 <table class='data-visualization'>
                   <!-- This is the label -->
                   <tr>
-                    <td class='classified-colors-label'>WHITE TEXT</td>
-                    <td class='classified-colors-label'>BLACK TEXT</td>
+                    <td class='classified-colors-label'>WHITE TEXT (<span class='white-text-num'>0</span> samples)</td>
+                    <td class='classified-colors-label'>BLACK TEXT (<span class='black-text-num'>0</span> samples)</td>
                   </tr>
                   <!-- This is where we display all the colors we've classified -->
                   <tr>
-                    <td>
-                      <div class="classified-colors classified-white">
-                        <div class='data-visualization-colors' style='background:red'></div>
-                        <div class='data-visualization-colors' style='background:red'></div>
-                        <div class='data-visualization-colors' style='background:red'></div>
-                        <div class='data-visualization-colors' style='background:red'></div>
-                        <div class='data-visualization-colors' style='background:red'></div>
-                        <div class='data-visualization-colors' style='background:red'></div>
-                        <div class='data-visualization-colors' style='background:red'></div>
-                      </div>
-                    </td>
+                    <td><div class="classified-colors classified-white"></div></td>
                     <td><div class="classified-colors classified-black"></div></td>
                   </tr>
                 </table>
