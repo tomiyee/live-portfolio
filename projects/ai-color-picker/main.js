@@ -1,6 +1,6 @@
 const Dense = tf.layers.dense;
 const Sequential = tf.sequential;
-const SHOW_TRAINING = true;
+const SHOW_TRAINING = false;
 
 let data = [];
 let currCol = [];
@@ -18,10 +18,14 @@ function start () {
     data = JSON.parse(localStorage["ai-color-picker:data"]);
   else
     localStorage.setItem("ai-color-picker:data",JSON.stringify([]))
+
+  $(".tabs").tabs();
   initModel ();
   currCol = randomColor();
   updateModelGuess();
-  $('.color-option').css('background-color', rgb(currCol[0], currCol[1], currCol[2]) );
+  $('.training-progress-bar-space').hide();
+  $('.training-progress-bar').progressbar({value:0});
+  $('.color-option').css('background-color', rgb(currCol[0]*255, currCol[1]*255, currCol[2]*255) );
   $('.left-option').bind('click', () => clickHandler('left'));
   $('.right-option').bind('click', () => clickHandler('right'));
 }
@@ -104,13 +108,25 @@ function initModel () {
  */
 async function trainModel (inputs, labels, e) {
 
-  const batchSize = 10;
-  const epochs = e || 20;
+  if (typeof inputs == 'undefined' && typeof labels == 'undefined') {
+    t = convertToTensor (data);
+    inputs = t.input;
+    labels = t.labels;
+  }
 
-  let callbacks = {}
+  const batchSize = 20;
+  const epochs = e || 50;
+  $('.training-progress-bar-space').show();
+  let callbacks = {
+    onEpochBegin: (epoch, logs) => {
+      $('.training-progress-bar').progressbar('value',100*epoch/epochs);
+    }
+  }
+
   if (SHOW_TRAINING) {
     callbacks = {
-      callbacks: tfvis.show.fitCallbacks(
+      ... callbacks,
+      ... tfvis.show.fitCallbacks(
         { name: 'Training Performance' },
           ['acc'],
         { height: 200, callbacks: ['onEpochEnd']})
@@ -121,9 +137,9 @@ async function trainModel (inputs, labels, e) {
     batchSize,
     epochs,
     shuffle:true,
-    ...callbacks
+    callbacks
   });
-
+  $('.training-progress-bar-space ').hide();
   console.log("Finished Training");
 }
 
