@@ -86,7 +86,7 @@
 						<h1 class="text-white">
 							AI Color Picker
 						</h1>
-						<p class="text-white">Jan 20 - Jan 22, 2020</p>
+						<p class="text-white">Jan 20, 2020 - Jan 22, 2020</p>
 					</div>
 				</div>
 			</div>
@@ -98,13 +98,51 @@
       <div class="container" align=center>
         <div class="row align-items-center justify-content-between">
           <div class="col-lg-12 pt-60 pb-60">
-            <p>Click on the text color you think is easier to read on the provided background color.</p>
-            <p>With every color, an AI will attempt to guess the ideal text color.</p>
+
             <div class="tabs">
               <ul>
-                <li><a href="#tab-training">Training the Model</a></li>
+                <li><a href="#tab-about">About</a> </li>
+                <li><a href="#tab-training">Train the Model</a></li>
                 <li><a href="#tab-data">See the Data</a></li>
               </ul>
+
+              <div id="tab-about" align=left>
+                <h1>The AI Color Picker</h1>
+                <br/>
+                <p>
+                  The goal of this project is to qualitatively show in real-time
+                  the ability of a neural network to learn from data.
+                </p>
+                <h3>What the AI Should Do</h3> <br/>
+                <p>
+                  The premise is that we want to create an AI which, when given
+                  a random background color, will advise someone if the text
+                  should be black or white to be easier to read. The problem is
+                  that we need data first. That's where you come in. In the second
+                  tab above, you will be giving your opinion on what color of
+                  text is easier to read on a given background color. The AI will
+                  also be tagging along at the bottom, giving its own best guess.
+                </p>
+
+                <h3>About the AI</h3> <br/>
+                <p>
+                  In this simple example, a small neural network is first created
+                  with random weights. It's given the color and attempts to categorize
+                  it into one of two groups, a group of colors for white text and
+                  one for black text. Below the buttons, you'll find the model's
+                  guess and its confidence in its classification as you are choosing
+                  the colors. You'll notice that the confidence of the model
+                  starts at about 50%, which is reasonable since it is basically guessing
+                </p>
+                <p>
+                  Every ten (10) colors you feed it (called data samples), the model
+                  will start to read and train itself on your input. Afterwards,
+                  its attempts at guessing will become more confident and accurate.
+                  Like any machine learning model, the more data you feed it, the
+                  more accurate and confident it becomes, so keep on giving it
+                  samples until you think its "good enough"!
+                </p>
+              </div>
 
               <div id="tab-training">
                 <!-- The Actual Training and Stuff -->
@@ -114,7 +152,7 @@
                       <div class='training-progress-bar-space' align=center>
                         <h2>The Neural Network is Training on your Inputs!</h2>
                         <br/>
-                        <img style='display:none' src="learning.gif" alt="">
+                        <img class'learning-animation' src="learning.gif" alt="">
                         <br/>
                         <br/>
                         <div class="training-progress-bar" style='width:300px'></div>
@@ -140,6 +178,7 @@
                   </tr>
                 </table>
               </div>
+              <!-- Data Visualization Tab -->
               <div id="tab-data">
                 <table class='data-visualization'>
                   <!-- This is the label -->
