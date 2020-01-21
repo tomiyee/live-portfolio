@@ -11,39 +11,38 @@ let blackSamples = 0;
 window.onload = start;
 
 /**
- * @function sortData - Sorts the dataset in order of increasing distance from
- * [0,0,0] in rgb values
- */
-function sortData () {
-  data = data.sort((sample1, sample2) => {
-    return dist (getRGB(sample1[0]), [0,0,0]) - dist (getRGB(sample2[0]), [0,0,0]);
-  });
-}
-
-/**
  * start - description
  *
  * @return {type}  description
  */
 function start () {
+  // Loads data if there is data saved
   if (localStorage["ai-color-picker:data"].length > 0)
     data = JSON.parse(localStorage["ai-color-picker:data"]);
   else
     localStorage.setItem("ai-color-picker:data",JSON.stringify([]))
+
   // Sorts the data in order of dark to light
   sortData();
   for (let i in data)
     addColor(data[i][0], data[i][1][0] == 0 ? 'white' : 'black')
 
-  $(".tabs").tabs();
+  // Initialize everything involved in with Machine Learning
   initModel ();
   currCol = randomColor();
   updateModelGuess();
+
+  // All the JQuery stuff
+  $(".tabs").tabs();
   $('.training-progress-bar-space').hide();
   $('.training-progress-bar').progressbar({value:0});
   $('.color-option').css('background-color', rgb(...getRGB(currCol)) );
   $('.left-option').bind('click', () => clickHandler('white'));
   $('.right-option').bind('click', () => clickHandler('black'));
+  $('.train-button').bind('click', () => {
+    const t = convertToTensor(data);
+    trainModel(t.input, t.labels);
+  });
 }
 
 /**
@@ -68,6 +67,7 @@ async function clickHandler (opt) {
   const label = opt == "white" ? [0] : [1];
   data.push([currCol, label]);
   localStorage["ai-color-picker:data"] = JSON.stringify(data);
+  addColor(currCol, opt)
 
   // 2. Display a new random background color
   currCol = randomColor();
@@ -82,6 +82,16 @@ async function clickHandler (opt) {
 
   // 4. Predict using the model and show its guess.
   updateModelGuess();
+}
+
+/**
+ * @function sortData - Sorts the dataset in order of increasing distance from
+ * [0,0,0] in rgb values
+ */
+function sortData () {
+  data = data.sort((sample1, sample2) => {
+    return dist (getRGB(sample1[0]), [0,0,0]) - dist (getRGB(sample2[0]), [0,0,0]);
+  });
 }
 
 /**
@@ -113,6 +123,7 @@ async function trainModel (inputs, labels, e) {
   // Hides the decision space, and shows the progress bar
   $('.decision-space').hide();
   $('.training-progress-bar-space').show();
+  $('.train-button').attr('disabled', true);
 
   if (typeof inputs == 'undefined' && typeof labels == 'undefined') {
     t = convertToTensor (data);
@@ -139,6 +150,7 @@ async function trainModel (inputs, labels, e) {
         { height: 200, callbacks: ['onEpochEnd']})
     }
   }
+
   // Begins the actual training of the model
   await model.fit(inputs, labels, {
     batchSize,
@@ -146,9 +158,14 @@ async function trainModel (inputs, labels, e) {
     shuffle:true,
     callbacks
   });
+
+  if (Array.isArray(currCol))
+    updateModelGuess();
+
   // Hides the progressbar and shows the decision space
   $('.training-progress-bar-space ').hide();
   $('.decision-space').show();
+  $('.train-button').attr('disabled', false);
 }
 
 /**
