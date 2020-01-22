@@ -86,3 +86,7 @@ p {
   -ms-user-select: none;
   user-select: none;
 }
+
+strong {
+  font-weight: bold;
+}

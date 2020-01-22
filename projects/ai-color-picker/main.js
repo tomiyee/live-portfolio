@@ -9,6 +9,7 @@ const Dense = tf.layers.dense;
 
 const SHOW_TRAINING = false;
 const DATA_TAG = "ai-color-picker:data";
+const SAMPLES_BETWEEN_TRAINING = 10;
 let data = [];
 let currCol = [];
 let model;
@@ -18,9 +19,11 @@ let blackSamples = 0;
 window.onload = start;
 
 /**
- * start - description
- *
- * @return {type}  description
+ * @function start - Initializes the entire project, doing the following in order:
+ * 1. Loads saved data if data exists.
+ * 2. Sorts the existing data in order of increasing distance to black
+ * 3. Initializes the brand new model
+ * 4. Initializes JQuery UI elements and event handler binding.
  */
 function start () {
 
@@ -90,9 +93,11 @@ function start () {
 }
 
 /**
- * @function clickHandler - Saves the choice of color to the array data,
- * displays a new random background color, and then displays the model's
- * current guess as to which one is the better contrast.
+ * @function clickHandler -
+ * 1. Saves the choice of color to the data list locally
+ * 2. Displays a new random background color
+ * 3. Trains the model on the new data every SAMPLES_BETWEEN_TRAINING samples
+ * 4. Displays the model's prediction for the new color
  *
  * @param  {String} opt - Either "white" or "black"
  */
@@ -108,7 +113,7 @@ async function clickHandler (opt) {
   $('.color-option').css('background-color', rgb(...getRGB(currCol)));
 
   // 3. Train the model on new data
-  if (data.length % 10 == 0){
+  if (data.length % SAMPLES_BETWEEN_TRAINING == 0){
     let t = convertToTensor(data);
     await trainModel(t.input, t.labels);
     $('.decision-space').show();
@@ -119,9 +124,9 @@ async function clickHandler (opt) {
 }
 
 /**
- * initModel - description
- *
- * @return {type}  description
+ * @function initModel - Using Tensorflow, creates a newly initialized model,
+ * called once at the start of the project. Assigns the new model to the global
+ * model variable
  */
 function initModel () {
   model = Sequential();
@@ -140,7 +145,15 @@ function initModel () {
 }
 
 /**
- * trainModel -
+ * trainModel - Trains the global model with the provided inputs and labels.
+ * 1. Hides Decision space, shows the progressbar
+ * 2. Define the callbacks
+ * 3. Begin the training
+ * 4. Shows Decision space, hides the progressbar
+ *
+ * @param  {tf.tensor2d} [inputs] - A list of sample inputs
+ * @param  {tf.tensor2d} [labels] - A list of sample labels
+ * @param  {Number} [e=20]     (Def. 50) Number of Epochs to train
  */
 async function trainModel (inputs, labels, e) {
 
@@ -183,9 +196,6 @@ async function trainModel (inputs, labels, e) {
     callbacks
   });
 
-  if (Array.isArray(currCol))
-    updateModelGuess();
-
   // Hides the progressbar and shows the decision space
   $('.training-progress-bar-space ').hide();
   $('.decision-space').show();
@@ -193,10 +203,14 @@ async function trainModel (inputs, labels, e) {
 }
 
 /**
- * convertToTensor - description
+ * @function convertToTensor - Given a list of samples, where every sample is a
+ * list. The first element in the sample is the list of features, the second is
+ * a list with the label. An example of a sample is [ [255,255,255], [1] ]. It
+ * shuffles the data, and returns a dict with the separated lists of inputs and
+ * labels.
  *
- * @param  {type} data description
- * @return {type}      description
+ * @param  {Number[][][]} data - A List of Samples
+ * @return {Object}      A dictionary with tf.tensor2d properties "input" and "labels"
  */
 function convertToTensor (data) {
   // Wrapping the following calculations in tf.tidy
@@ -220,9 +234,9 @@ function convertToTensor (data) {
 }
 
 /**
-* predict - description
+ * @function predict - Returns the model's prediction on the global var currCol
  *
- * @return {Number}  Float, confidence it is red
+ * @return {Number}  Float, the model's confidence that the ideal text color is black.
  */
 function predict () {
   return tf.tidy (() => {
@@ -241,28 +255,6 @@ function updateModelGuess() {
   else
     $('.chose-black').append($(".model-pred"));
   $('.model-confidence').text(round((guess>0.5?guess:1-guess)*100,1));
-}
-
-/**
- * printData - description
- *
- * @return {type}  description
- */
-function printData () {
-  let x = '[';
-  let y = '[';
-  for (let i in data) {
-    x += `(${data[i][0][0]},${data[i][0][1]},${data[i][0][2]})`;
-    if (i < data.length-1)
-      x += ',';
-
-    y += `[${data[i][1][0]}]`;
-    if (i < data.length-1)
-      y += ',';
-  }
-  x += ']';
-  y += ']';
-  console.log(x,'\n',y);
 }
 
 /**
@@ -298,7 +290,7 @@ function openDeleteDataPopup () {
 }
 
 /**
- * @function clearData - Empties all of the previous selections
+ * @function clearData - Deletes all of the samples the user has previously chosen.
  */
 function clearData () {
   localStorage.setItem(DATA_TAG, JSON.stringify([]))
@@ -307,13 +299,9 @@ function clearData () {
   $('.black-text-num').text(0);
 }
 
-function saveData () {
-
-}
-
 /**
  * @function randomColor - Returns a random list of rgb values on the range
- * [0, 255] inclusive
+ * [0, 1) 
  *
  * @return {Integer[]} List of rgb values
  */
