@@ -1,7 +1,15 @@
+/**
+ * TO-DO
+ *
+ * Make Data Draggable
+ * Allow Data to be Moved between categories.
+ * Finish Documentation
+ */
+
 const Dense = tf.layers.dense;
 const Sequential = tf.sequential;
 const SHOW_TRAINING = false;
-const DATA_TAG = "ai-color-picker:data-temp";
+const DATA_TAG = "ai-color-picker:data";
 let data = [];
 let currCol = [];
 let model;
