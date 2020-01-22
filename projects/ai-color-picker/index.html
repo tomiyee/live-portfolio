@@ -1,11 +1,4 @@
 <!DOCTYPE html>
-<!--
-  When creating a new project:
-
-  1. Update the Project Title and the Date in the Title Area
-  2. Update the Title Tags in the Head
-  2. Credit Inspiration or Tutorials followed in the Contents Area
- -->
 <html lang="zxx" class="no-js">
   <head>
     <!-- Mobile Specific Meta -->
@@ -15,7 +8,7 @@
     <!-- Author Meta -->
     <meta name="author" content="theng">
     <!-- Meta Description -->
-    <meta name="description" content="">
+    <meta name="description" content="Hands on example of AI.">
     <!-- Meta Keyword -->
     <meta name="keywords" content="">
     <!-- meta character set -->
@@ -115,18 +108,21 @@
                   The goal of this project is to qualitatively show in real-time
                   the ability of a neural network to learn from data.
                 </p>
-                <h3>What the AI Should Do</h3> <br/>
+                <h3>What the Neural Network Should Do</h3> <br/>
                 <p>
-                  The premise is that we want to create an AI which, when given
-                  a random background color, will advise someone if the text
-                  should be black or white to be easier to read. The problem is
-                  that we need data first. That's where you come in. In the second
-                  tab above, you will be giving your opinion on what color of
-                  text is easier to read on a given background color. The AI will
-                  also be tagging along at the bottom, giving its own best guess.
+                  We want to create an AI that, when given a random background
+                  color, will advise the user if the ideal text color is black
+                  or white. However, like any machine learning model, this neural
+                  network needs loads of data. That's where you come in!
                 </p>
-
-                <h3>About the AI</h3> <br/>
+                <p>
+                  In the second tab above, you will be giving <strong>your</strong>
+                  opinion on what color of text is easier to read on a given
+                  background color. The AI will also be tagging along at the bottom,
+                  giving its own best guess, and learning from the examples you
+                  give it.
+                </p>
+                <h3>About the Neural Network</h3> <br/>
                 <p>
                   In this simple example, a small neural network is first created
                   with random weights. It's given the color and attempts to categorize
@@ -134,11 +130,12 @@
                   one for black text. Below the buttons, you'll find the model's
                   guess and its confidence in its classification as you are choosing
                   the colors. You'll notice that the confidence of the model
-                  starts at about 50%, which is reasonable since it is basically guessing
+                  starts at about 50%, which is reasonable since it is essentially
+                  guessing.
                 </p>
                 <p>
                   Every ten (10) colors you feed it (called data samples), the model
-                  will start to read and train itself on your input. Afterwards,
+                  will start to read and train itself on your input. Afterward,
                   its attempts at guessing will become more confident and accurate.
                   Like any machine learning model, the more data you feed it, the
                   more accurate and confident it becomes, so keep on giving it
@@ -152,11 +149,8 @@
                   <tr>
                     <td colspan=4>
                       <div class='training-progress-bar-space' align=center>
-                        <h2>The Neural Network is Training on your Inputs!</h2>
-                        <br/>
-                        <img class'learning-animation' src="learning.gif" alt="">
-                        <br/>
-                        <br/>
+                        <h2>The Neural Network is Training on your Inputs!</h2><br/>
+                        <img class'learning-animation' src="learning.gif" alt=""><br/><br/>
                         <div class="training-progress-bar" style='width:300px'></div>
                       </div>
                     </td>
@@ -169,10 +163,8 @@
                   <tr class='decision-space'>
                     <td colspan=1 class="chose-white model-prediction" align=center>
                       <div class="model-pred">
-                        <img src="arrow.png" width=100 alt="">
-                        <div>
-                          The model is <span class="model-confidence">0</span>% sure.
-                        </div>
+                        <img src="arrow.png" width=100 alt=""><br/>
+                        <div>The model is <span class="model-confidence">0</span>% sure.</div>
                       </div>
                     </td>
                     <td colspan=2></td>
@@ -183,11 +175,15 @@
 
               <!-- Data Visualization Tab -->
               <div id="tab-data">
-
-                <center><button class='train-button' style='font-size:30px;padding:10px;'>Train on Existing Data</button></center>
-                <br/>
-                <center><button class='clear-data-button' style='font-size:20px;padding:10px;'>Clear Existing Data</button></center>
-                <br/>
+                <div align=center>
+                  <button class='train-button' style='font-size:30px;padding:10px;'>Train on Existing Data</button> <br/> <br/>
+                  <button class='clear-data-button' style='font-size:20px;padding:5px;'>Clear Existing Data</button> <br/> <br/>
+                  <div style='font-size:18px;width:600px;'>
+                    If you made a mistake and would like to relabel a color
+                    simply drag the color to the other category.
+                  </div>
+                  <br/>
+                </div>
 
                 <table class='data-visualization'>
                   <!-- This is the label -->
@@ -197,8 +193,8 @@
                   </tr>
                   <!-- This is where we display all the colors we've classified -->
                   <tr>
-                    <td><div class="classified-colors classified-white"></div></td>
-                    <td><div class="classified-colors classified-black"></div></td>
+                    <td><ul class='sortable classified-colors classified-white'></ul></td>
+                    <td><ul class='sortable classified-colors classified-black'></ul></td>
                   </tr>
                 </table>
               </div>
