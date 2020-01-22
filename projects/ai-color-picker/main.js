@@ -1,15 +1,11 @@
-/**
- * TO-DO
- *
- * Finish Documentation
- */
-
+// Shorthands
 const Sequential = tf.sequential;
 const Dense = tf.layers.dense;
-
+// Constants
 const SHOW_TRAINING = false;
 const DATA_TAG = "ai-color-picker:data";
 const SAMPLES_BETWEEN_TRAINING = 10;
+// Variabls
 let data = [];
 let currCol = [];
 let model;
