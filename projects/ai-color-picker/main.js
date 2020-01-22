@@ -1,7 +1,7 @@
 const Dense = tf.layers.dense;
 const Sequential = tf.sequential;
 const SHOW_TRAINING = false;
-
+const DATA_TAG = "ai-color-picker:data-temp";
 let data = [];
 let currCol = [];
 let model;
@@ -17,10 +17,12 @@ window.onload = start;
  */
 function start () {
   // Loads data if there is data saved
-  if (localStorage["ai-color-picker:data"].length > 0)
-    data = JSON.parse(localStorage["ai-color-picker:data"]);
+
+  if (localStorage.hasOwnProperty(DATA_TAG) &&
+      localStorage[DATA_TAG].length > 0)
+    data = JSON.parse(localStorage[DATA_TAG]);
   else
-    localStorage.setItem("ai-color-picker:data",JSON.stringify([]))
+    localStorage.setItem(DATA_TAG, JSON.stringify([]))
 
   // Sorts the data in order of dark to light
   sortData();
@@ -34,25 +36,17 @@ function start () {
 
   // All the JQuery stuff
   $(".tabs").tabs();
+  $( "#dialog-confirm" ).dialog().dialog('close');
   $('.training-progress-bar-space').hide();
   $('.training-progress-bar').progressbar({value:0});
   $('.color-option').css('background-color', rgb(...getRGB(currCol)) );
   $('.left-option').bind('click', () => clickHandler('white'));
   $('.right-option').bind('click', () => clickHandler('black'));
-  $('.train-button').bind('click', () => {
+  $('.clear-data-button').bind('click', openDeleteDataPopup);
+  $('.train-button').bind('click', () => tf.tidy(()=>{
     const t = convertToTensor(data);
     trainModel(t.input, t.labels);
-  });
-}
-
-/**
- * @function randomColor - Returns a random list of rgb values on the range
- * [0, 255] inclusive
- *
- * @return {Integer[]} List of rgb values
- */
-function randomColor () {
-  return [Math.random(), Math.random(), Math.random()];
+  }));
 }
 
 /**
@@ -82,16 +76,6 @@ async function clickHandler (opt) {
 
   // 4. Predict using the model and show its guess.
   updateModelGuess();
-}
-
-/**
- * @function sortData - Sorts the dataset in order of increasing distance from
- * [0,0,0] in rgb values
- */
-function sortData () {
-  data = data.sort((sample1, sample2) => {
-    return dist (getRGB(sample1[0]), [0,0,0]) - dist (getRGB(sample2[0]), [0,0,0]);
-  });
 }
 
 /**
@@ -239,6 +223,58 @@ function printData () {
   x += ']';
   y += ']';
   console.log(x,'\n',y);
+}
+
+/**
+ * @function sortData - Sorts the dataset in order of increasing distance from
+ * [0,0,0] in rgb values
+ */
+function sortData () {
+  data = data.sort((sample1, sample2) => {
+    return dist (getRGB(sample1[0]), [0,0,0]) - dist (getRGB(sample2[0]), [0,0,0]);
+  });
+}
+
+/**
+ * @function openDeleteDataPopup - Opens the dialog to make sure that the user
+ * wishes to delete all of their training data.
+ */
+function openDeleteDataPopup () {
+  $( "#dialog-confirm" ).dialog({
+    resizable: false,
+    height: "auto",
+    width: 400,
+    modal: true,
+    buttons: {
+      "Delete all items": function() {
+        clearData();
+        $( this ).dialog( "close" );
+      },
+      Cancel: function() {
+        $( this ).dialog( "close" );
+      }
+    }
+  });
+}
+
+/**
+ * @function clearData - Empties all of the previous selections
+ */
+function clearData () {
+  localStorage.setItem(DATA_TAG, JSON.stringify([]))
+  $('.classified-colors').empty();
+  $('.white-text-num').text(0);
+  $('.black-text-num').text(0);
+}
+
+/**
+ * @function randomColor - Returns a random list of rgb values on the range
+ * [0, 255] inclusive
+ *
+ * @return {Integer[]} List of rgb values
+ */
+function randomColor () {
+  return [Math.random(), Math.random(), Math.random()];
 }
 
 /**

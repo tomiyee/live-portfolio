@@ -39,7 +39,7 @@
 
 .classified-colors {
   width:400px;
-  height:300px;
+  height:400px;
   overflow-y: scroll;
   padding:10px;
 }
@@ -70,4 +70,13 @@
 
 p {
   font-size: 18px;
+}
+
+.no-highlight {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }

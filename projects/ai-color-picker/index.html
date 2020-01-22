@@ -98,7 +98,9 @@
       <div class="container" align=center>
         <div class="row align-items-center justify-content-between">
           <div class="col-lg-12 pt-60 pb-60">
-
+            <div id="dialog-confirm" title="Delete Training Data?">
+              <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>These items will be permanently deleted and cannot be recovered. Are you sure?</p>
+            </div>
             <div class="tabs">
               <ul>
                 <li><a href="#tab-about">About</a> </li>
@@ -144,8 +146,8 @@
                 </p>
               </div>
 
+              <!-- The Actual Training and Stuff -->
               <div id="tab-training">
-                <!-- The Actual Training and Stuff -->
                 <table>
                   <tr>
                     <td colspan=4>
@@ -160,9 +162,9 @@
                     </td>
                   </tr>
                   <tr class='decision-space'>
-                    <td><div class="color-option left-option">WHITE TEXT</div></td>
+                    <td><div class="color-option left-option no-highlight">WHITE TEXT</div></td>
                     <td colspan=2 width=100px align=center style="font-weight:bold;font-size:40px">OR</td>
-                    <td><div class="color-option right-option">BLACK TEXT</div></td>
+                    <td><div class="color-option right-option no-highlight">BLACK TEXT</div></td>
                   </tr>
                   <tr class='decision-space'>
                     <td colspan=1 class="chose-white model-prediction" align=center>
@@ -184,12 +186,14 @@
 
                 <center><button class='train-button' style='font-size:30px;padding:10px;'>Train on Existing Data</button></center>
                 <br/>
+                <center><button class='clear-data-button' style='font-size:20px;padding:10px;'>Clear Existing Data</button></center>
+                <br/>
 
                 <table class='data-visualization'>
                   <!-- This is the label -->
                   <tr>
-                    <td class='classified-colors-label'>WHITE TEXT (<span class='white-text-num'>0</span> samples)</td>
-                    <td class='classified-colors-label'>BLACK TEXT (<span class='black-text-num'>0</span> samples)</td>
+                    <td class='classified-colors-label no-highlight'>WHITE TEXT (<span class='white-text-num'>0</span> samples)</td>
+                    <td class='classified-colors-label no-highlight'>BLACK TEXT (<span class='black-text-num'>0</span> samples)</td>
                   </tr>
                   <!-- This is where we display all the colors we've classified -->
                   <tr>
