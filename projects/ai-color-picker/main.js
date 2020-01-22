@@ -301,7 +301,7 @@ function clearData () {
 
 /**
  * @function randomColor - Returns a random list of rgb values on the range
- * [0, 1) 
+ * [0, 1)
  *
  * @return {Integer[]} List of rgb values
  */
@@ -350,5 +350,5 @@ function dist (pt1, pt2) {
   let s = 0;
   for (let i in pt1)
     s += (pt1[i]-pt2[i])**2;
-  return Math.sqrt(s)
+  return Math.sqrt(s);
 }
