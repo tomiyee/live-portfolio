@@ -97,122 +97,127 @@
     <section class="home-about-area pb-60 pt-60">
       <div class="container">
         <div class="row align-items-center justify-content-between">
-          <div class="col-lg-12">
-            <center>
-              <div class="context-container" style="width:800px; text-align:left;">
-                <!-- The Text -->
-                <h2>Context</h2>
-                <p>
-                  During January of 2020, I participated in the <b>MISTI Brazil Program</b>,
-                  where I introduced local teachers to <a href="http://appinventor.mit.edu">
-                  MIT App Inventor</a>, a beginner-friendly block-based programming platform.
-                </p>
-                <p>
-                  Through this 4-week program, these "multipliers" would first learn to use the
-                  MIT App Inventor Inteface (Week 1), develop an independent project
-                  (Week 2), and then a handful of the multiplies would volunteer to teach
-                  App Inventor to local high school students (Week 3-4).
-                </p>
-                <p>
-                  During the first week of the program, one of my peers, Talia, suggested
-                  making 2048 using App Inventor. Thus began this journey down the rabit hole
-                  of finding out which of the strategies for 2048 I had heard of was optimal.
-                </p>
-                <p>
-                  <h3>Instructions</h3>
-                  Use the WASD keys or Arrow keys to play the game in manual mode.
-                  To simulate a strategy, simply select the strategy in the dropdown
-                  menu and click start to begin the automated strategy.
+          <div class="col-lg-12" align=center>
+            <div class="tabs">
+              <ul>
+                <li><a href="#tab-about">About</a> </li>
+                <li><a href="#tab-game">Game</a> </li>
+              </ul>
+              <div id='tab-about'>
+                <div class="context-container" style="width:800px; text-align:left;">
+                  <!-- The Text -->
+                  <h2>Context</h2>
+                  <p>
+                    During January of 2020, I participated in the <b>MISTI Brazil Program</b>,
+                    where I introduced local teachers to <a href="http://appinventor.mit.edu">
+                    MIT App Inventor</a>, a beginner-friendly block-based programming platform.
+                  </p>
+                  <p>
+                    Through this 4-week program, these "multipliers" would first learn to use the
+                    MIT App Inventor Inteface (Week 1), develop an independent project
+                    (Week 2), and then a handful of the multiplies would volunteer to teach
+                    App Inventor to local high school students (Week 3-4).
+                  </p>
+                  <p>
+                    During the first week of the program, one of my peers, Talia, suggested
+                    making 2048 using App Inventor. Thus began this journey down the rabit hole
+                    of finding out which of the strategies for 2048 I had heard of was optimal.
+                  </p>
+                  <p>
+                    <h3>Instructions</h3>
+                    Use the WASD keys or Arrow keys to play the game in manual mode.
+                    To simulate a strategy, simply select the strategy in the dropdown
+                    menu and click start to begin the automated strategy.
 
-                  <h5>Down Right Strategy</h5>
-                  This strategy will prioritize alternating Down and to the Right. If
-                  it gets stuck, it will then try to go to the Left. If it is still stuck,
-                  it will go Up.
+                    <h5>Down Right Strategy</h5>
+                    This strategy will prioritize alternating Down and to the Right. If
+                    it gets stuck, it will then try to go to the Left. If it is still stuck,
+                    it will go Up.
 
-                  <h5>Left Down Right Down Strategy</h5>
-                  This strategy will prioritize repeating the pattern (Left, Down, Right, Down).
-                  If it gets stuck, it will then try to go Up.
-                </p>
+                    <h5>Left Down Right Down Strategy</h5>
+                    This strategy will prioritize repeating the pattern (Left, Down, Right, Down).
+                    If it gets stuck, it will then try to go Up.
+                  </p>
+                </div>
               </div>
-            </center>
-            <center>
-              <div class="simulation-settings">
+              <div id='tab-game'>
+
+                <div class="simulation-settings">
+                  <table>
+                    <tr>
+                      <th>Rows</th>
+                      <th>Cols</th>
+                      <th>Strategy</th>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input id="input-rows" style="font-size: 2em; width:50px;" type="number" name="rows" value="6" onchange="updateGame()">
+                      </td>
+                      <td>
+                        <input id="input-cols" style="font-size: 2em; width:50px;" width="30px" type="number" name="cols" value="6" onchange="updateGame()">
+                      </td>
+                      <td>
+                        <select name="strategy" id="strategy" style="font-size:2em;">
+                          <option value=1 selected="selected">Manual</option>
+                          <option value=2>Down Right</option>
+                          <option value=3>Left Down Right Down</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <th colspan=3>
+                        <center>Strategy Simulation Speed (<span class='speed-value'>0</span>)</center>
+                      </th>
+                    </tr>
+                    <tr>
+                      <td colspan=3>
+                        <center>
+                          <input type="range" min=0 max=1050 step=50 value=500 class="slider" id="speed">
+                        </center>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan=3>
+                        <center>
+                          <button type="button" name="button" style="width:45%" id="restart">Restart</button>
+                          <button type="button" name="button" style="width:45%" id="start" disabled>Start</button>
+                        </center>
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+
+                <!-- The canvas and the data to the right -->
                 <table>
                   <tr>
-                    <th>Rows</th>
-                    <th>Cols</th>
-                    <th>Strategy</th>
-                  </tr>
-                  <tr>
                     <td>
-                      <input id="input-rows" style="font-size: 2em; width:50px;" type="number" name="rows" value="6" onchange="updateGame()">
+                      <canvas id="canvas" width="300" height="300"></canvas>
                     </td>
-                    <td>
-                      <input id="input-cols" style="font-size: 2em; width:50px;" width="30px" type="number" name="cols" value="6" onchange="updateGame()">
-                    </td>
-                    <td>
-                      <select name="strategy" id="strategy" style="font-size:2em;">
-                        <option value=1 selected="selected">Manual</option>
-                        <option value=2>Down Right</option>
-                        <option value=3>Left Down Right Down</option>
-                      </select>
-                    </td>
-                  </tr>
-                  <tr>
-                    <th colspan=3>
-                      <center>Strategy Simulation Speed (<span class='speed-value'>0</span>)</center>
-                    </th>
-                  </tr>
-                  <tr>
-                    <td colspan=3>
-                      <center>
-                        <input type="range" min=0 max=1050 step=50 value=500 class="slider" id="speed">
-                      </center>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan=3>
-                      <center>
-                        <button type="button" name="button" style="width:45%" id="restart">Restart</button>
-                        <button type="button" name="button" style="width:45%" id="start" disabled>Start</button>
-                      </center>
+                    <td valign="top">
+                      <div class="sim-data-container">
+                        <table class="simulation-data">
+                          <tr height=1em>
+                            <th>Manual</th>
+                            <th>DoRi</th>
+                            <th>LDRD</th>
+                          </tr>
+                          <tr height=1em class="avg">
+                            <td class='avg-manual'>0</td>
+                            <td class='avg-dr'>0</td>
+                            <td class='avg-ldrd'>0</td>
+                          </tr>
+                          <tr valign=top  >
+                            <td class="scores-manual"></td>
+                            <td class="scores-dr"></td>
+                            <td class="scores-ldrd"></td>
+                          </tr>
+                        </table>
+                      </div>
                     </td>
                   </tr>
                 </table>
               </div>
-            </center>
-            <!-- The canvas and the data to the right -->
-            <center>
-              <table>
-                <tr>
-                  <td>
-                    <canvas id="canvas" width="300" height="300"></canvas>
-                  </td>
-                  <td valign="top">
-                    <div class="sim-data-container">
-                      <table class="simulation-data">
-                        <tr height=1em>
-                          <th>Manual</th>
-                          <th>DoRi</th>
-                          <th>LDRD</th>
-                        </tr>
-                        <tr height=1em class="avg">
-                          <td class='avg-manual'>0</td>
-                          <td class='avg-dr'>0</td>
-                          <td class='avg-ldrd'>0</td>
-                        </tr>
-                        <tr valign=top  >
-                          <td class="scores-manual"></td>
-                          <td class="scores-dr"></td>
-                          <td class="scores-ldrd"></td>
-                        </tr>
-                      </table>
-                    </div>
-                  </td>
-                </tr>
-              </table>
-            </center>
-
+            </div>
           </div>
         </div>
       </div>
@@ -282,6 +287,8 @@
     <script src="../../js/mail-script.js"></script>
     <script src="../../js/main.js"></script>
     <script src="../../js/personal-lib.js"></script>
+    <script src="../../js/jquery-ui.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="../../css/jquery-ui.min.css">
     <script src="./main.js" charset="utf-8"></script>
     <link rel="stylesheet" href="./style.css">
   </body>

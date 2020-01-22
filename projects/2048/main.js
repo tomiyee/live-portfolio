@@ -56,6 +56,7 @@ function start () {
   $("#start").bind("click", startSimulation)
   $("#strategy").bind("change", strategyChangeHandler);
   $("#speed").bind("change", speedChangeHandler).bind("mousemove", displaySpeed);
+  $(".tabs").tabs();
   displaySpeed();
   // Add The event listeners
   window.addEventListener("keydown", keyDownHandler);

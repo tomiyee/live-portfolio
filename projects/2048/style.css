@@ -19,7 +19,7 @@
   border-width: 5px;
   border-color: #bbada0;
   border-style: solid;
-  overflow:scroll;
+  overflow-y:auto;
   height:100px;
 }
 
