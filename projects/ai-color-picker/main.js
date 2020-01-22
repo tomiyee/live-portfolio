@@ -1,15 +1,15 @@
 /**
  * TO-DO
  *
- * Make Data Draggable
- * Allow Data to be Moved between categories.
  * Finish Documentation
  */
 
-const Dense = tf.layers.dense;
 const Sequential = tf.sequential;
+const Dense = tf.layers.dense;
+
 const SHOW_TRAINING = false;
 const DATA_TAG = "ai-color-picker:data";
+const SAMPLES_BETWEEN_TRAINING = 10;
 let data = [];
 let currCol = [];
 let model;
@@ -19,13 +19,15 @@ let blackSamples = 0;
 window.onload = start;
 
 /**
- * start - description
- *
- * @return {type}  description
+ * @function start - Initializes the entire project, doing the following in order:
+ * 1. Loads saved data if data exists.
+ * 2. Sorts the existing data in order of increasing distance to black
+ * 3. Initializes the brand new model
+ * 4. Initializes JQuery UI elements and event handler binding.
  */
 function start () {
-  // Loads data if there is data saved
 
+  // Loads data if there is data saved
   if (localStorage.hasOwnProperty(DATA_TAG) &&
       localStorage[DATA_TAG].length > 0)
     data = JSON.parse(localStorage[DATA_TAG]);
@@ -55,12 +57,47 @@ function start () {
     const t = convertToTensor(data);
     trainModel(t.input, t.labels);
   }));
+
+  $(".sortable").sortable({connectWith:'.sortable'});
+  $(".sortable").disableSelection();
+  $('.classified-white').sortable({'receive': (e, ui) => {
+    whiteSamples += 1;
+    blackSamples -= 1;
+    $('.white-text-num').text(whiteSamples);
+    $('.black-text-num').text(blackSamples);
+    const color = JSON.parse(ui.item.attr('color'));
+    for (let i in data){
+      if (data[i][0][0] == color[0] && data[i][0][1] == color[1] && data[i][0][2] == color[2]){
+        data[i][1][0] = 0;
+        localStorage[DATA_TAG] = JSON.stringify(data);
+        return;
+      }
+    }
+    console.error ("Couldn't find the color in the list of data!");
+  }});
+  $('.classified-black').sortable({'receive': (e, ui) => {
+    whiteSamples -= 1;
+    blackSamples += 1;
+    $('.white-text-num').text(whiteSamples);
+    $('.black-text-num').text(blackSamples);
+    const color = JSON.parse(ui.item.attr('color'));
+    for (let i in data){
+      if (data[i][0][0] == color[0] && data[i][0][1] == color[1] && data[i][0][2] == color[2]){
+        data[i][1][0] = 1;
+        localStorage[DATA_TAG] = JSON.stringify(data);
+        return;
+      }
+    }
+    console.error ("Couldn't find the color in the list of data!");
+  }});
 }
 
 /**
- * @function clickHandler - Saves the choice of color to the array data,
- * displays a new random background color, and then displays the model's
- * current guess as to which one is the better contrast.
+ * @function clickHandler -
+ * 1. Saves the choice of color to the data list locally
+ * 2. Displays a new random background color
+ * 3. Trains the model on the new data every SAMPLES_BETWEEN_TRAINING samples
+ * 4. Displays the model's prediction for the new color
  *
  * @param  {String} opt - Either "white" or "black"
  */
@@ -68,7 +105,7 @@ async function clickHandler (opt) {
   // 1. Saves the selection to the data.
   const label = opt == "white" ? [0] : [1];
   data.push([currCol, label]);
-  localStorage["ai-color-picker:data"] = JSON.stringify(data);
+  localStorage[DATA_TAG] = JSON.stringify(data);
   addColor(currCol, opt)
 
   // 2. Display a new random background color
@@ -76,7 +113,7 @@ async function clickHandler (opt) {
   $('.color-option').css('background-color', rgb(...getRGB(currCol)));
 
   // 3. Train the model on new data
-  if (data.length % 10 == 0){
+  if (data.length % SAMPLES_BETWEEN_TRAINING == 0){
     let t = convertToTensor(data);
     await trainModel(t.input, t.labels);
     $('.decision-space').show();
@@ -87,9 +124,9 @@ async function clickHandler (opt) {
 }
 
 /**
- * initModel - description
- *
- * @return {type}  description
+ * @function initModel - Using Tensorflow, creates a newly initialized model,
+ * called once at the start of the project. Assigns the new model to the global
+ * model variable
  */
 function initModel () {
   model = Sequential();
@@ -108,7 +145,15 @@ function initModel () {
 }
 
 /**
- * trainModel -
+ * trainModel - Trains the global model with the provided inputs and labels.
+ * 1. Hides Decision space, shows the progressbar
+ * 2. Define the callbacks
+ * 3. Begin the training
+ * 4. Shows Decision space, hides the progressbar
+ *
+ * @param  {tf.tensor2d} [inputs] - A list of sample inputs
+ * @param  {tf.tensor2d} [labels] - A list of sample labels
+ * @param  {Number} [e=20]     (Def. 50) Number of Epochs to train
  */
 async function trainModel (inputs, labels, e) {
 
@@ -151,9 +196,6 @@ async function trainModel (inputs, labels, e) {
     callbacks
   });
 
-  if (Array.isArray(currCol))
-    updateModelGuess();
-
   // Hides the progressbar and shows the decision space
   $('.training-progress-bar-space ').hide();
   $('.decision-space').show();
@@ -161,10 +203,14 @@ async function trainModel (inputs, labels, e) {
 }
 
 /**
- * convertToTensor - description
+ * @function convertToTensor - Given a list of samples, where every sample is a
+ * list. The first element in the sample is the list of features, the second is
+ * a list with the label. An example of a sample is [ [255,255,255], [1] ]. It
+ * shuffles the data, and returns a dict with the separated lists of inputs and
+ * labels.
  *
- * @param  {type} data description
- * @return {type}      description
+ * @param  {Number[][][]} data - A List of Samples
+ * @return {Object}      A dictionary with tf.tensor2d properties "input" and "labels"
  */
 function convertToTensor (data) {
   // Wrapping the following calculations in tf.tidy
@@ -188,9 +234,9 @@ function convertToTensor (data) {
 }
 
 /**
-* predict - description
+ * @function predict - Returns the model's prediction on the global var currCol
  *
- * @return {Number}  Float, confidence it is red
+ * @return {Number}  Float, the model's confidence that the ideal text color is black.
  */
 function predict () {
   return tf.tidy (() => {
@@ -209,28 +255,6 @@ function updateModelGuess() {
   else
     $('.chose-black').append($(".model-pred"));
   $('.model-confidence').text(round((guess>0.5?guess:1-guess)*100,1));
-}
-
-/**
- * printData - description
- *
- * @return {type}  description
- */
-function printData () {
-  let x = '[';
-  let y = '[';
-  for (let i in data) {
-    x += `(${data[i][0][0]},${data[i][0][1]},${data[i][0][2]})`;
-    if (i < data.length-1)
-      x += ',';
-
-    y += `[${data[i][1][0]}]`;
-    if (i < data.length-1)
-      y += ',';
-  }
-  x += ']';
-  y += ']';
-  console.log(x,'\n',y);
 }
 
 /**
@@ -266,7 +290,7 @@ function openDeleteDataPopup () {
 }
 
 /**
- * @function clearData - Empties all of the previous selections
+ * @function clearData - Deletes all of the samples the user has previously chosen.
  */
 function clearData () {
   localStorage.setItem(DATA_TAG, JSON.stringify([]))
@@ -277,7 +301,7 @@ function clearData () {
 
 /**
  * @function randomColor - Returns a random list of rgb values on the range
- * [0, 255] inclusive
+ * [0, 1)
  *
  * @return {Integer[]} List of rgb values
  */
@@ -293,10 +317,10 @@ function randomColor () {
  * @param  {String} classification "white" or "black"
  */
 function addColor (color, classification) {
-  let colorBlock = $(document.createElement('div'))
-    colorBlock.addClass('data-visualization-colors');
+  let colorBlock = $(document.createElement('li'))
     colorBlock.css('background-color',rgb(...getRGB(color)));
-    colorBlock.appendTo($('.classified-' + classification))
+    colorBlock.appendTo($('.classified-' + classification));
+    colorBlock.attr('color', JSON.stringify(color));
   if (classification == "white")
     $('.white-text-num').text(whiteSamples += 1);
   else
@@ -326,5 +350,5 @@ function dist (pt1, pt2) {
   let s = 0;
   for (let i in pt1)
     s += (pt1[i]-pt2[i])**2;
-  return Math.sqrt(s)
+  return Math.sqrt(s);
 }
