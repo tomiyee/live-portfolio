@@ -184,6 +184,11 @@
               <!-- Data Visualization Tab -->
               <div id="tab-data">
 
+                <style media="screen">
+                  .sortable { list-style-type: none; margin: 0; padding: 0; width: 450px; }
+                  .sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 90px; height: 90px; font-size: 4em; text-align: center; }
+                </style>
+
                 <center><button class='train-button' style='font-size:30px;padding:10px;'>Train on Existing Data</button></center>
                 <br/>
                 <center><button class='clear-data-button' style='font-size:20px;padding:10px;'>Clear Existing Data</button></center>
@@ -197,8 +202,8 @@
                   </tr>
                   <!-- This is where we display all the colors we've classified -->
                   <tr>
-                    <td><div class="classified-colors classified-white"></div></td>
-                    <td><div class="classified-colors classified-black"></div></td>
+                    <td><ul class='sortable classified-colors classified-white'></ul></td>
+                    <td><ul class='sortable classified-colors classified-black'></ul></td>
                   </tr>
                 </table>
               </div>

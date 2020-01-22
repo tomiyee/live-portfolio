@@ -1,13 +1,12 @@
 /**
  * TO-DO
  *
- * Make Data Draggable
- * Allow Data to be Moved between categories.
  * Finish Documentation
  */
 
-const Dense = tf.layers.dense;
 const Sequential = tf.sequential;
+const Dense = tf.layers.dense;
+
 const SHOW_TRAINING = false;
 const DATA_TAG = "ai-color-picker:data";
 let data = [];
@@ -24,8 +23,8 @@ window.onload = start;
  * @return {type}  description
  */
 function start () {
-  // Loads data if there is data saved
 
+  // Loads data if there is data saved
   if (localStorage.hasOwnProperty(DATA_TAG) &&
       localStorage[DATA_TAG].length > 0)
     data = JSON.parse(localStorage[DATA_TAG]);
@@ -55,6 +54,39 @@ function start () {
     const t = convertToTensor(data);
     trainModel(t.input, t.labels);
   }));
+
+  $(".sortable").sortable({connectWith:'.sortable'});
+  $(".sortable").disableSelection();
+  $('.classified-white').sortable({'receive': (e, ui) => {
+    whiteSamples += 1;
+    blackSamples -= 1;
+    $('.white-text-num').text(whiteSamples);
+    $('.black-text-num').text(blackSamples);
+    const color = JSON.parse(ui.item.attr('color'));
+    for (let i in data){
+      if (data[i][0][0] == color[0] && data[i][0][1] == color[1] && data[i][0][2] == color[2]){
+        data[i][1][0] = 0;
+        localStorage[DATA_TAG] = JSON.stringify(data);
+        return;
+      }
+    }
+    console.error ("Couldn't find the color in the list of data!");
+  }});
+  $('.classified-black').sortable({'receive': (e, ui) => {
+    whiteSamples -= 1;
+    blackSamples += 1;
+    $('.white-text-num').text(whiteSamples);
+    $('.black-text-num').text(blackSamples);
+    const color = JSON.parse(ui.item.attr('color'));
+    for (let i in data){
+      if (data[i][0][0] == color[0] && data[i][0][1] == color[1] && data[i][0][2] == color[2]){
+        data[i][1][0] = 1;
+        localStorage[DATA_TAG] = JSON.stringify(data);
+        return;
+      }
+    }
+    console.error ("Couldn't find the color in the list of data!");
+  }});
 }
 
 /**
@@ -68,7 +100,7 @@ async function clickHandler (opt) {
   // 1. Saves the selection to the data.
   const label = opt == "white" ? [0] : [1];
   data.push([currCol, label]);
-  localStorage["ai-color-picker:data"] = JSON.stringify(data);
+  localStorage[DATA_TAG] = JSON.stringify(data);
   addColor(currCol, opt)
 
   // 2. Display a new random background color
@@ -275,6 +307,10 @@ function clearData () {
   $('.black-text-num').text(0);
 }
 
+function saveData () {
+
+}
+
 /**
  * @function randomColor - Returns a random list of rgb values on the range
  * [0, 255] inclusive
@@ -293,10 +329,10 @@ function randomColor () {
  * @param  {String} classification "white" or "black"
  */
 function addColor (color, classification) {
-  let colorBlock = $(document.createElement('div'))
-    colorBlock.addClass('data-visualization-colors');
+  let colorBlock = $(document.createElement('li'))
     colorBlock.css('background-color',rgb(...getRGB(color)));
-    colorBlock.appendTo($('.classified-' + classification))
+    colorBlock.appendTo($('.classified-' + classification));
+    colorBlock.attr('color', JSON.stringify(color));
   if (classification == "white")
     $('.white-text-num').text(whiteSamples += 1);
   else

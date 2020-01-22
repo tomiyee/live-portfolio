@@ -48,13 +48,19 @@
   border-top:2px solid black;
 }
 
-.data-visualization-colors {
+.classified-colors li {
+  float: left;
   width:30px;
   height:30px;
   border-radius:4px;
   margin:2px;
   display: inline-block;
 }
+
+.classified-colors li:hover {
+  cursor:pointer;
+}
+
 
 .data-visualization tr td {
   vertical-align: top;
