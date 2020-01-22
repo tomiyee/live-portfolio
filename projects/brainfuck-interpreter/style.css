@@ -1,0 +1,64 @@
+#editor {
+  height: 300px;
+  width:660px;
+  padding:0;
+  margin:0;
+  border-width:0;
+}
+
+.editor-container {
+  margin-bottom: 2em;
+  padding:0;
+  margin:0;
+}
+
+.code-lines {
+  width: 40px;
+  height:300px;
+  background-color: #45443C;
+  color: #E1B41F;
+  padding:0;
+  margin:0;
+}
+
+.output {
+  height: 200px;
+  text-align: left;
+  overflow-y: auto;
+}
+
+.output, #editor {
+  background-color: #1E1916;
+  color: #fff;
+  font-family:'Lucida Console', Monaco, monospace;
+  font-size: 1.5em;
+}
+
+.output, .editor-contianer, .input-container, #console-input {
+  width: 700px;
+  font-family:'Lucida Console', Monaco, monospace;
+  font-size: 1.5em;
+}
+
+table,tr,td {
+  padding:0;
+  margin:0;
+  vertical-align: top;
+}
+.command-table {
+  width:600px;
+  border:2px solid #bbb;
+}
+.command-table tr td{
+  padding:10px;
+}
+.command-table tr td:nth-child(1) {
+  font-weight:bold;
+  border-right:2px solid #bbb;
+}
+.command-table tr:nth-child(even) {
+  background:#ddd;
+}
+.command-table tr:nth-child(odd) {
+  background:#eee;
+}
