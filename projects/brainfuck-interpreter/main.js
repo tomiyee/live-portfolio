@@ -7,7 +7,7 @@ let codePointer;
 let openBracketPositions;
 
 let intervalId = null;
-let numStepsPerInterval = 10;
+let numStepsPerInterval = 50;
 let stepDelay = 2;
 
 window.onload = start;
@@ -18,7 +18,7 @@ window.onload = start;
 function start () {
   loadCode();
 
-  $(".context-tabs").width(700).tabs({
+  $(".context-tabs").width(800).tabs({
     collapsible:true,
   });
   // The input is disabled by default

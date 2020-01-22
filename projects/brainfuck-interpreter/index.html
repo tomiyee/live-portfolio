@@ -134,7 +134,62 @@
                 </p>
               </div>
               <div id="tab-about">
-                Brainfuck
+                <p> According to the Brainfuck Wikipedia page: </p>
+                <p>
+                  Brainfuck is an esoteric programming language created in 1993 by
+                  Urban Müller, and is notable for its extreme minimalism.
+                </p>
+                <p>
+                  The language consists of only eight simple commands and an
+                  instruction pointer. While it is fully Turing complete, it is not
+                  intended for practical use, but to challenge and amuse programmers.
+                  Brainfuck simply requires one to break commands into microscopic steps.
+                </p>
+                <h2>Commands</h2>
+                <center>
+                  <table class='command-table'>
+                    <tr>
+                      <td>&gt;</td>
+                      <td>increment the data pointer (to point to the next cell to the right).</td>
+                    </tr>
+                    <tr>
+                      <td>&lt;</td>
+                      <td>decrement the data pointer (to point to the next cell to the left).</td>
+                    </tr>
+                    <tr>
+                      <td>+</td>
+                      <td>increment (increase by one) the byte at the data pointer.</td>
+                    </tr>
+                    <tr>
+                      <td>-</td>
+                      <td>decrement (decrease by one) the byte at the data pointer.</td>
+                    </tr>
+                    <tr>
+                      <td>.</td>
+                      <td>output the byte at the data pointer.</td>
+                    </tr>
+                    <tr>
+                      <td>,</td>
+                      <td>output the byte at the data pointer.</td>
+                    </tr>
+                    <tr>
+                      <td>[</td>
+                      <td>
+                        if the byte at the data pointer is zero, then instead of
+                        moving the instruction pointer forward to the next command,
+                        jump it forward to the command after the matching ] command.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>]</td>
+                      <td>
+                        if the byte at the data pointer is nonzero, then instead
+                        of moving the instruction pointer forward to the next command,
+                        jump it back to the command after the matching [ command.
+                      </td>
+                    </tr>
+                  </table>
+                </center>
               </div>
             </div>
             <br/>

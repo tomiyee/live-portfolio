@@ -24,7 +24,7 @@
 .output {
   height: 200px;
   text-align: left;
-  overflow:scroll;
+  overflow-y: auto;
 }
 
 .output, #editor {
@@ -44,4 +44,21 @@ table,tr,td {
   padding:0;
   margin:0;
   vertical-align: top;
+}
+.command-table {
+  width:600px;
+  border:2px solid #bbb;
+}
+.command-table tr td{
+  padding:10px;
+}
+.command-table tr td:nth-child(1) {
+  font-weight:bold;
+  border-right:2px solid #bbb;
+}
+.command-table tr:nth-child(even) {
+  background:#ddd;
+}
+.command-table tr:nth-child(odd) {
+  background:#eee;
 }
