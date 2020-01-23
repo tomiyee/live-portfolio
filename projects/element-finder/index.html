@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<!--
+  When creating a new project:
+
+  1. Update the Project Title and the Date in the Title Area
+  2. Update the Title Tags in the Head
+  2. Credit Inspiration or Tutorials followed in the Contents Area
+ -->
+<html lang="zxx" class="no-js">
+  <head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="../../img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="theng">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Template</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+    <!--
+    CSS
+    ============================================= -->
+    <link rel="stylesheet" href="../../css/linearicons.css">
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/magnific-popup.css">
+    <link rel="stylesheet" href="../../css/jquery-ui.css">
+    <link rel="stylesheet" href="../../css/nice-select.css">
+    <link rel="stylesheet" href="../../css/animate.min.css">
+    <link rel="stylesheet" href="../../css/owl.carousel.css">
+    <link rel="stylesheet" href="../../css/main.css">
+  </head>
+  <body>
+
+    <header id="header">
+      <div class="container main-menu">
+        <div class="row align-items-center justify-content-between d-flex">
+          <div id="logo">
+            <a href="../../index.html"><img src="../../img/logo.png" alt="" title="" /></a>
+          </div>
+          <nav id="nav-menu-container">
+            <ul class="nav-menu">
+              <li><a href="../../index.html">Home</a></li>
+              <li><a href="../../about.html">About</a></li>
+              <li><a href="../../projects/index.html">Portfolio</a></li>
+
+              <!--
+              <li class="menu-has-children"><a href="">Blog</a>
+                <ul>
+                  <li><a href="blog-home.html">Blog Home</a></li>
+                  <li><a href="blog-single.html">Blog Single</a></li>
+                </ul>
+              </li>
+
+              <li class="menu-has-children"><a href="">Pages</a>
+                <ul>
+                  <li><a href="elements.html">Elements</a></li>
+                <li class="menu-has-children"><a href="">Level 2 </a>
+                  <ul>
+                    <li><a href="#">Item One</a></li>
+                    <li><a href="#">Item Two</a></li>
+                  </ul>
+                </li>
+                </ul>
+              </li>
+              -->
+
+              <li><a href="../../contact.html">Contact</a></li>
+            </ul>
+          </nav><!-- #nav-menu-container -->
+        </div>
+      </div>
+    </header><!-- #header -->
+
+		<!-- Start Title Area -->
+		<section class="about-banner">
+			<div class="container">
+				<div class="row d-flex align-items-center justify-content-center">
+					<div class="about-content col-lg-12">
+						<h1 class="text-white">
+							Element Finder
+						</h1>
+						<p class="text-white">March 10, 2014</p>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- End Title Area -->
+
+    <!-- Start Contents -->
+    <section class="home-about-area">
+      <div class="container" align=center>
+        <div class="row align-items-center justify-content-between">
+          <div class="col-lg-12 pt-60 pb-60">
+
+            <div class="tabs">
+              <ul>
+                <li><a href="#tab-context">Context</a> </li>
+                <li><a href="#tab-project">Project</a> </li>
+              </ul>
+              <div id="tab-context" style='font-weight:normal' align=left>
+                <p>
+                  In middle school, my science teacher assigned very tedious homework
+                  assignments for chemistry. For a couple weeks, he would hand out
+                  worksheets with tables on them. Each row would have one or two
+                  cells filled in with information (e.g. 10 protons, or the Element's
+                  name), and you would be tasked with finding the element on the
+                  periodic table and completing the row.
+                </p>
+                <p>
+                  My friend Issac and I decided that we actually wanted to automate
+                  this task of searching the periodic table, and we did so by
+                  hard coding the entire periodic table as a huge list, where every
+                  item is a list with data on the element.
+                </p>
+                <p>
+                  I did my best to preserve the original styling of the project.
+                </p>
+              </div>
+
+              <div id="tab-project"align=left>
+
+                <style media="screen" type="text/css">
+                  #protons {
+                      width:25px;
+                  }
+                  .inputs {
+                      background:#C5C5C5;
+                      font-weight:bold;
+                  }
+                  #names {
+                      width: 115px;
+                  }
+                  #given_symbol {
+                      width: 25px;
+                  }
+                  #error {
+                      background:orange;
+                      color:red;
+                  }
+                  #atomicsymbol {
+                      width:25px;
+                  }
+                  body, #tab-project {
+                      background:#929292;
+                      font-weight:Bold;
+                      font-size:18px;
+                      color:black;
+                  }
+                  .Button {
+                      box-shadow:inset 0px 1px 7px 0px #ffffff;
+                      /*self explanatory*/
+                      background-color:#ededed;
+                      /*rounds edges*/
+                      border-top-left-radius:20px;
+                      border-top-right-radius:20px;
+                      border-bottom-right-radius:20px;
+                      border-bottom-left-radius:20px;
+                      border:2px solid #dcdcdc;
+                      display:inline-block;
+                      font-family:Verdana;
+                      font-size:17px;
+                      /*self explanatory*/
+                      font-weight:bold;
+                      /*self explanatory*/
+                      height:25px;
+                      /*button placement*/
+                      line-height:15px;
+                      /*self explanatory*/
+                      width:220px;
+                      /*aligns text according to buttons width*/
+                      text-align:center;
+                      text-shadow:1px -8px 20px #ffffff;
+                  }
+                  /*properties when hover over button (from internet)*/
+                   .Button:hover {
+                      background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed));
+                      background:-moz-linear-gradient(center top, #dfdfdf 5%, #ededed 100%);
+                      filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
+                      background-color:#dfdfdf;
+                  }
+                  .Button:active {
+                      position:relative;
+                      top:1px;
+                  }
+                  #answers {
+                      margin:15px;
+                      /*the border*/
+                      border:2px solid #777777;
+                      /*self explanatory*/
+                      background:#C5C5C5;
+                      width:470px;
+                      /*rounds the edges*/
+                      border-top-left-radius:20px;
+                      border-top-right-radius:20px;
+                      border-bottom-right-radius:20px;
+                      border-bottom-left-radius:20px;
+                      /*brings it in*/
+                      padding:10px;
+                  }
+                  #resources {
+                      margin:15px;
+                      position:relative;
+                      border:2px solid #777777;
+                      background:#A2A2A2;
+                      width:460px;
+                      /*rounds the edges*/
+                      border-radius:20px;
+                      /*brings it in*/
+                      padding:10px;
+                  }
+
+                  #Text {
+                      margin:19px;
+                      border-top-left-radius:20px;
+                      border-bottom-right-radius:20px;
+                      padding:10px;
+                      background-color:#C4C4C4;
+                  }
+                </style>
+                <div   id="index" class="home">
+                  <div id='Text' class='Text'> Element Finder </div>
+                  <script>
+                    //var with elements
+                    //e [protons] 0:Name 1:Symbol 2:Atomic_Mass 3:Valence ellectrons
+                    var e = {
+                          1: ['Hydrogen',
+                              'H',
+                          1],
+                          2: ['Helium',
+                              'He',
+                          4],
+                          3: ['Lithium',
+                              'Li',
+                          7],
+                          4: ['Berylium',
+                              'Be',
+                          9],
+                          5: ['Boron',
+                              'B',
+                          11],
+                          6: ['Carbon',
+                              'C',
+                          12],
+                          7: ['Nitrogen',
+                              'N',
+                          14],
+                          8: ['Oxygen',
+                              'O',
+                          16],
+                          9: ['Fluorine',
+                              'F',
+                          19],
+                          10: ['Neon',
+                              'Ne',
+                          20],
+                          11: ['Sodium',
+                              'Na',
+                          23],
+                          12: ['Magnesium',
+                              'Mg',
+                          24],
+                          13: ['Aluminum',
+                              'Al',
+                          27],
+                          14: ['Silicon',
+                              'Si',
+                          28],
+                          15: ['Phosphorus',
+                              'P',
+                          31],
+                          16: ['Sulfur',
+                              'S',
+                          32],
+                          17: ['Chlorine',
+                              'Cl',
+                          35],
+                          18: ['Argon',
+                              'Ar',
+                          40],
+                          19: ['Potassium',
+                              'K',
+                          39],
+                          20: ['Calcium',
+                              'Ca',
+                          40],
+                          21: ['Scandium',
+                              'Sc',
+                          45],
+                          22: ['Titanium',
+                              'Ti',
+                          48],
+                          23: ['Vanadium',
+                              'V',
+                          51],
+                          24: ['Chromium',
+                              'Cr',
+                          52],
+                          25: ['Manganese',
+                              'Mn',
+                          55],
+                          26: ['Iron',
+                              'Fe',
+                          56],
+                          27: ['Cobalt',
+                              'Co',
+                          59],
+                          28: ['Nickel',
+                              'Ni',
+                          59],
+                          29: ['Copper',
+                              'Cu',
+                          64],
+                          30: ['Zinc',
+                              'Zn',
+                          65],
+                          31: ['Gallium',
+                              'Ga',
+                          70],
+                          32: ['Germanium',
+                              'Ge',
+                          73],
+                          33: ['Arsenic',
+                              'As',
+                          75],
+                          34: ['Selenium',
+                              'Se',
+                          79],
+                          35: ['Bromine',
+                              'Br',
+                          80],
+                          36: ['Krypton',
+                              'Kr',
+                          84],
+                          37: ['Rubidium',
+                              'Rb',
+                          85],
+                          38: ['Strontium',
+                              'Sr',
+                          88],
+                          39: ['Yttrium',
+                              'Y',
+                          89],
+                          40: ['Zirconium',
+                              'Zr',
+                          91],
+                          41: ['Niobium',
+                              'Nb',
+                          93],
+                          42: ['Molybdenum',
+                              'Mo',
+                          96],
+                          43: ['Thechneium',
+                              'Tc',
+                          98],
+                          44: ['Ruthenium',
+                              'Ru',
+                          101],
+                          45: ['Rhodium',
+                              'Rh',
+                              103],
+                          46: ['Palladium',
+                              'Pd',
+                              106],
+                          47: ['Sliver',
+                              'Ag',
+                              108],
+                          48: ['Cadium',
+                              'Cd',
+                          113],
+                          49: ['Indium',
+                              'In',
+                          115],
+                          50: ['Tin',
+                              'Sn',
+                          115],
+                          51: ['Antimony',
+                              'Sb',
+                          122],
+                          52: ['Tellurium',
+                              'Te',
+                          128],
+                          53: ['Iodine',
+                              'I',
+                          127],
+                          54: ['Xenon',
+                              'Xe',
+                          131],
+                          55: ['Caesium',
+                              'Cs',
+                          133],
+                          56: ['Barium',
+                              'Ba',
+                          137],
+                          57: 'Lanthanum',
+                          58: ['Cerium',
+                              'Ce',
+                          140],
+                          59: ['Praseodymium',
+                              'Pr',
+                          141],
+                          60: ['Neodymium',
+                              'Nd',
+                          144],
+                          61: ['Promethium',
+                              'Pm',
+                          145],
+                          62: ['Samarium',
+                              'Sm',
+                          150],
+                          63: ['Europium',
+                              'Eu',
+                          152],
+                          64: ['Gadolinium',
+                              'Gd',
+                          157],
+                          65: ['Terbium',
+                              'Tb',
+                          159],
+                          66: ['Dysprosium',
+                              'Dy',
+                          163],
+                          67: ['Holmium',
+                              'Ho',
+                          165],
+                          68: ['Erbium',
+                              'Er',
+                          167],
+                          69: ['Thulium',
+                              'Tm',
+                          169],
+                          70: ['Ytterbium',
+                              'Yb',
+                          173],
+                          71: ['Lutetium',
+                              'Lu',
+                          175],
+                          72: ['Hafnium',
+                              'Hf',
+                          178],
+                          73: ['Tantalum',
+                              'Ta',
+                          181],
+                          74: ['Tungsten',
+                              'W',
+                          184],
+                          75: ['Rhenium',
+                              'Re',
+                          186],
+                          76: ['Osmium',
+                              'Os',
+                          190],
+                          77: ['Iridium',
+                              'Ir',
+                          192],
+                          78: ['Platinum',
+                              'Pt',
+                          195],
+                          79: ['Gold',
+                              'Au',
+                          197],
+                          80: ['Mercury',
+                              'Hg',
+                          201],
+                          81: ['Thallium',
+                              'Tl',
+                          204],
+                          82: ['Lead',
+                              'Pb',
+                          207],
+                          83: ['Bismuth',
+                              'Bi',
+                          209],
+                          84: ['Polonium',
+                              'Po',
+                          209],
+                          85: ['Astatine',
+                              'At',
+                          210],
+                          86: ['Radon',
+                              'Rn',
+                          222],
+                          87: ['Francium',
+                              'Fr',
+                          223],
+                          88: ['Radium',
+                              'Ra',
+                          226],
+                          89: ['Actinium',
+                              'Ac',
+                          227],
+                          90: ['Thorium',
+                              'Th',
+                          232],
+                          91: ['Protactinium',
+                              'Pa',
+                          232],
+                          92: ['Uranium',
+                              'U',
+                          238],
+                          93: ['Neptunium',
+                              'Np',
+                          237],
+                          94: ['Plutonium',
+                              'Pu',
+                          244],
+                          95: ['Americium',
+                              'Am',
+                          243],
+                          96: ['Curium',
+                              'Cm',
+                          247],
+                          97: ['Berkelium',
+                              'Bk',
+                          247],
+                          98: ['Californium',
+                              'Cf',
+                          251],
+                          99: ['Einsteinium',
+                              'Es',
+                          252],
+                          100: ['Fermium',
+                              'Fm',
+                          257],
+                          101: ['Mendelevium',
+                              'Md',
+                          258],
+                          102: ['Nobelium',
+                              'No',
+                          259],
+                          103: ['Lawrencium',
+                              'Lr',
+                          262],
+                          104: ['Rutherfordium',
+                              'Rf',
+                          261],
+                          105: ['Dubnium',
+                              'Db',
+                          262],
+                          106: ['Seaborgium',
+                              'Sg',
+                          266],
+                          107: ['Bohrium',
+                              'Bh',
+                          264],
+                          108: ['Hassium',
+                              'Hs',
+                          269],
+                          109: ['Meitnerium',
+                              'Mt',
+                          268],
+                          110: ['Darmstadtium',
+                              'Ds',
+                          281],
+                          111: ['Roentgenium',
+                              'Rg',
+                          280],
+                          112: ['Copernicium',
+                              'Cn',
+                          285],
+                          113: ['Ununtrium',
+                              'Uut',
+                          284],
+                          114: ['Flerovium',
+                              'Fl',
+                          289],
+                          115: ['Ununpentium',
+                              'Uup',
+                          288],
+                          116: ['Livermorium',
+                              'Lv',
+                          293],
+                          117: ['Ununseptium',
+                              'Uus',
+                              '~'],
+                          118: ['Ununoctium',
+                              'Uuo',
+                          294]
+                      };
+
+                    //returns input
+                    function get(a) {
+                        return document.getElementById(a).value;
+                    }
+
+                    //sets div
+                    function set(a, b) {
+                        document.getElementById(a).innerHTML = b;
+                    }
+
+
+                    //find valence electons
+                    function ve(a) {
+                        if (a > 2) {
+                            var l = (a - 2) % 8;
+                            return l;
+                        }
+                        return a;
+                    }
+                    //find the energy level
+                    function el(a) {
+                        //of on the first ergy level
+                        if (a < 3)
+                            return 1;
+                        if (a > 2 && a < 11)
+                            return 2;
+                        if (a > 10 && a < 19)
+                            return 3;
+                        if (a > 18 && a < 37)
+                            return 4;
+                        if (a > 36 && a < 55)
+                            return 5;
+                        if (a > 54 && a < 87)
+                            return 6;
+                        if (a > 86 && a < 119)
+                            return 7;
+                    }
+
+                    function given_name() {
+                        var n = get('names');
+                        //goes through every atom and its name
+                        for (var i = 1; i < 118; i++) {
+                            //i represents protons
+                            if (n == e[i][0]) {
+                                var am = e[i][2] - i;
+                                //displays name of atom
+                                set('name', 'Name: ' + e[i][0]);
+                                //displays the symbol
+                                set('sym', 'Symbol: ' + e[i][1]);
+                                //displays protons
+                                set('proton', 'Protons: ' + i);
+                                //displays atomic mass
+                                set('am', 'Atomic Mass: ' + e[i][2]);
+                                //displays neutrons
+                                set('neutrons', 'Neutrons: ' + am);
+                                //displays valence electrons
+                                set('ve', 'V.E: ' + ve(i));
+                                //energy levels
+                                set('energy_levels', 'E.L: ' + el(i));
+                            }
+                        }
+                    }
+                    //self-explanotory
+                    function given_symbol() {
+                        var n = get('given_symbol');
+                        //goes through every atom and its name
+                        for (i = 1; i < 118; i++) {
+                            //i represents protons
+                            if (n == e[i][1]) {
+                                var am = e[i][2] - i;
+                                //displays name of atom
+                                set('name', 'Name: ' + e[i][0]);
+                                //displays the symbol
+                                set('sym', 'Symbol: ' + e[i][1]);
+                                //displays protons
+                                set('proton', 'Protons: ' + i);
+                                //displays atomic mass
+                                set('am', 'Atomic Mass: ' + e[i][2]);
+                                //displays neutrons
+                                set('neutrons', 'Neutrons: ' + am);
+                                //displays valence electrons
+                                set('ve', 'V.E: ' + ve(i));
+                                //energy levels
+                                set('energy_levels', 'E.L: ' + el(i));
+                            }
+                        }
+                    }
+                    //the main function
+                    function given_protons() {
+                        var protons = get('protons');
+                        var am = e[protons][2] - protons;
+                        //if there is no protons
+                        if (protons < 1) {
+                            alert('positive numbers only');
+                        } else {
+                            //displays name of atom
+                            set('name', 'Name: ' + e[protons][0]);
+                            //displays the symbol
+                            set('sym', 'Symbol: ' + e[protons][1]);
+                            //displays protons
+                            set('proton', 'Protons: ' + protons);
+                            //displays atomic mass
+                            set('am', 'Atomic Mass: ' + e[protons][2]);
+                            //displays neutrons
+                            set('neutrons', 'Neutrons: ' + am);
+                            //displays valence electrons
+                            set('ve', 'V.E: ' + ve(protons));
+                            //energy levels
+                            set('energy_levels', 'E.L: ' + el(protons));
+                        }
+                    }
+
+                  </script>
+
+                  <div id='resources'>There are
+                      <input class='inputs' id='protons'>protons.
+                      <br>
+                      <button onclick='given_protons()' class='Button'>What is the Element</button>
+                      <br>The name is
+                      <input class='inputs' id='names'>. (first letter capital)
+                      <br>
+                      <button onclick='given_name()' class='Button'>What is the Element</button>
+                      <br>The Symbol is
+                      <input class='inputs' id='given_symbol'>. (first letter capital)
+                      <br>
+                      <button onclick='given_symbol()' class='Button'>What is the Element</button>
+                  </div>
+                  <div id='error'></div>
+                  <div id='answers'>
+                      <div class='d' id='name'>Name:</div>
+                      <div class='d' id='sym'>Symbol:</div>
+                      <div class='d' id='proton'>Protons:</div>
+                      <div class='d' id='am'>Atomic Mass:</div>
+                      <div class='d' id='neutrons'>Neutrons:</div>
+                      <div class='d' style='font-color:red; font-weight:bold;'>\/ ===== DO NOT TRUST THE BELOW INFORMATION ===== \/</div>
+                      <div class='d' id='ve'>V.E:</div>
+                      <div class='d' id='energy_levels'>E.L:</div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Contents -->
+
+    <!-- Start Footer Area -->
+    <footer class="footer-area section-gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h4>About Me</h4>
+                        <p>
+                            We have tested a number of registry fix and clean utilities and present our top 3 list on our site for your convenience.
+                        </p>
+                        <p class="footer-text"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                  <!--
+                    <div class="single-footer-widget">
+                        <h4>Newsletter</h4>
+                        <p>Stay updated with our latest trends</p>
+                      <div class="" id="mc_embed_signup">
+                         <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get">
+                          <div class="input-group">
+                            <input type="text" class="form-control" name="EMAIL" placeholder="Enter Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email Address '" required="" type="email">
+                            <div class="input-group-btn">
+                              <button class="btn btn-default" type="submit">
+                                <span class="lnr lnr-arrow-right"></span>
+                              </button>
+                            </div>
+                              <div class="info"></div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  -->
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6 social-widget">
+                    <div class="single-footer-widget">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End footer Area -->
+
+    <script src="../../js/vendor/jquery-2.2.4.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/vendor/bootstrap.min.js"></script>
+    <script src="../../js/easing.min.js"></script>
+    <script src="../../js/hoverIntent.js"></script>
+    <script src="../../js/superfish.min.js"></script>
+    <script src="../../js/jquery.ajaxchimp.min.js"></script>
+    <script src="../../js/jquery.magnific-popup.min.js"></script>
+    <script src="../../js/jquery.tabs.min.js"></script>
+    <script src="../../js/jquery.nice-select.min.js"></script>
+    <script src="../../js/isotope.pkgd.min.js"></script>
+    <script src="../../js/waypoints.min.js"></script>
+    <script src="../../js/jquery.counterup.min.js"></script>
+    <script src="../../js/simple-skillbar.js"></script>
+    <script src="../../js/owl.carousel.min.js"></script>
+    <script src="../../js/mail-script.js"></script>
+    <script src="../../js/main.js"></script>
+    <script src="../../js/personal-lib.js"></script>
+    <script src="../../js/jquery-ui.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="../../css/jquery-ui.min.css">
+    <!-- Proect Specific Files -->
+    <script src="./main.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="./style.css">
+  </body>
+</html>
