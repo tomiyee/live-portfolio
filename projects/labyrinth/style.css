@@ -1,0 +1,231 @@
+body {
+    background:url(http://i.imgur.com/UeXpzDV.jpg);
+    background-size:cover;
+    background-attachment:scroll;
+    background-position: center;
+    background-repeat:no-repeat;
+}
+
+#tab-project {
+    background:url(http://i.imgur.com/UeXpzDV.jpg);
+    background-size:cover;
+    background-attachment:scroll;
+    background-position: center;
+    background-repeat:no-repeat;
+    height:700px;
+}
+#title {
+    background:#C4C4C4;
+    border-top-left-radius:0.5em;
+    border-bottom-right-radius:0.5em;
+    padding:0.5em;
+    text-align:center;
+    width:70%;
+}
+#field {
+    position:absolute;
+    transition: width 2s;
+    top:120px;
+    background:#006F00;
+    width:250px;
+    height:250px;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    border:4px solid black;
+    overflow: hidden;
+}
+#game{
+    display: none;
+}
+#scoreboard{
+    background:#929292;
+    display:none;
+    margin-top: 1em;
+    width:60%;
+}
+#player {
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom:0;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:auto;
+    margin-bottom:auto;
+    width:2em;
+    height:2em;
+    border-radius:50%;
+    text-align:center;
+    font-weight:900;
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+}
+#editorsGUI{
+    display:none;
+    position:absolute;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-right:auto;
+    width:600px;
+    height:70%;
+
+}
+#begin{
+    width:150px;
+    height:50px;
+}
+
+/* the map */
+#back {
+    transition:top 0.25s, left 0.25s;
+    width:300px;
+    height:300px;
+    background:#DE8900;
+    position:absolute;
+}
+
+#controls{
+    width:310px;
+    position:absolute;
+    left:0;
+    right:0;
+    margin-left:auto;
+    margin-fight:auto;
+    text-align:right;
+}
+
+
+/* The Word Display Styles Here */
+
+/*The entire div*/
+#placeForTheStory{
+        position:relative; /* keeps the button within the div */
+        margin:1em;
+        font: bold 100% Garamond;
+        padding:1em;
+        width:280px;
+        height:100px;
+        border:2px solid blue;
+        background:skyblue;
+        margin-top:300px;
+        border-top-left-radius:1em;
+        border-bottom-right-radius:1em;
+        border-top-right-radius:1em;
+        border-bottom-left-radius:1em;
+}
+
+/* the div that actually has the story */
+#story{
+        font-family:"Times New Roman";
+}
+
+/* the div containing the button */
+#buttons{
+    text-align:right;
+    position: absolute; /* allows to move the button within the div */
+    bottom:1em; /* the margins */
+    right:1em; /* the margins */
+}
+
+
+
+/* Discontinue Word Styles */
+/* The Walls */
+.space {
+    position: absolute;
+    width:50px;
+    height:50px;
+    margin:0;
+    background:#006F00;
+}
+
+.door{
+    position: absolute;
+    width:42px;
+    height:42px;
+    margin:0;
+    border:4px solid #8B4513;
+}
+
+/* The Exit */
+.exit{
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: gray;
+    border-top-right-radius:5px;
+    border-top-left-radius:5px;
+    border-bottom-right-radius:5px;
+    border-bottom-left-radius:5px;
+}
+
+.coin{
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background: yellow;
+    border-radius: 50%;
+}
+
+#keypad {
+    width:60px;
+    height:60px;
+}
+.arrows{
+    position:absolute;
+    width:20px;
+    height:20px;
+}
+#up{
+    left:20px;
+    top:0;
+}
+#down{
+    left:20px;
+    top:40px;
+}
+#left{
+    left:0;
+    top:20px;
+}
+#right{
+    left:40px;
+    top:20px;
+}
+#scary{
+    background:url(http://dutchyindenial.files.wordpress.com/2010/10/scary-halloween-backgrounds.png);
+    background-repeat:no-repeat;
+    background-size:contain;
+    position:absolute;
+    z-index:1000;
+    display:none;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+}
+
+#feedback{
+    position:absolute;
+}
+/*
+Classes Identifying Round Corners
+
+.topLeft{
+    border-top-left-radius:1em;
+}
+.topRight{
+    border-top-right-radius:1em;
+}
+.botLeft{
+    border-bottom-left-radius:1em;
+}
+.botRight{
+    border-bottom-left-radius:1em;
+}
+*/
