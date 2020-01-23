@@ -83,9 +83,7 @@
 			<div class="container">
 				<div class="row d-flex align-items-center justify-content-center">
 					<div class="about-content col-lg-12">
-						<h1 class="text-white">
-							The Labyrinth
-						</h1>
+						<h1 class="text-white">The Labyrinth</h1>
 						<p class="text-white">Feb 27, 2014</p>
 					</div>
 				</div>
@@ -107,18 +105,78 @@
                 <li><a href="#tab-about">About the Game</a> </li>
                 <li><a href="#tab-project">The Old Project</a> </li>
               </ul>
-              <div id="tab-context">
-
+              <div id="tab-context" align=left>
+                <div style='color:red; font-size:24px;' class='pt-20 pb-20'>
+                  Warning: My friend and I added a jumpscare to this game when
+                  we fist made it on level 5.
+                </div>
+                <h1>The Time I Made this Project</h1>
+                <p>
+                  I made this project during the 7th grade, when I was just beginning
+                  down my programming path. During this time, I was playing Pokemon
+                  Red Rescue Team on my gameboy, and I had an epiphany. The player
+                  character actually rarely moved in the game, it was the background
+                  that moved. Figuring out this mechanic, I made an entire proof
+                  of concept game I called "the labyrinth" that did just this.
+                </p>
+                <p>
+                  I tried to keep this page as faithful to the original project
+                  as possible, so I made minimal changes to the source material.
+                  I kept the tacky background images and the terrible source code.
+                  Feel free to look at the code in my Github, but be warned. It is
+                  not pretty, and is very evident that a middle school student
+                  threw this together in his free time.
+                </p>
+                <h2>Features I First Implemented</h2>
+                <p>
+                  This project in particular, though very poorly made, is still
+                  one of my proudest works to date, and that's because it
+                  incorporated so many small features that I had been toying with
+                  until this point. Below are just a few features I had implemented
+                  myself, however poorly.
+                </p>
+                <h3>1. View Port</h3>
+                <p>
+                  As mentioned above, I had a sudden realization that the player
+                  character does not move, but the background. I hadn't learned
+                  about HTML Canvas yet, so I implemented this feature using div
+                  elements. I took advantage of CSS transforms and absolute positioning.
+                  I remember very vividly the struggles of positioning everything
+                  properly relative to its parent, but the effect once it worked
+                  out was incredibly rewarding.
+                </p>
+                <h3>2. Character by Character Text Display</h3>
+                <p>
+                  This feature was an attempt at mimicking the feature of many
+                  rpg games where the text is slowly revealed when you talk to NPCs,
+                  like in Pokemon Ruby or Runescape (two games I had in mind at
+                  the time). I had recently learned about window.setTimeout(), so
+                  I thought it would be really cool to try and make this feature.
+                  I then made a mini "library" which I made for use in this project
+                  without worrying about the text.
+                </p>
               </div>
-              <div id="tab-about">
-                <b>Move:</b> Arrow Keys
-                <b>Open "Developer Mode":</b> D
+              <div id="tab-about" align=left>
+                <h2>Story</h2>
+                <p>
+                  tl;dr There is no story. Get keys to open locked doors.
+                </p>
+                <p>
+                  In this game, you are the blue circle in the center of the screen
+                  (graphic design was clearly not my strong suit). You are trying
+                  to collect keys to get through doors and get to the "stairs,"
+                  similarly to Pokemon Mystery Dungeon. You may collect coins but
+                  that is completely optional.
+                </p>
+                <h2>Controls</h2>
+                <b>Move:</b> Arrow Keys <br/>
+                <b>Open "Developer Mode":</b> D Key
               </div>
               <div id="tab-project">
 
                 <!-- The Title thing at the top of the window -->
                 <div id='title'><strong> Game </strong></div>
-                
+
                 <!-- The Cheaters Window -->
                 <div id='editorsGUI'>
                   <table>
@@ -192,11 +250,6 @@
             <!-- any code relating to the inventory -->
             <script type='text/javascript' src='inv.js'></script>
             <script type='text/javascript'>hideButton();</script>
-
-            <audio id="sound" autoplay loop>
-              <source id="sourceWav" src="" type="audio/wav" />
-                Your browser does not support the audio element.
-            </audio>
 
           </div>
         </div>
