@@ -210,7 +210,7 @@ function draw () {
  * Prepares the accordian properties
  */
 function initAccordion() {
-    var accordion = $('.accordion');
+    var accordion = $('.accordion').width(300)  ;
     accordion.accordion({
         collapsible: true,
         active: false
@@ -220,16 +220,17 @@ function initAccordion() {
         'border-width':'2px',
         'border-radius':'10px',
         'font-family':'"bree serif", serif',
-        "font-size":"1em"
+        "font-size":"18px"
     });
     accordion.find( $('div') ).css({
         'padding': '5px',
         'border-width':'2px',
         'font-family':'"Libre Baskerville", serif',
-        'font-size': '0.9em',
-        'font-weight': 'bold'
+        'font-size': '16px',
+        'font-weight': 'bold',
+        'height':'250px'
     });
-    accordion.css('font-size', '1em');
+    accordion.css('font-size', '18px');
 }
 
 
@@ -249,7 +250,7 @@ function initSliders() {
         range: "min",
         animate: true,
         orientation: "horizontal",
-        height: '4',
+        height: '4px',
         create: function() {
             $(this).children('.ui-slider-handle').text( $( this ).slider( "value" ) );
         },
@@ -294,9 +295,7 @@ function initSliders() {
             Settings.MUTATION_RATE = ui.value/100;
         }
     });
-
 }
-
 
 
 /*
@@ -432,8 +431,8 @@ function switchObstacleMode (desiredMode) {
  * Returns a vector with the x and y coordinates to the given html element
  */
 function relativeCoords (event, element) {
-    var x = event.clientX - $(element).offset().left + document.getElementsByTagName('body')[0].scrollLeft;
-    var y = event.clientY - $(element).offset().top + document.getElementsByTagName('body')[0].scrollTop;
+    var x = event.clientX + window.scrollX - $(element).offset().left + document.getElementsByTagName('body')[0].scrollLeft;
+    var y = event.clientY + window.scrollY - $(element).offset().top + document.getElementsByTagName('body')[0].scrollTop;
     return new Vector(x, y);
 }
 
