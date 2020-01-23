@@ -687,10 +687,3 @@ function controls(input,e){
     document.getElementById('menuKey').value = e.keyCode;// Such SWAG; Issac Replies: Swag;
     console.log(menuKey);
 }
-
-$(() => {window.addEventListener('keydown', (e) => {
-    if (e.keyCode == Keys.UP ||
-        e.keyCode == Keys.DOWN ||
-        e.keyCode == Keys.LEFT ||
-        e.keyCode == Keys.RIGHT)
-      e.preventDefault()})})

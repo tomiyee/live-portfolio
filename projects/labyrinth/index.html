@@ -101,71 +101,89 @@
             <!-- I tried to keep this window's set up as close as possible to
             the original website I made at the age of 14 -->
 
-            <!-- The Title thing at the top of the window -->
-            <div id='title'><strong> Game </strong></div>
-            <!-- The Cheaters Window -->
-            <div id='editorsGUI'>
-              <table>
-                <td>
-                  <button onclick='gotKey = true'> Skip Key</button>
-                  <button onclick=''>Empty</button>
-                </td>
-                <td>
-                  <button onclick = 'exitting()'> Auto-Exit</button>
-                </td>
-              </table>
+            <div class="tabs">
+              <ul>
+                <li><a href="#tab-context">Context</a> </li>
+                <li><a href="#tab-about">About the Game</a> </li>
+                <li><a href="#tab-project">The Old Project</a> </li>
+              </ul>
+              <div id="tab-context">
+
+              </div>
+              <div id="tab-about">
+                <b>Move:</b> Arrow Keys
+                <b>Open "Developer Mode":</b> D
+              </div>
+              <div id="tab-project">
+
+                <!-- The Title thing at the top of the window -->
+                <div id='title'><strong> Game </strong></div>
+                
+                <!-- The Cheaters Window -->
+                <div id='editorsGUI'>
+                  <table>
+                    <td>
+                      <button onclick='gotKey = true'> Skip Key</button>
+                      <button onclick=''>Empty</button>
+                    </td>
+                    <td>
+                      <button onclick = 'exitting()'> Auto-Exit</button>
+                    </td>
+                  </table>
+                </div>
+
+                <center>
+                  <div id='frontMenu'>
+                    <button id='begin' onclick='say("Lets Begin");
+                    this.style.display = "none";
+                    document.getElementById("game").style.display = "block";
+                    window.setTimeout(function (){exitting("first");},850);'>Begin Your Labrynth</button>
+                  </div>
+                </center>
+
+                <div id='game'>
+                  <div id='scary' style='display:none'>
+                    <img src='http://images4.fanpop.com/image/answers/1672000/1672045_1308540471204.36res_413_300.jpg' />
+                  </div>
+
+                  <div id='field' style='display:block'>
+                    <div id='back'></div>
+                    <div id='player' style='background:rgb(173, 216, 230);'></div>
+                  </div>
+                  <!-- Buttons with Arrow Keys so you could Play on Mobile -->
+                  <div id='controls'>
+                    <div id='keypad'>
+                      <button class='arrows' id='up' onclick='move(38)'>^</button>
+                      <button class='arrows' id='right' onclick='move(39)'>></button>
+                      <button class='arrows' id='left' onclick='move(37)'><</button>
+                      <button class='arrows' id='down' onclick='move(40)'>\/</button>
+                    </div>
+                  </div>
+
+                  <center>
+                    <div id='scoreboard'>
+                      Current Maze:
+                      <div><em id='mazeCurrent'></em></div>
+                      <div>Current Position:<b id='cPosition'></b></div>
+
+                      <div>Money: <b id='currency'>0</b></div>
+
+                      <div id='key'>false</div>
+                      <div id='inv'><inv>
+                    </div>
+                  </center>
+
+                  <center>
+                    <div id='placeForTheStory'>
+                      <div id='story'></div>
+                      <div id='buttons'><button onclick='nextSlide()' id='theButton'>S</button></div>
+                    </div>
+                  </center>
+                </div>
+
+              </div>
             </div>
 
-            <center>
-              <div id='frontMenu'>
-                <button id='begin' onclick='say("Lets Begin");
-                this.style.display = "none";
-                document.getElementById("game").style.display = "block";
-                window.setTimeout(function (){exitting("first");},850);'>Begin Your Labrynth</button>
-              </div>
-            </center>
-
-            <div id='game'>
-              <div id='scary' style='display:none'>
-                <img src='http://images4.fanpop.com/image/answers/1672000/1672045_1308540471204.36res_413_300.jpg' />
-              </div>
-
-              <div id='field' style='display:block'>
-                <div id='back'></div>
-                <div id='player' style='background:rgb(173, 216, 230);'></div>
-              </div>
-              <!-- Buttons with Arrow Keys so you could Play on Mobile -->
-              <div id='controls'>
-                <div id='keypad'>
-                  <button class='arrows' id='up' onclick='move(38)'>^</button>
-                  <button class='arrows' id='right' onclick='move(39)'>></button>
-                  <button class='arrows' id='left' onclick='move(37)'><</button>
-                  <button class='arrows' id='down' onclick='move(40)'>\/</button>
-                </div>
-              </div>
-
-              <center>
-                <div id='scoreboard'>
-                  Current Maze:
-                  <div><em id='mazeCurrent'></em></div>
-                  <div>Current Position:<b id='cPosition'></b></div>
-
-                  <div>Money: <b id='currency'>0</b></div>
-
-                  <div id='key'>false</div>
-                  <div id='inv'><inv>
-                </div>
-              </center>
-
-              <center>
-                <div id='placeForTheStory'>
-                  <div id='story'></div>
-                  <div id='buttons'><button onclick='nextSlide()' id='theButton'>S</button></div>
-                </div>
-              </center>
-            </div>
-
-            <script type='text/javascript'>hideButton();</script>
 
             <!-- any code relating to the map -->
             <script type='text/javascript' src='maps.js'></script>
@@ -173,6 +191,7 @@
             <script type='text/javascript' src='worldGen.js'></script>
             <!-- any code relating to the inventory -->
             <script type='text/javascript' src='inv.js'></script>
+            <script type='text/javascript'>hideButton();</script>
 
             <audio id="sound" autoplay loop>
               <source id="sourceWav" src="" type="audio/wav" />
@@ -251,8 +270,8 @@
     <script src="../../js/jquery-ui.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="../../css/jquery-ui.min.css">
     <!-- Proect Specific Files -->
-    <script src="./main.js" charset="utf-8"></script>
     <script src='js.js' type='text/javascript'></script>
+    <script src="./main.js" charset="utf-8"></script>
     <link rel="stylesheet" href="./style.css">
   </body>
 </html>

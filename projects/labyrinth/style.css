@@ -5,6 +5,15 @@ body {
     background-position: center;
     background-repeat:no-repeat;
 }
+
+#tab-project {
+    background:url(http://i.imgur.com/UeXpzDV.jpg);
+    background-size:cover;
+    background-attachment:scroll;
+    background-position: center;
+    background-repeat:no-repeat;
+    height:700px;
+}
 #title {
     background:#C4C4C4;
     border-top-left-radius:0.5em;
@@ -16,7 +25,7 @@ body {
 #field {
     position:absolute;
     transition: width 2s;
-    top:5em;
+    top:120px;
     background:#006F00;
     width:250px;
     height:250px;
@@ -64,7 +73,7 @@ body {
     margin-right:auto;
     width:600px;
     height:70%;
-    
+
 }
 #begin{
     width:150px;
