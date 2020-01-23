@@ -1,0 +1,46 @@
+
+.btn {
+  background: #cad4db;
+  background-image: -webkit-linear-gradient(top, #cad4db, #7d8f99);
+  background-image: -moz-linear-gradient(top, #cad4db, #7d8f99);
+  background-image: -ms-linear-gradient(top, #cad4db, #7d8f99);
+  background-image: -o-linear-gradient(top, #cad4db, #7d8f99);
+  background-image: linear-gradient(to bottom, #cad4db, #7d8f99);
+  -webkit-border-radius: 14;
+  -moz-border-radius: 14;
+  border-radius: 14px;
+  text-shadow: 2px 1px 3px #666666;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 19px;
+  padding: 5px 20px 5px 20px;
+  border: solid #969696 2px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #beccd4;
+  background-image: -webkit-linear-gradient(top, #beccd4, #858f94);
+  background-image: -moz-linear-gradient(top, #beccd4, #858f94);
+  background-image: -ms-linear-gradient(top, #beccd4, #858f94);
+  background-image: -o-linear-gradient(top, #beccd4, #858f94);
+  background-image: linear-gradient(to bottom, #beccd4, #858f94);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.display {
+  display: none;
+  background: #ddd;
+  color: #333;
+  width:100%;
+  border:2px solid black;
+  border-radius: 5px;
+}
+
+.pageContent{
+  width:90%;
+}
+
+.accordion{
+}
