@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!--
+  When creating a new project:
+
+  1. Update the Project Title and the Date in the Title Area
+  2. Update the Title Tags in the Head
+  2. Credit Inspiration or Tutorials followed in the Contents Area
+ -->
+<html lang="zxx" class="no-js">
+  <head>
+    <!-- Mobile Specific Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="../../img/fav.png">
+    <!-- Author Meta -->
+    <meta name="author" content="theng">
+    <!-- Meta Description -->
+    <meta name="description" content="">
+    <!-- Meta Keyword -->
+    <meta name="keywords" content="">
+    <!-- meta character set -->
+    <meta charset="UTF-8">
+    <!-- Site Title -->
+    <title>Genetic Algorithm</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+    <!--
+    CSS
+    ============================================= -->
+    <link rel="stylesheet" href="../../css/linearicons.css">
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/magnific-popup.css">
+    <link rel="stylesheet" href="../../css/jquery-ui.css">
+    <link rel="stylesheet" href="../../css/nice-select.css">
+    <link rel="stylesheet" href="../../css/animate.min.css">
+    <link rel="stylesheet" href="../../css/owl.carousel.css">
+    <link rel="stylesheet" href="../../css/main.css">
+  </head>
+  <body>
+    <header id="header">
+      <div class="container main-menu">
+        <div class="row align-items-center justify-content-between d-flex">
+          <div id="logo">
+            <a href="../../index.html"><img src="../../img/logo.png" alt="" title="" /></a>
+          </div>
+          <nav id="nav-menu-container">
+            <ul class="nav-menu">
+              <li><a href="../../index.html">Home</a></li>
+              <li><a href="../../about.html">About</a></li>
+              <li><a href="../../projects/index.html">Portfolio</a></li>
+
+              <!--
+              <li class="menu-has-children"><a href="">Blog</a>
+                <ul>
+                  <li><a href="blog-home.html">Blog Home</a></li>
+                  <li><a href="blog-single.html">Blog Single</a></li>
+                </ul>
+              </li>
+
+              <li class="menu-has-children"><a href="">Pages</a>
+                <ul>
+                  <li><a href="elements.html">Elements</a></li>
+                <li class="menu-has-children"><a href="">Level 2 </a>
+                  <ul>
+                    <li><a href="#">Item One</a></li>
+                    <li><a href="#">Item Two</a></li>
+                  </ul>
+                </li>
+                </ul>
+              </li>
+              -->
+
+              <li><a href="../../contact.html">Contact</a></li>
+            </ul>
+          </nav><!-- #nav-menu-container -->
+        </div>
+      </div>
+    </header><!-- #header -->
+
+		<!-- Start Title Area -->
+		<section class="about-banner">
+			<div class="container">
+				<div class="row d-flex align-items-center justify-content-center">
+					<div class="about-content col-lg-12">
+						<h1 class="text-white">
+							Genetic Algorithm w/ Rockets
+						</h1>
+						<p class="text-white">Dec 5, 2016</p>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- End Title Area -->
+
+    <!-- Start Contents -->
+    <section class="home-about-area">
+      <div class="container" align=center>
+        <div class="row align-items-center justify-content-between">
+          <div class="col-lg-12 pt-60 pb-60">
+
+            <div class="tabs">
+              <ul>
+                <li><a href="#tab-context">Context</a> </li>
+                <li><a href="#tab-project">The Original Project</a> </li>
+              </ul>
+
+              <div id="tab-context" align=left style='font-size:18px;'>
+                <h2>The Inspiration</h2><br/>
+                <p>
+                  This genetic algorithm, inspired by <a href="https://youtu.be/bGz7mv2vD6g">this</a>
+                  youtube video by Daniel Shiffman, is my first ever approach to
+                  the field of machine learning.
+                </p>
+                <h2>The Details</h2><br/>
+                <p>
+                  These "rockets" are given the goal of reaching a red "target"
+                  at the top of the screen. There is no gravity.
+                </p>
+                <p>
+                  This program calculates the fitness according to the distance
+                  from the target location multiplied by 10 if the rocket reached
+                  the target, divided by 10 if it crashed, and increases with the
+                  time alive.
+                </p>
+                <p>
+                  To reproduce, the program throws the rocket with the highest
+                  fitness level into a mating pool 100 ties, and the rest are
+                  added proportionally (half the fitness means half the entries).
+                  Each parent is chosen from the mating pool, and the genes are
+                  crossed over.
+                </p>
+                <p>
+                  The genes are an array of vectors which are applied in sequential
+                  order each simulation tick.
+                </p>
+                <p>
+                  You can add obstacles once the simulation begins by clicking
+                  and draging on the canvas. When a rocket collides with the
+                  obstacle, it counts as a "crash."
+                </p>
+              </div>
+              <div id="tab-project" align=center>
+                <!-- The Title -->
+                <h1> Genetic Evolution w/ Rockets </h1>
+                <button class='btn' width="100%"> Begin Evolution </button>
+                <br/>
+                <table>
+                  <tr>
+                    <td class='canvasLocation'> </td>
+                    <!-- Settings -->
+                    <td style='vertical-align:top'>
+                      <div class='accordion'>
+
+                        <h3>Adjustable Settings</h3>
+
+                        <div id="properties">
+                          <label title='Adjust the number of rockets that appear in each generation.'> Population Size </label>
+                          <div class='populationSizeSlider'>100</div>
+                          <label title='Adjust the number of Frames (and Physics Ticks) that occur every second, limited by browser speed.'> Frames Per Second</label>
+                          <div class='fpsSlider'>30</div>
+                          <label title='Whenever two parents reproduce to create the genes of the next generation, there is are 5 different chances of mutation a random gene. The chance of the mutation is determined by the value below (in percent).'>Mutation Rate</label>
+                          <div class='mutationRateSlider'>10</div>
+                          <br/>
+                        </div>
+                        <br/>
+
+                        <!-- Display for things -->
+                        <div class='display'>
+                          <table>
+                            <tr>
+                              <td>Generation: </td>
+                              <td class='generationNumber'>0</td>
+                            </tr>
+                            <tr>
+                              <td>Life Counter:</td>
+                              <td class='counter'>0</td>
+                            </tr>
+                            <tr>
+                              <td>Number Successful: </td>
+                              <td class='numberReached'>0</td>
+                            </tr>
+                            <tr>
+                              <td>Number Crashed: </td>
+                              <td class='numberCrashed'>0</td>
+                            </tr>
+                          </table>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- End Contents -->
+
+    <!-- Start Footer Area -->
+    <footer class="footer-area section-gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                    <div class="single-footer-widget">
+                        <h4>About Me</h4>
+                        <p>
+                            We have tested a number of registry fix and clean utilities and present our top 3 list on our site for your convenience.
+                        </p>
+                        <p class="footer-text"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                          Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-6 col-sm-6">
+                  <!--
+                    <div class="single-footer-widget">
+                        <h4>Newsletter</h4>
+                        <p>Stay updated with our latest trends</p>
+                      <div class="" id="mc_embed_signup">
+                         <form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01" method="get">
+                          <div class="input-group">
+                            <input type="text" class="form-control" name="EMAIL" placeholder="Enter Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email Address '" required="" type="email">
+                            <div class="input-group-btn">
+                              <button class="btn btn-default" type="submit">
+                                <span class="lnr lnr-arrow-right"></span>
+                              </button>
+                            </div>
+                              <div class="info"></div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  -->
+                </div>
+                <div class="col-lg-2 col-md-6 col-sm-6 social-widget">
+                    <div class="single-footer-widget">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- End footer Area -->
+
+    <script src="../../js/vendor/jquery-2.2.4.min.js"></script>
+    <script src="../../js/popper.min.js"></script>
+    <script src="../../js/vendor/bootstrap.min.js"></script>
+    <script src="../../js/easing.min.js"></script>
+    <script src="../../js/hoverIntent.js"></script>
+    <script src="../../js/superfish.min.js"></script>
+    <script src="../../js/jquery.ajaxchimp.min.js"></script>
+    <script src="../../js/jquery.magnific-popup.min.js"></script>
+    <script src="../../js/jquery.tabs.min.js"></script>
+    <script src="../../js/jquery.nice-select.min.js"></script>
+    <script src="../../js/isotope.pkgd.min.js"></script>
+    <script src="../../js/waypoints.min.js"></script>
+    <script src="../../js/jquery.counterup.min.js"></script>
+    <script src="../../js/simple-skillbar.js"></script>
+    <script src="../../js/owl.carousel.min.js"></script>
+    <script src="../../js/mail-script.js"></script>
+    <script src="../../js/main.js"></script>
+    <script src="../../js/personal-lib.js"></script>
+    <script src="../../js/jquery-ui.min.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="../../css/jquery-ui.min.css">
+    <!-- Proect Specific Files -->
+    <script src="./main.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="./style.css">
+  </body>
+</html>
