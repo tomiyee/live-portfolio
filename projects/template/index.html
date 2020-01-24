@@ -98,8 +98,18 @@
       <div class="container" align=center>
         <div class="row align-items-center justify-content-between">
           <div class="col-lg-12 pt-60 pb-60">
-            <p>A brief description of the project</p>
-            <p>Probably some more stuff can go here too.</p>
+            <div class="tabs">
+              <ul>
+                <li><a href="#tab-project">The Project</a> </li>
+                <li><a href="#tab-about">About</a> </li>
+              </ul>
+              <div id='tab-project' style='min-height:300px'>
+
+              </div>
+              <div id="tab-about" style='min-height:300px'>
+
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -171,6 +181,7 @@
     <script src="../../js/personal-lib.js"></script>
     <script src="../../js/jquery-ui.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="../../css/jquery-ui.min.css">
+    <script type="text/javascript">$(() => $('.tabs').tabs())</script>
     <!-- Proect Specific Files -->
     <script src="./main.js" charset="utf-8"></script>
     <link rel="stylesheet" href="./style.css">
