@@ -31,7 +31,7 @@ let targetImage;
 let numGenes = 100;
 let geneIncrement;
 let population;
-let stopSlide4 = false;
+let stopSlide4 = true;
 let generation = 0;
 let genPerIter = 1;
 
@@ -47,6 +47,9 @@ let s4WorstCanvas, s4Worstctx;
 window.onload = start;
 
 function start () {
+  $('.tabs').tabs();
+  $('.orig-proj-start').bind('click', toggleAlgorithm)
+
   // set up the canvas
   s4BestCanvas = document.getElementById('slide4BestCanvas');
     s4BestCanvas.width = WIDTH;
@@ -152,6 +155,16 @@ function slide4_enter () {
 
 function slide4_leave () {
   stopSlide4 = true;
+}
+
+function toggleAlgorithm () {
+  if (stopSlide4 == true) {
+    slide4_enter();
+    $('.orig-proj-start').text("Pause Genetic Algorithm");
+  } else {
+    slide4_leave();
+    $('.orig-proj-start').text("Start Genetic Algorithm");
+  }
 }
 
 
