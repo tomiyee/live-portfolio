@@ -139,7 +139,7 @@
                 <td class="table-date">Dec 5, 2016</td>
                 <td class="table-title"><a href="genetic-rockets/index.html">Genetic Alg. Rockets</a></td>
               </tr>
-              <tr>
+              <tr class='old-project'>
                 <td class="table-date">Mar 10, 2014</td>
                 <td class="table-title"><a href="element-finder/index.html">Element Finder</a></td>
               </tr>
@@ -230,5 +230,41 @@
     <script src="../js/owl.carousel.min.js"></script>
     <script src="../js/mail-script.js"></script>
     <script src="../js/main.js"></script>
+    <script src="../js/personal-lib.js"></script>
+
+    <script type="text/javascript">
+      $(start);
+      let hidden = true;
+      function start () {
+        if (hidden) {
+          $('.old-project').hide();
+          /* Changes the background color of every other line */
+          let arr = $('.table-of-contents tr:not(.old-project)');
+          for (let i = 0; i < arr.length; i++)
+            $(arr[i]).css('background', i % 2 == 0 ? '#ddd' : "#eee");
+        }
+
+        window.addEventListener('keydown', (e) => {
+          if (e.shiftKey && e.keyCode == Keys.O) {
+            if (hidden) {
+              $('.old-project').show();
+              /* Changes the background color of every other line */
+              $('.table-of-contents tr:nth-child(even)').css('background','#eee');
+              $('.table-of-contents tr:nth-child(odd)').css('background','#ddd');
+              hidden = false;
+            } else {
+              $('.old-project').hide();
+              /* Changes the background color of every other line */
+              let arr = $('.table-of-contents tr:not(.old-project)');
+              for (let i = 0; i < arr.length; i++) {
+                $(arr[i]).css('background', i % 2 == 0 ? '#ddd' : "#eee");
+              }
+              hidden = true;
+            }
+          }
+        });
+      }
+
+    </script>
   </body>
 </html>
