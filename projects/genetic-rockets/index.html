@@ -105,8 +105,40 @@
                 <li><a href="#tab-project">The Original Project</a> </li>
               </ul>
 
-              <div id="tab-context">
-
+              <div id="tab-context" align=left style='font-size:18px;'>
+                <h2>The Inspiration</h2><br/>
+                <p>
+                  This genetic algorithm, inspired by <a href="https://youtu.be/bGz7mv2vD6g">this</a>
+                  youtube video by Daniel Shiffman, is my first ever approach to
+                  the field of machine learning.
+                </p>
+                <h2>The Details</h2><br/>
+                <p>
+                  These "rockets" are given the goal of reaching a red "target"
+                  at the top of the screen. There is no gravity.
+                </p>
+                <p>
+                  This program calculates the fitness according to the distance
+                  from the target location multiplied by 10 if the rocket reached
+                  the target, divided by 10 if it crashed, and increases with the
+                  time alive.
+                </p>
+                <p>
+                  To reproduce, the program throws the rocket with the highest
+                  fitness level into a mating pool 100 ties, and the rest are
+                  added proportionally (half the fitness means half the entries).
+                  Each parent is chosen from the mating pool, and the genes are
+                  crossed over.
+                </p>
+                <p>
+                  The genes are an array of vectors which are applied in sequential
+                  order each simulation tick.
+                </p>
+                <p>
+                  You can add obstacles once the simulation begins by clicking
+                  and draging on the canvas. When a rocket collides with the
+                  obstacle, it counts as a "crash."
+                </p>
               </div>
               <div id="tab-project" align=center>
                 <!-- The Title -->
@@ -115,57 +147,44 @@
                 <br/>
                 <table>
                   <tr>
-                    <td class='canvasLocation'>
-
-                    </td>
+                    <td class='canvasLocation'> </td>
+                    <!-- Settings -->
                     <td style='vertical-align:top'>
-
-                      <!-- Settings -->
                       <div class='accordion'>
 
                         <h3>Adjustable Settings</h3>
 
-                        <div>
-                          <table width='100%'>
+                        <div id="properties">
+                          <label title='Adjust the number of rockets that appear in each generation.'> Population Size </label>
+                          <div class='populationSizeSlider'>100</div>
+                          <label title='Adjust the number of Frames (and Physics Ticks) that occur every second, limited by browser speed.'> Frames Per Second</label>
+                          <div class='fpsSlider'>30</div>
+                          <label title='Whenever two parents reproduce to create the genes of the next generation, there is are 5 different chances of mutation a random gene. The chance of the mutation is determined by the value below (in percent).'>Mutation Rate</label>
+                          <div class='mutationRateSlider'>10</div>
+                          <br/>
+                        </div>
+                        <br/>
+
+                        <!-- Display for things -->
+                        <div class='display'>
+                          <table>
                             <tr>
-                              <td width='100%'>
-                                <div id="properties">
-                                  <label title='Adjust the number of rockets that appear in each generation.'> Population Size </label>
-                                  <div class='populationSizeSlider'>100</div>
-                                  <label title='Adjust the number of Frames (and Physics Ticks) that occur every second, limited by browser speed.'> Frames Per Second</label>
-                                  <div class='fpsSlider'>30</div>
-                                  <label title='Whenever two parents reproduce to create the genes of the next generation, there is are 5 different chances of mutation a random gene. The chance of the mutation is determined by the value below (in percent).'>Mutation Rate</label>
-                                  <div class='mutationRateSlider'>10</div>
-                                  <br/>
-                                </div>
-                              </td>
+                              <td>Generation: </td>
+                              <td class='generationNumber'>0</td>
+                            </tr>
+                            <tr>
+                              <td>Life Counter:</td>
+                              <td class='counter'>0</td>
+                            </tr>
+                            <tr>
+                              <td>Number Successful: </td>
+                              <td class='numberReached'>0</td>
+                            </tr>
+                            <tr>
+                              <td>Number Crashed: </td>
+                              <td class='numberCrashed'>0</td>
                             </tr>
                           </table>
-
-                          <br/>
-
-                          <!-- Display for things -->
-                          <div class='display'>
-                              <table>
-                                  <tr>
-                                      <td>Generation: </td>
-                                      <td class='generationNumber'>0</td>
-                                  </tr>
-                                  <tr>
-                                      <td>Life Counter:</td>
-                                      <td class='counter'>0</td>
-                                  </tr>
-                                  <tr>
-                                      <td>Number Successful: </td>
-                                      <td class='numberReached'>0</td>
-                                  </tr>
-                                  <tr>
-                                      <td>Number Crashed: </td>
-                                      <td class='numberCrashed'>0</td>
-                                  </tr>
-                              </table>
-
-                          </div>
                         </div>
                       </div>
                     </td>

@@ -185,8 +185,7 @@ function draw () {
     for(var o = 0; o < Global.obstacles.length; o++)
         Global.obstacles[o].draw();
 
-    if(Global.wallGhost)
-    {
+    if(Global.wallGhost) {
         Global.wallGhost.draw();
     }
 
@@ -195,8 +194,7 @@ function draw () {
 
     // updates the count variable and displays the count
     Global.count ++;
-    if(Global.count == Settings.LIFE_SPAN)
-    {
+    if(Global.count == Settings.LIFE_SPAN) {
         Global.population.evaluate();
         Global.population.breed();
     }
@@ -210,7 +208,7 @@ function draw () {
  * Prepares the accordian properties
  */
 function initAccordion() {
-    var accordion = $('.accordion').width(300)  ;
+    var accordion = $('.accordion').width(250)  ;
     accordion.accordion({
         collapsible: true,
         active: false
@@ -227,10 +225,10 @@ function initAccordion() {
         'border-width':'2px',
         'font-family':'"Libre Baskerville", serif',
         'font-size': '16px',
-        'font-weight': 'bold',
-        'height':'250px'
+        'font-weight': 'bold'
     });
     accordion.css('font-size', '18px');
+    $('#properties').height('auto')
 }
 
 
@@ -296,6 +294,7 @@ function initSliders() {
         }
     });
 }
+
 
 
 /*
