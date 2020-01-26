@@ -12,15 +12,28 @@ let game;
 
 window.onload = start;
 
+/**
+ * @function start - Initializes everything
+ *
+ * @return {type}  description
+ */
 function start () {
   initCanvas ();
-  game = new Board(sampleGame('hard'));
+  game = new Board(sampleGame('easy'));
   // game = new Board();
   game.display(canvas);
   $('.single-step').bind('click', () => {
-    game.dfsStep();
+    game.solveStep();
     game.display(canvas);
   });
+  $('.start-solving').bind('click', () => {
+    let intervalId = setInterval( () => {
+      if(game.solveStep())
+        game.display(canvas);
+      else
+        clearInterval(intervalId)
+    }, 200)
+  })
   window.addEventListener('mousedown', clickHandler);
   window.addEventListener('keydown', keyDownHandler);
 }
@@ -51,7 +64,6 @@ function sampleGame (difficulty) {
   }
 }
 
-
 function initCanvas () {
   canvas = document.getElementById(CANVAS_ID);
   canvas.height = HEIGHT;
@@ -70,7 +82,6 @@ function keyDownHandler(e) {
     e.preventDefault();
 }
 
-
 function clickHandler (e) {
 }
 
@@ -78,7 +89,6 @@ class Board {
 
   constructor (state) {
     this.dfsIndex = 0;
-
     this.origState = [];
     this.state = [];
     if (Array.isArray(state)) {
@@ -280,7 +290,7 @@ class Board {
     return false;
   }
 
-  dfsStep () {
+  solveStep () {
     let changed = false;
     let loopLength = 0;
     do {
@@ -294,27 +304,79 @@ class Board {
   }
 
   beginDFS () {
+    let spots = [];
+    for (let i = 0; i < 9 * 9; i++) {
+      const r = Math.floor(i / 9);
+      const c = i % 9;
+      let ns = [];
+      if (this.getCell(r, c) != 0)
+        continue;
+      for (let n = 1; n <= 9; n++) {
+        if (this.rowHas(r, n))
+          continue;
+        if (this.colHas(c, n))
+          continue;
+        if (this.sqrHas(Math.floor(r/3), Math.floor(c/3), n))
+          continue;
+        ns.push(n)
+      }
+      spots.push({r, c, ns});
+    }
+    let searchSpace = 1;
+    for (let i = 0; i < spots.length; i++)
+      searchSpace *= spots[i].ns.length
+    console.log(`Number of Configs: ${searchSpace}`);
+    this.recurse(spots)
   }
 
+  recurse (spots) {
+    let spot = spots[0];
+    for (let i = 0; i < spot.ns.length; i++) {
+      let n = spot.ns[i];
+      if (this.rowHas(spot.r, n))
+        continue;
+      if (this.colHas(spot.c, n))
+        continue;
+      if (this.sqrHas(Math.floor(spot.r/3), Math.floor(spot.c/3), n))
+        continue;
+      this.setCell (spot.r, spot.c, n);
+      // Base Case
+      if (this.solved())
+        return true;
+      // Recursion Step
+      let win = this.recurse (spots.slice(1));
+      if (win)
+        return true;
+      // Otherwise, clean up
+      this.setCell (spot.r, spot.c, 0);
+    }
+    return false;
+  }
+
+  /**
+   * @function display - Displays the current game state onto the canvas
+   *
+   * @param  {type} canvas description
+   * @return {type}        description
+   */
   display (canvas) {
     let ctx = canvas.getContext('2d');
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0,0,WIDTH, HEIGHT);
+    ctx.fillStyle = this.solved() ? 'lightblue':'white';
+    ctx.fillRect(0,0,canvas.width, canvas.height);
     ctx.strokeStyle = 'black';
     ctx.fillStyle = 'black';
     // 1. Draw the Horizontal and Vertical Lines
     ctx.lineWidth = 10;
     for (let r = 0; r < 10; r ++) {
       ctx.lineWidth = r % 3 == 0 ? THICK_BORDER : THIN_BORDER;
-      drawLine(ctx, 0, r * (HEIGHT/9), WIDTH, r * (HEIGHT/9));
+      drawLine(ctx, 0, r * (canvas.height/9), canvas.width, r * (canvas.height/9));
     }
     for (let c = 0; c < 10; c++) {
       ctx.lineWidth = c % 3 == 0 ? THICK_BORDER : THIN_BORDER;
-      drawLine(ctx, c * (WIDTH/9), 0, c * (WIDTH/9), HEIGHT);
+      drawLine(ctx, c * (canvas.width/9), 0, c * (canvas.width/9), canvas.height);
     }
     // 2. Draw the numbers in each of the grids
     ctx.font = FONT;
-    ctx.lineWidth = 2;
     for (let x = 0; x < 9*9; x++) {
       const r = Math.floor(x/9);
       const c = x % 9;
@@ -322,8 +384,9 @@ class Board {
       if (n == 0)
         continue;
       ctx.lineWidth = n == this.origState[r][c] ? 2: 1
+      ctx.fillStyle = n == this.origState[r][c] ? 'black': 'blue'
       const w = ctx.measureText(n).width;
-      ctx.strokeText(n, c*WIDTH/9 + WIDTH/18 - w/2, r*HEIGHT/9 + 30);
+      ctx.fillText(n, c*canvas.width/9 + canvas.width/18 - w/2, r*canvas.height/9 + 30);
     }
 
   }
