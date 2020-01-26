@@ -156,3 +156,19 @@ function round (number, decimals) {
     decimals = 0;
   return Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);
 }
+
+/**
+ * @function drawLine - Draws a line on the provided canvas context
+ *
+ * @param  {CanvasRenderingContext2D} ctx description
+ * @param  {Number} x1  The x value of the start coordinate
+ * @param  {Number} x2  The y value of the start coordinate
+ * @param  {Number} y1  The x value of the end coordinate
+ * @param  {Number} y2  The y value of the end coordinate
+ */
+function drawLine(ctx, x1, y1, x2, y2) {
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+}
