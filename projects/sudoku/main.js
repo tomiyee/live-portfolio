@@ -17,20 +17,19 @@ window.onload = start;
  */
 function start () {
   initCanvas ();
-  game = new Board(sampleGame('easy'));
+  game = new Board(sampleGame('hard'));
   // game = new Board();
   game.display(canvas);
   $('.single-step').bind('click', () => {
     game.solveStep();
     game.display(canvas);
   });
+  $('.single-dfs-step').bind('click', () => {
+    game.dfsStep();
+    game.display(canvas);
+  });
   $('.start-solving').bind('click', () => {
-    let intervalId = setInterval( () => {
-      if(game.solveStep())
-        game.display(canvas);
-      else
-        clearInterval(intervalId)
-    }, 200)
+    game.autoSolve(100)
   })
   window.addEventListener('keydown', keyDownHandler);
 }
@@ -121,6 +120,8 @@ class Board {
     this.dfsIndex = 0;
     this.origState = [];
     this.state = [];
+    this.spots = [];
+    this.recursionConfig = [];
     if (Array.isArray(state)) {
       for (let i = 0; i < 9; i++) {
         this.origState.push(state.slice(i*9, i*9+9));
@@ -439,7 +440,7 @@ class Board {
    * @return {type}  description
    */
   beginDFS () {
-    let spots = [];
+    this.spots = [];
     for (let i = 0; i < 9 * 9; i++) {
       const r = Math.floor(i / 9);
       const c = i % 9;
@@ -455,13 +456,13 @@ class Board {
           continue;
         ns.push(n)
       }
-      spots.push({r, c, ns});
+      this.spots.push({r, c, ns, i:0});
     }
+    // Calculates the worst case search space
     let searchSpace = 1;
-    for (let i = 0; i < spots.length; i++)
-      searchSpace *= spots[i].ns.length
+    for (let i = 0; i < this.spots.length; i++)
+      searchSpace *= this.spots[i].ns.length
     console.log(`Number of Configs: ${searchSpace}`);
-    this.recurse(spots)
   }
 
   /**
@@ -474,6 +475,7 @@ class Board {
     let spot = spots[0];
     for (let i = 0; i < spot.ns.length; i++) {
       let n = spot.ns[i];
+      // Skip n if it conflics with previous configs
       if (this.rowHas(spot.r, n))
         continue;
       if (this.colHas(spot.c, n))
@@ -492,6 +494,59 @@ class Board {
       this.setCell (spot.r, spot.c, 0);
     }
     return false;
+  }
+
+  dfsStep () {
+    if (this.recursionConfig.length == this.spots.length)
+      return false;
+
+    let spot = this.spots[this.recursionConfig.length];
+
+    if (spot.i == spot.ns.length){
+      console.log(`Backtracking from ${spot.r} and ${spot.c}`)
+      spot.i = 0;
+      this.recursionConfig.pop();
+      this.setCell (spot.r, spot.c, 0);
+      return this.dfsStep();
+    }
+
+    let n = spot.ns[spot.i];
+    // skip n if it conflicts with previous configs
+    if (this.rowHas(spot.r, n)) {
+      spot.i += 1;
+      return this.dfsStep();
+    }
+    if (this.colHas(spot.c, n)) {
+      spot.i += 1;
+      return this.dfsStep();
+    }
+    if (this.sqrHas(Math.floor(spot.r/3), Math.floor(spot.c/3), n)){
+      spot.i += 1;
+      return this.dfsStep();
+    }
+    this.setCell (spot.r, spot.c, n);
+    this.recursionConfig.push({r:spot.r, c:spot.c})
+    return true;
+  }
+
+  autoSolve (delay) {
+    let intId = setInterval (() => {
+      if (this.solveStep())
+        this.display(canvas);
+      else {
+        console.log("Finished Confidence, now brute forcing")
+        this.beginDFS();
+        clearInterval (intId);
+        let intervalId = setInterval (() => {
+          let n = this.dfsStep()
+          console.log(n)
+          if(n)
+            this.display(canvas);
+          else
+            clearInterval(intervalId);
+        }, delay / 2);
+      }
+    }, delay);
   }
 
   /**
@@ -535,7 +590,13 @@ class Board {
       if (n == 0)
         continue;
       ctx.lineWidth = n == this.origState[r][c] ? 2: 1
-      ctx.fillStyle = n == this.origState[r][c] ? 'black': 'blue'
+      ctx.fillStyle = n == this.origState[r][c] ? 'black': 'blue';
+      for (let i in this.recursionConfig) {
+        if (this.recursionConfig[i].r == r && this.recursionConfig[i].c == c) {
+          ctx.fillStyle = 'orange';
+          break;
+        }
+      }
       const w = ctx.measureText(n).width;
       ctx.fillText(n, c*canvas.width/9 + canvas.width/18 - w/2, r*canvas.height/9 + 30);
     }
