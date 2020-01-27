@@ -7,6 +7,10 @@ const THICK_BORDER = 4;
 const THIN_BORDER = 1;
 const FONT = "24px Arial";
 
+const COLOR_ORIGINAL = 'black';
+const COLOR_CONFIDENT = 'blue';
+const COLOR_RECURSION = 'orange';
+
 let canvas;
 let game;
 
@@ -24,13 +28,22 @@ function start () {
     game.solveStep();
     game.display(canvas);
   });
-  $('.single-dfs-step').bind('click', () => {
-    game.dfsStep();
-    game.display(canvas);
+  $('.full-dfs').bind('click', () => {
+    game.prepareDFS();
+    let intervalId = setInterval (() => {
+      if(game.dfsStep())
+        game.display(canvas);
+      else
+        clearInterval(intervalId);
+    }, 50);
   });
   $('.start-solving').bind('click', () => {
-    game.autoSolve(100)
-  })
+    game.autoSolve(100);
+  });
+  $('.restart-board').bind('click', () => {
+    game.restartBoard();
+    game.display(canvas);
+  });
   window.addEventListener('keydown', keyDownHandler);
 }
 
@@ -284,6 +297,32 @@ class Board {
   }
 
   /**
+   * @function assignCell - Assigns the cell as a starting condition cell, rather
+   * than as a confident or recursive call.
+   *
+   * @param  {Integer} row [0, 8] The index of the row we want to assign to
+   * @param  {Integer} col [0, 8] The index of the col we want to assign to
+   * @param  {Integer} num [1, 9] The number to assign to the cell
+   */
+  assignCell (row, col, val) {
+    this.setCell(row, col, val);
+    this.origState[row][col] = val;
+  }
+
+  /**
+   * @function restartBoard - Clears any of the assignments we have made to the
+   * board, but does not clear the starting conditions.
+   */
+  restartBoard () {
+    this.dfsIndex = 0;
+    this.spots = [];
+    this.recursionConfig = [];
+    for (let r = 0; r < this.state.length; r++)
+      for (let c = 0; c < this.state[r].length; c++)
+        this.setCell(r, c, this.origState[r][c]);
+  }
+
+  /**
    * @function solveStep - It will continually try the tryPlacing method on all
    * the empty sqaures until it can be confident a number can be placed. At this
    * point it saves its position and writes to the cell. The next time this
@@ -435,11 +474,11 @@ class Board {
   }
 
   /**
-   * beginDFS - description
-   *
-   * @return {type}  description
+   * @function prepareDFS - Initializes the spots property, which stores each
+   * cell and the values it could possibly be without conflicting the current
+   * board state.
    */
-  beginDFS () {
+  prepareDFS () {
     this.spots = [];
     for (let i = 0; i < 9 * 9; i++) {
       const r = Math.floor(i / 9);
@@ -466,12 +505,16 @@ class Board {
   }
 
   /**
-   * recurse - description
+   * @function recurse - This uses backtracking recursion to find a satisfying
+   * assignment of all of the cells. This method does not animate the process
+   * of backtracking, and only finds the solution. If there are multiple
+   * solutions to the board, it will stop after one is found.
    *
    * @param  {type} spots description
    * @return {type}       description
    */
   recurse (spots) {
+    spots = spots || this.spots;
     let spot = spots[0];
     for (let i = 0; i < spot.ns.length; i++) {
       let n = spot.ns[i];
@@ -496,6 +539,12 @@ class Board {
     return false;
   }
 
+  /**
+   * @function dfsStep - This is the same algorithm as the recursive method above,
+   * except it pauses on every cell it attempts to assign, so that we could
+   *
+   * @return {Boolean}  True if we were able to assign a number to a cell without conflict
+   */
   dfsStep () {
     if (this.recursionConfig.length == this.spots.length)
       return false;
@@ -503,7 +552,6 @@ class Board {
     let spot = this.spots[this.recursionConfig.length];
 
     if (spot.i == spot.ns.length){
-      console.log(`Backtracking from ${spot.r} and ${spot.c}`)
       spot.i = 0;
       this.recursionConfig.pop();
       this.setCell (spot.r, spot.c, 0);
@@ -529,18 +577,25 @@ class Board {
     return true;
   }
 
+  /**
+   * @function autoSolve - Solves the current sudoku board by first using hard -
+   * coded rules that result in a confident assignment of a cell. When the
+   * hard-coded rules dont yield a confident assignment in any cell, it will resort
+   * to a DFS algorithm that will attempt to assign a number to each cell and
+   * find a satisfying assignment.
+   *
+   * @param  {Integer} delay [0,Infinity) The delay in ms between confident assignments
+   */
   autoSolve (delay) {
     let intId = setInterval (() => {
       if (this.solveStep())
         this.display(canvas);
       else {
-        console.log("Finished Confidence, now brute forcing")
-        this.beginDFS();
+        console.log("Finished Confidence, now brute forcing");
+        this.prepareDFS();
         clearInterval (intId);
         let intervalId = setInterval (() => {
-          let n = this.dfsStep()
-          console.log(n)
-          if(n)
+          if(this.dfsStep())
             this.display(canvas);
           else
             clearInterval(intervalId);
@@ -567,7 +622,7 @@ class Board {
    */
   display (canvas) {
     let ctx = canvas.getContext('2d');
-    ctx.fillStyle = this.solved() ? 'lightblue':'white';
+    ctx.fillStyle = this.solved() ? rgba(255*0.68, 255*0.85, 255*0.90, 0.5): 'white';
     ctx.fillRect(0,0,canvas.width, canvas.height);
     ctx.strokeStyle = 'black';
     ctx.fillStyle = 'black';
@@ -589,17 +644,15 @@ class Board {
       const n = this.state[r][c];
       if (n == 0)
         continue;
-      ctx.lineWidth = n == this.origState[r][c] ? 2: 1
-      ctx.fillStyle = n == this.origState[r][c] ? 'black': 'blue';
+      ctx.fillStyle = n == this.origState[r][c] ? COLOR_ORIGINAL: COLOR_CONFIDENT;
       for (let i in this.recursionConfig) {
         if (this.recursionConfig[i].r == r && this.recursionConfig[i].c == c) {
-          ctx.fillStyle = 'orange';
+          ctx.fillStyle = COLOR_RECURSION;
           break;
         }
       }
       const w = ctx.measureText(n).width;
       ctx.fillText(n, c*canvas.width/9 + canvas.width/18 - w/2, r*canvas.height/9 + 30);
     }
-
   }
 }
