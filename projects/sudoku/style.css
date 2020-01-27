@@ -1,0 +1,22 @@
+.number-selector-button {
+  width:50px;
+  height:50px;
+  background:lightblue;
+  text-align:center;
+  vertical-align: middle;
+  font-size: 30px;
+  padding:15px;
+  margin:5px;
+  border-radius:8px;
+  /* Prevent Highlighting */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.number-selector-button:hover {
+  cursor:pointer;
+}

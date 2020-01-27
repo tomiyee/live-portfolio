@@ -104,13 +104,31 @@
                 <li><a href="#tab-about">About</a> </li>
               </ul>
               <div id='tab-project' style='min-height:300px'>
-                <button type="button" name="button" class='start-solving'>Begin Solution</button>
-                <button type="button" name="button" class='full-dfs'>Full DFS Solution</button>
-                <button type="button" name="button" class='single-step'>Step</button>
-                <button type="button" name="button" class='restart-board'>Restart Board</button>
-                <button type="button" name="button" class='clear-board'>Clear Board</button>
+                <div class="buttons">
+                  <button type="button" name="button" class='start-solving'>Begin Solution</button>
+                  <button type="button" name="button" class='full-dfs'>Full DFS Solution</button>
+                  <button type="button" name="button" class='single-step'>Step</button>
+                  <button type="button" name="button" class='restart-board'>Restart Board</button>
+                  <button type="button" name="button" class='clear-board'>Clear Board</button>
+                </div>
                 <br/>
                 <canvas id="sudoku-canvas" width="300" height="300"></canvas>
+                <br>
+                <div class="number-selector">
+                  <table>
+                    <tr>
+                      <td><div class='number-selector-button num-1'>1</div></td>
+                      <td><div class='number-selector-button num-2'>2</div></td>
+                      <td><div class='number-selector-button num-3'>3</div></td>
+                      <td><div class='number-selector-button num-4'>4</div></td>
+                      <td><div class='number-selector-button num-5'>5</div></td>
+                      <td><div class='number-selector-button num-6'>6</div></td>
+                      <td><div class='number-selector-button num-7'>7</div></td>
+                      <td><div class='number-selector-button num-8'>8</div></td>
+                      <td><div class='number-selector-button num-9'>9</div></td>
+                    </tr>
+                  </table>
+                </div>
               </div>
               <div id="tab-about" style='min-height:300px'>
 

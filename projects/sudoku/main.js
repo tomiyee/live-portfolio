@@ -6,13 +6,18 @@ const WIDTH = 360;
 const THICK_BORDER = 4;
 const THIN_BORDER = 1;
 const FONT = "24px Arial";
-
+// Colors of the numbers when displaying the game
 const COLOR_ORIGINAL = 'black';
 const COLOR_CONFIDENT = 'blue';
 const COLOR_RECURSION = 'orange';
+// Color of the number
+const COLOR_NUMBER_BTNS = rgb(173, 216, 230);
+const COLOR_NUMBER_HIGHLIGHT = rgb(186, 230, 250);
 
 let canvas;
 let game;
+let currentIntervalId;
+let currNumber = 1;
 
 window.onload = start;
 
@@ -21,6 +26,7 @@ window.onload = start;
  */
 function start () {
   initCanvas ();
+  initNumbers ();
   game = new Board(sampleGame('hard'));
   // game = new Board();
   game.display(canvas);
@@ -43,6 +49,10 @@ function start () {
   $('.restart-board').bind('click', () => {
     game.restartBoard();
     game.display(canvas);
+  });
+  $('.clear-board').bind('click', () => {
+    game.clearBoard();
+    game.display (canvas);
   });
   window.addEventListener('keydown', keyDownHandler);
 }
@@ -92,7 +102,33 @@ function initCanvas () {
   canvas.width = WIDTH;
   $(canvas)
     .css('border', '2px solid black')
-    .bind('click', clickHandler);
+    .bind('click', (e) => {
+      game.clickHandler (e);
+      game.display(canvas);
+    })
+    .bind('mousemove', (e) => {
+      game.mouseMoveHandler(e, canvas);
+      game.display(canvas);
+    })
+    .bind('mouseleave', (e) => {
+      game.mouseLeaveHandler(e);
+      game.display(canvas);
+    });
+}
+
+/**
+ * initNumbers - Initializes the effect of each of the 9 buttons at the bottom.
+ */
+function initNumbers () {
+  for (let i = 1; i <= 9; i++) {
+    $('.num-' + i).bind('click', () => {
+      for (let n = 1; n <= 9; n++)
+        $('.num-' + n).css('background', COLOR_NUMBER_BTNS);
+      $('.num-' + i).css('background', COLOR_NUMBER_HIGHLIGHT);
+      currNumber = i;
+    });
+  }
+  $('.num-1').click();
 }
 
 /**
@@ -118,14 +154,6 @@ function keyDownHandler(e) {
     e.preventDefault();
 }
 
-/**
- * @function clickHandler - click handler that handles whenever the canvas
- *
- * @param  {MouseEvent} e Mouse Event Data
- */
-function clickHandler (e) {
-  game.keyDownHandler (e);
-}
 
 class Board {
 
@@ -305,8 +333,8 @@ class Board {
    * @param  {Integer} num [1, 9] The number to assign to the cell
    */
   assignCell (row, col, val) {
-    this.setCell(row, col, val);
     this.origState[row][col] = val;
+    this.state[row][col] = val;
   }
 
   /**
@@ -320,6 +348,15 @@ class Board {
     for (let r = 0; r < this.state.length; r++)
       for (let c = 0; c < this.state[r].length; c++)
         this.setCell(r, c, this.origState[r][c]);
+  }
+
+  clearBoard () {
+    for (let r = 0; r < this.state.length; r++) {
+      for (let c = 0; c < this.state[r].length; c++) {
+        this.origState[r][c] = 0;
+        this.setCell(r, c, 0);
+      }
+    }
   }
 
   /**
@@ -607,11 +644,31 @@ class Board {
   /**
    * mouseDownHandler -  *
    *
-   * @param  {type} e description
+   * @param  {MouseEvent} e description
    * @return {type}   description
    */
-  mouseDownHandler (e) {
+  mouseMoveHandler (e, canvas) {
+    let coords = relativeCoords(e, canvas);
+    let rowHeight = canvas.height / 9;
+    let r = Math.floor(coords.y / rowHeight);
+    let colWidth = canvas.width / 9;
+    let c = Math.floor(coords.x / colWidth);
 
+    if (r < 0 || c < 0 || r > 8 || c > 8)
+      return;
+
+    this.hover = {r, c};
+  }
+
+  mouseLeaveHandler (e) {
+    this.hover = null;
+  }
+
+  clickHandler (e) {
+    if (this.hover == null)
+      return;
+
+    this.assignCell (this.hover.r, this.hover.c, currNumber);
   }
 
   /**
@@ -622,19 +679,30 @@ class Board {
    */
   display (canvas) {
     let ctx = canvas.getContext('2d');
-    ctx.fillStyle = this.solved() ? rgba(255*0.68, 255*0.85, 255*0.90, 0.5): 'white';
+    ctx.fillStyle = 'white';
     ctx.fillRect(0,0,canvas.width, canvas.height);
+    if (this.solved()) {
+      ctx.fillStyle = rgba(255 * 0.68, 255 * 0.85, 255 * 0.90, 0.5);
+      ctx.fillRect(0,0,canvas.width, canvas.height);
+    }
+    const W = canvas.width / 9;
+    const H = canvas.height / 9;
     ctx.strokeStyle = 'black';
     ctx.fillStyle = 'black';
+
+    // 1. Draws the highlight
+    ctx.fillStyle = COLOR_NUMBER_HIGHLIGHT;
+    if (this.hover != null)
+      ctx.fillRect(this.hover.c*W,this.hover.r*H, W, H)
     // 1. Draw the Horizontal and Vertical Lines
     ctx.lineWidth = 10;
     for (let r = 0; r < 10; r ++) {
       ctx.lineWidth = r % 3 == 0 ? THICK_BORDER : THIN_BORDER;
-      drawLine(ctx, 0, r * (canvas.height/9), canvas.width, r * (canvas.height/9));
+      drawLine(ctx, 0, r * H, canvas.width, r * H);
     }
     for (let c = 0; c < 10; c++) {
       ctx.lineWidth = c % 3 == 0 ? THICK_BORDER : THIN_BORDER;
-      drawLine(ctx, c * (canvas.width/9), 0, c * (canvas.width/9), canvas.height);
+      drawLine(ctx, c * W, 0, c * W, canvas.height);
     }
     // 2. Draw the numbers in each of the grids
     ctx.font = FONT;
