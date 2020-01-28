@@ -10,6 +10,7 @@ const FONT = "24px Arial";
 const COLOR_ORIGINAL = 'black';
 const COLOR_CONFIDENT = 'blue';
 const COLOR_RECURSION = 'orange';
+const COLOR_CONFLICT = 'red';
 // Color of the number
 const COLOR_NUMBER_BTNS = rgb(173, 216, 230);
 const COLOR_NUMBER_HIGHLIGHT = rgb(186, 230, 250);
@@ -120,9 +121,9 @@ function initCanvas () {
  * initNumbers - Initializes the effect of each of the 9 buttons at the bottom.
  */
 function initNumbers () {
-  for (let i = 1; i <= 9; i++) {
+  for (let i = 0; i <= 9; i++) {
     $('.num-' + i).bind('click', () => {
-      for (let n = 1; n <= 9; n++)
+      for (let n = 0; n <= 9; n++)
         $('.num-' + n).css('background', COLOR_NUMBER_BTNS);
       $('.num-' + i).css('background', COLOR_NUMBER_HIGHLIGHT);
       currNumber = i;
@@ -163,6 +164,7 @@ class Board {
     this.state = [];
     this.spots = [];
     this.recursionConfig = [];
+    this.problematicCells = [];
     if (Array.isArray(state)) {
       for (let i = 0; i < 9; i++) {
         this.origState.push(state.slice(i*9, i*9+9));
@@ -276,26 +278,48 @@ class Board {
 
   /**
    * @function checkErrorsAt - Checks if a given cell is breaking any of the win
-   * conditions of sudoku. If there is an error, it will return true, and false
-   * if there is no error at the prvided sqaure.
+   * conditions of sudoku. If there is an error, it will return a list of cells
+   * that are conflicting with this one
    *
    * @param  {Integer} row [0, 8] The index of the row we want to check
    * @param  {Integer} col [0, 8] The index of the col we want to check
-   * @return {Boolean}     True if there is an error at the cell, false otherwise
+   * @return {Object[]}    A list of Objects with properties r and c
    */
   checkErrorsAt (row, col) {
     // Will not show error with cell if empty
     if (this.getCell(row, col) == 0)
-      return false;
+      return [];
+
     let cellVal = this.getCell(row, col);
-    this.setCell (row, col, 0);
+    this.assignCell (row, col, 0);
+
+    let problematicCells = [];
+
+    // 1. Finds all conflicting cells in the same row
     if (this.rowHas(row, cellVal))
-      return true;
+      for (let c = 0; c < this.state[row].length; c++)
+        if (this.getCell(row, c) == cellVal)
+          problematicCells.push({r:row, c});
+
+    // 2. Finds all conflicting cells in the same col
     if (this.colHas(col, cellVal))
-      return true;
-    if (this.sqrHas(row, col, cellVal))
-      return true;
-    return false;
+      for (let r = 0; r < this.state.length; r++)
+        if (this.getCell(r, col) == cellVal)
+          problematicCells.push({r, c:col});
+
+    // 3. Finds all conflicting cells in the same square
+    if (this.sqrHas(Math.floor(row/3), Math.floor(col/3), cellVal))
+      for (let r = Math.floor(row/3)*3; r < Math.floor(row/3)*3 + 3; r++)
+        for (let c = Math.floor(col/3)*3; c < Math.floor(col/3)*3 + 3; c++)
+          if (this.getCell(r, c) == cellVal)
+            problematicCells.push({r, c});
+
+    // If any conflicts were found, include this cell as well
+    if (problematicCells.length > 0)
+      problematicCells.push({r:row, c:col});
+    // Puts back the value
+    this.assignCell (row, col, cellVal);
+    return problematicCells;
   }
 
   /**
@@ -345,6 +369,7 @@ class Board {
     this.dfsIndex = 0;
     this.spots = [];
     this.recursionConfig = [];
+    this.problematicCells = [];
     for (let r = 0; r < this.state.length; r++)
       for (let c = 0; c < this.state[r].length; c++)
         this.setCell(r, c, this.origState[r][c]);
@@ -667,7 +692,6 @@ class Board {
   clickHandler (e) {
     if (this.hover == null)
       return;
-
     this.assignCell (this.hover.r, this.hover.c, currNumber);
   }
 
@@ -694,7 +718,7 @@ class Board {
     ctx.fillStyle = COLOR_NUMBER_HIGHLIGHT;
     if (this.hover != null)
       ctx.fillRect(this.hover.c*W,this.hover.r*H, W, H)
-    // 1. Draw the Horizontal and Vertical Lines
+    // 2. Draw the Horizontal and Vertical Lines
     ctx.lineWidth = 10;
     for (let r = 0; r < 10; r ++) {
       ctx.lineWidth = r % 3 == 0 ? THICK_BORDER : THIN_BORDER;
@@ -704,7 +728,21 @@ class Board {
       ctx.lineWidth = c % 3 == 0 ? THICK_BORDER : THIN_BORDER;
       drawLine(ctx, c * W, 0, c * W, canvas.height);
     }
-    // 2. Draw the numbers in each of the grids
+
+    // 3. Compiles a list of cells that conflict
+    this.problematicCells = [];
+    for (let r = 0; r < 9; r++){
+      for (let c = 0; c < 9; c++){
+        let alreadyIncluded = false;
+        for (let i in this.problematicCells)
+          if (this.problematicCells[i].r == r && this.problematicCells[i].c == c)
+            alreadyIncluded = true;
+        if (!alreadyIncluded)
+          this.problematicCells = [...this.problematicCells, ...this.checkErrorsAt(r, c)];
+      }
+    }
+
+    // 4. Draw the numbers in each of the grids
     ctx.font = FONT;
     for (let x = 0; x < 9*9; x++) {
       const r = Math.floor(x/9);
@@ -713,9 +751,17 @@ class Board {
       if (n == 0)
         continue;
       ctx.fillStyle = n == this.origState[r][c] ? COLOR_ORIGINAL: COLOR_CONFIDENT;
+      // 4a. Change the color if the cell is associated with Recursion
       for (let i in this.recursionConfig) {
         if (this.recursionConfig[i].r == r && this.recursionConfig[i].c == c) {
           ctx.fillStyle = COLOR_RECURSION;
+          break;
+        }
+      }
+      // 4b. Change the color if the cell is associated with a conflict
+      for (let i in this.problematicCells) {
+        if (this.problematicCells[i].r == r && this.problematicCells[i].c == c) {
+          ctx.fillStyle = COLOR_CONFLICT;
           break;
         }
       }

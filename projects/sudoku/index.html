@@ -100,9 +100,20 @@
           <div class="col-lg-12 pt-60 pb-60">
             <div class="tabs">
               <ul>
+                <li><a href="#tab-usage">How to Use</a> </li>
                 <li><a href="#tab-project">The Project</a> </li>
                 <li><a href="#tab-about">About</a> </li>
               </ul>
+              <!-- TAB 1 -->
+              <div id="tab-usage">
+                <h1>How to Use the Sudoku Solver</h1>
+                <hr>
+                <p>
+                  To enter in any sudoku board to the solver, you click on one of
+                  the nine numbers below the canvas. Then, select
+                </p>
+              </div>
+              <!-- TAB 2 -->
               <div id='tab-project' style='min-height:300px'>
                 <div class="buttons">
                   <button type="button" name="button" class='start-solving'>Begin Solution</button>
@@ -117,6 +128,7 @@
                 <div class="number-selector">
                   <table>
                     <tr>
+                      <td><div class='number-selector-button num-0'>0</div></td>
                       <td><div class='number-selector-button num-1'>1</div></td>
                       <td><div class='number-selector-button num-2'>2</div></td>
                       <td><div class='number-selector-button num-3'>3</div></td>
@@ -130,8 +142,39 @@
                   </table>
                 </div>
               </div>
-              <div id="tab-about" style='min-height:300px'>
-
+              <!-- TAB 3 -->
+              <div id="tab-about" style='min-height:300px' align=left>
+                <h1>Sudoku Solver</h1>
+                <hr>
+                <h2>The Algorithm</h2>
+                <p>
+                  I have a handful of hard coded algorithms to find cells which
+                  can be confidently assigned. Once none of these hard-coded
+                  algorithms can find a cell to assign, it will begin to run a
+                  depth-first search backtracking algorithm to find a possible
+                  solution.
+                </p>
+                <h3>Method 1 - Unique Candidates</h3>
+                <hr>
+                <p>
+                  You know that each block, row and column on a Sudoku board must
+                  contain every number between 1 and 9. Therefore, if a number,
+                  say 4, can only be put in a single cell within a block/column/row,
+                  then that number is guaranteed to fit there. This example
+                  illustrates the number 4 as the unique candidate for the cell
+                  marked in red.
+                </p>
+                <img src="unique-candidate.png" height=300px style='margin-bottom:2em'>
+                <h3>Method 2 - Eight-in-a-Block/Column/Row</h3>
+                <hr>
+                <p>
+                  There is a smarter way to do this, but the simplest was to check
+                  if every other cell in a given cell's row, column or block is
+                  occupied, in which case, the remaining number in the row, column,
+                  or block must be in this cell. For example, this following image
+                  shows a column with all cells but one assigned.
+                </p>
+                <img src="eight-present.png" height=300px>
               </div>
             </div>
           </div>
