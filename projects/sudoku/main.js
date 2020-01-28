@@ -28,31 +28,47 @@ window.onload = start;
 function start () {
   initCanvas ();
   initNumbers ();
-  game = new Board(sampleGame('hard'));
-  // game = new Board();
+
+  // game = new Board(sampleGame('hard'));
+  game = new Board();
   game.display(canvas);
+
   $('.single-step').bind('click', () => {
     game.solveStep();
     game.display(canvas);
   });
   $('.full-dfs').bind('click', () => {
     game.prepareDFS();
-    let intervalId = setInterval (() => {
+    currentIntervalId = setInterval (() => {
       if(game.dfsStep())
         game.display(canvas);
       else
-        clearInterval(intervalId);
+        clearInterval(currentIntervalId);
     }, 50);
   });
   $('.start-solving').bind('click', () => {
     game.autoSolve(100);
   });
+  $('.quick-solve').bind('click', () => {
+    console.time("Quick Solve");
+    try {
+      game.prepareDFS();
+      game.recurse(game.spots);
+      game.display(canvas);
+    } catch (e) {
+      console.error("Something went wrong in Quick Solve : " + e.message)
+    }
+    console.timeEnd("Quick Solve");
+  })
   $('.restart-board').bind('click', () => {
-    game.restartBoard();
+    origState = [];
+    for (let r in game.origState)
+      origState = [...origState, ...game.origState[r]]
+    game = new Board (origState);
     game.display(canvas);
   });
   $('.clear-board').bind('click', () => {
-    game.clearBoard();
+    game = new Board();
     game.display (canvas);
   });
   window.addEventListener('keydown', keyDownHandler);
@@ -68,6 +84,16 @@ function start () {
  */
 function sampleGame (difficulty) {
   switch (difficulty) {
+    case 'impossible':
+      return [8, 0, 0, 0, 0, 0, 0, 0, 0,
+              0, 0, 3, 6, 0, 0, 0, 0, 0,
+              0, 7, 0, 0, 9, 0, 2, 0, 0,
+              0, 5, 0, 0, 0, 7, 0, 0, 0,
+              0, 0, 0, 0, 4, 5, 7, 0, 0,
+              0, 0, 0, 1, 0, 0, 0, 3, 0,
+              0, 0, 1, 0, 0, 0, 0, 6, 8,
+              0, 0, 8, 5, 0, 0, 0, 1, 0,
+              0, 9, 0, 0, 0, 0, 4, 0, 0]
     case 'hard':
       return [9, 0, 3, 0, 0, 0, 6, 7, 0,
               0, 0, 0, 0, 0, 0, 0, 0, 4,
@@ -291,6 +317,7 @@ class Board {
       return [];
 
     let cellVal = this.getCell(row, col);
+    let origVal = this.origState[row][col];
     this.assignCell (row, col, 0);
 
     let problematicCells = [];
@@ -318,7 +345,9 @@ class Board {
     if (problematicCells.length > 0)
       problematicCells.push({r:row, c:col});
     // Puts back the value
-    this.assignCell (row, col, cellVal);
+    this.setCell (row, col, cellVal);
+    if (origVal == cellVal)
+      this.assignCell(row, col, cellVal)
     return problematicCells;
   }
 
@@ -359,29 +388,6 @@ class Board {
   assignCell (row, col, val) {
     this.origState[row][col] = val;
     this.state[row][col] = val;
-  }
-
-  /**
-   * @function restartBoard - Clears any of the assignments we have made to the
-   * board, but does not clear the starting conditions.
-   */
-  restartBoard () {
-    this.dfsIndex = 0;
-    this.spots = [];
-    this.recursionConfig = [];
-    this.problematicCells = [];
-    for (let r = 0; r < this.state.length; r++)
-      for (let c = 0; c < this.state[r].length; c++)
-        this.setCell(r, c, this.origState[r][c]);
-  }
-
-  clearBoard () {
-    for (let r = 0; r < this.state.length; r++) {
-      for (let c = 0; c < this.state[r].length; c++) {
-        this.origState[r][c] = 0;
-        this.setCell(r, c, 0);
-      }
-    }
   }
 
   /**
@@ -649,18 +655,18 @@ class Board {
    * @param  {Integer} delay [0,Infinity) The delay in ms between confident assignments
    */
   autoSolve (delay) {
-    let intId = setInterval (() => {
+    currentIntervalId = setInterval (() => {
       if (this.solveStep())
         this.display(canvas);
       else {
         console.log("Finished Confidence, now brute forcing");
         this.prepareDFS();
-        clearInterval (intId);
-        let intervalId = setInterval (() => {
+        clearInterval (currentIntervalId);
+        currentIntervalId = setInterval (() => {
           if(this.dfsStep())
             this.display(canvas);
           else
-            clearInterval(intervalId);
+            clearInterval(currentIntervalId);
         }, delay / 2);
       }
     }, delay);

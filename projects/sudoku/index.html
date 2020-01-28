@@ -105,19 +105,45 @@
                 <li><a href="#tab-about">About</a> </li>
               </ul>
               <!-- TAB 1 -->
-              <div id="tab-usage">
+              <div id="tab-usage" align=left>
                 <h1>How to Use the Sudoku Solver</h1>
                 <hr>
                 <p>
                   To enter in any sudoku board to the solver, you click on one of
-                  the nine numbers below the canvas. Then, select
+                  the nine numbers below the canvas. Then, select any cells that
+                  you want to assign the number to.
                 </p>
+                <p>
+                  If any cells are conflicting, the numbers will be highlighted in
+                  red. If any cells are red, it should be noted that the solver
+                  would be unable to find a valid solution.
+                </p>
+                <h2>Buttons</h2>
+                <hr>
+                <ul>
+                  <li><b>Begin Solution</b> - Starts the animation where the
+                    algorithm attempts to solve the provided sudoku. See About
+                    for more details.</li>
+                  <li><b>Full DFS Solution</b> - Starts the animation where the
+                    algorithm attempts to solve the provided sudoku using <strong>
+                    only</strong> the backtrack recursion animation. </li>
+                  <li><b>Quick Solve</b> - Tries to Solve it immediately, without
+                    an animation. </li>
+                  <li><b>Step</b> - Does a single step of part 1 of the algorithm,
+                    where the algorithm assigns a cell using the hard-coded rules
+                    described in the About section.</li>
+                  <li><b>Restart Board</b> - Clears ONLY the cells edited by the
+                    algorithm, leaving the starting cells intact.</li>
+                  <li><b>Clear Board</b> - Clears ALL of the cells, including the
+                    cells provided by the user. </li>
+                </ul>
               </div>
               <!-- TAB 2 -->
               <div id='tab-project' style='min-height:300px'>
                 <div class="buttons">
                   <button type="button" name="button" class='start-solving'>Begin Solution</button>
-                  <button type="button" name="button" class='full-dfs'>Full DFS Solution</button>
+                  <button type="button" name="button" class='full-dfs'>Only Backtracking Solution</button>
+                  <button type="button" name="button" class='quick-solve'>Quick Solve</button>
                   <button type="button" name="button" class='single-step'>Step</button>
                   <button type="button" name="button" class='restart-board'>Restart Board</button>
                   <button type="button" name="button" class='clear-board'>Clear Board</button>
@@ -153,6 +179,10 @@
                   algorithms can find a cell to assign, it will begin to run a
                   depth-first search backtracking algorithm to find a possible
                   solution.
+                </p>
+                <p>
+                  Currently only the following two algorithms are defined before
+                  it begins the backtracking method.
                 </p>
                 <h3>Method 1 - Unique Candidates</h3>
                 <hr>
