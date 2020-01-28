@@ -17,8 +17,8 @@ const COLOR_NUMBER_HIGHLIGHT = rgb(186, 230, 250);
 
 let canvas;
 let game;
-let currentIntervalId;
-let currNumber = 1;
+let currentIntervalId = 0;
+let currNumber = 1; // Current Number being used to write
 
 window.onload = start;
 
@@ -33,11 +33,18 @@ function start () {
   game = new Board();
   game.display(canvas);
 
-  $('.single-step').bind('click', () => {
-    game.solveStep();
-    game.display(canvas);
+  $('.start-solving').bind('click', () => {
+    // Restart the board
+    clearInterval(currentIntervalId);
+    $('.restart-board').click();
+    // Begins the dfs
+    game.autoSolve(100);
   });
   $('.full-dfs').bind('click', () => {
+    // Restart the board
+    clearInterval(currentIntervalId);
+    $('.restart-board').click();
+    // Begins the dfs
     game.prepareDFS();
     currentIntervalId = setInterval (() => {
       if(game.dfsStep())
@@ -46,8 +53,12 @@ function start () {
         clearInterval(currentIntervalId);
     }, 50);
   });
-  $('.start-solving').bind('click', () => {
-    game.autoSolve(100);
+  $('.single-step').bind('click', () => {
+    game.solveStep();
+    game.display(canvas);
+  });
+  $('.stop-animation').bind('click', () => {
+    clearInterval(currentIntervalId);
   });
   $('.quick-solve').bind('click', () => {
     console.time("Quick Solve");
