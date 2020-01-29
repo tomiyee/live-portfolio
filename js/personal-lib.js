@@ -159,6 +159,20 @@ function round (number, decimals) {
 }
 
 /**
+ * @function relativeCoords - Returns an obect with the x and y coordinates of
+ * the mouse event to the given html element
+ *
+ * @param  {MouseEvent}   event   The Mouse Event data
+ * @param  {HTML Element} element The element we want the coordinates relative to
+ * @return {Object}       The x and y coordinates relative to the given element
+ */
+function relativeCoords (event, element) {
+    var x = event.clientX - element.getBoundingClientRect().left;
+    var y = event.clientY - element.getBoundingClientRect().top;
+    return {x, y};
+}
+
+/**
  * @function drawLine - Draws a line on the provided canvas context
  *
  * @param  {CanvasRenderingContext2D} ctx description

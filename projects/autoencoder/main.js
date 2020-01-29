@@ -151,16 +151,3 @@ function shrink () {
   input16Ctx.drawImage(shrunk, 0, 0, input16.width, input16.height);
   input8Ctx.drawImage(shrunk, 0, 0, input8.width, input8.height);
 }
-
-/**
- * Returns an obect with the x and y coordinates of the mouse event to the given html element
- *
- * @param  {MouseEvent}   event   The Mouse Event data
- * @param  {HTML Element} element The element we want the coordinates relative to
- * @return {Object}       The x and y coordinates relative to the top left of the given element
- */
-function relativeCoords (event, element) {
-    var x = event.clientX - element.getBoundingClientRect().left;
-    var y = event.clientY - element.getBoundingClientRect().top;
-    return {x, y};
-}
