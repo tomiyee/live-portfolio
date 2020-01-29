@@ -104,7 +104,25 @@
                 <li><a href="#tab-about">About</a> </li>
               </ul>
               <div id='tab-project' style='min-height:300px'>
-
+                <canvas class='canvas-display no-highlight' id="drawing-canvas" width="300" height="300"></canvas>
+                <hr>
+                <table>
+                  <tr>
+                    <td><canvas width="300" height="300" id="input-canvas-32" class='canvas-display'></canvas></td>
+                    <td><canvas width="300" height="300" id="animation-canvas-32" class='canvas-animation'></canvas></td>
+                    <td><canvas width="300" height="300" id="output-canvas-32" class='canvas-display'></canvas></td>
+                  </tr>
+                  <tr>
+                    <td><canvas width="300" height="300" id="input-canvas-16" class='canvas-display'></canvas></td>
+                    <td><canvas width="300" height="300" id="animation-canvas-16" class='canvas-animation'></canvas></td>
+                    <td><canvas width="300" height="300" id="output-canvas-16" class='canvas-display'></canvas></td>
+                  </tr>
+                  <tr>
+                    <td><canvas width="300" height="300" id="input-canvas-8" class='canvas-display'></canvas></td>
+                    <td><canvas width="300" height="300" id="animation-canvas-8" class='canvas-animation'></canvas></td>
+                    <td><canvas width="300" height="300" id="output-canvas-8" class='canvas-display'></canvas></td>
+                  </tr>
+                </table>
               </div>
               <div id="tab-about" style='min-height:300px'>
 
@@ -182,6 +200,8 @@
     <script src="../../js/jquery-ui.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="../../css/jquery-ui.min.css">
     <script type="text/javascript">$(() => $('.tabs').tabs())</script>
+    <!-- Tensorflow Library -->
+    <script src="../../js/tf.min.js"></script>
     <!-- Proect Specific Files -->
     <script src="./main.js" charset="utf-8"></script>
     <link rel="stylesheet" href="./style.css">

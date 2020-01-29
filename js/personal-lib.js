@@ -52,6 +52,7 @@ const Keys = {
   X: 88,
   Y: 89,
   Z: 90,
+  isArrowKeys: (keyCode) => {return [37, 38, 39, 40].indexOf(keyCode) != -1;}
 }
 
 const rgb = (r,g,b) => `rgb(${r},${g},${b})`;
