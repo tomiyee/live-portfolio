@@ -5,6 +5,7 @@ const PIXEL_SCALE = 6;
 const DRAWING_SCALE = 8;
 const ANIM_WIDTH = 400;
 const BRUSH_RADIUS = min(INPUT_WIDTH, INPUT_HEIGHT)*PIXEL_SCALE / 10;
+const SLIDER_WIDTH = 100;
 
 // All of the Models involved
 let autoencoder32, encoder32, decoder32;
@@ -22,6 +23,8 @@ $(start);
 function start () {
   // Initializes the Canvases
   initCanvases ();
+
+  initSliders ();
   // Loads the Tensorflowjs models
   initModels ();
 
@@ -116,6 +119,57 @@ function initCanvases () {
     .bind('mousedown', (e) => input.dragging = true)
     .bind ('mousemove', dragHandler)
     .bind ('mouseup', (e) => input.dragging = false);
+}
+
+function initSliders () {
+  for (let i = 0; i < 8; i++) {
+    const slider = $(document.createElement('div'))
+      .addClass('slider-8-f' + i)
+    slider.slider ({
+      orientation:'horizontal',
+      range: 'min',
+      animate:true,
+      min: 0,
+      max:10,
+      step:0.01,
+      slide: (event, ui) => {
+        // ... Insert Slider Handler Here
+      }
+    }).width(SLIDER_WIDTH).css('margin',15);
+    $('.decoder-8-sliders').append(slider);
+  }
+  for (let i = 0; i < 16; i++) {
+    const slider = $(document.createElement('div'))
+      .addClass('slider-16-f' + i)
+    slider.slider ({
+      range: 'min',
+      animate:true,
+      min: 0,
+      max:10,
+      step:0.01,
+      slide: (event, ui) => {
+        // ... Insert Slider Handler Here
+      }
+    }).width(SLIDER_WIDTH).css('margin',10);
+    $('.decoder-16-sliders').append(slider);
+
+  }
+  for (let i = 0; i < 32; i++) {
+    const slider = $(document.createElement('div'))
+      .addClass('slider-32-f' + i)
+    slider.slider ({
+      range: 'min',
+      animate:true,
+      min: 0,
+      max:10,
+      step:0.01,
+      slide: (event, ui) => {
+        // ... Insert Slider Handler Here
+      }
+    }).width(SLIDER_WIDTH).css('margin',10);
+    $('.decoder-32-sliders').append(slider);
+
+  }
 }
 
 /**

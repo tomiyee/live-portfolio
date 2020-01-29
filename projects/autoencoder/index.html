@@ -101,8 +101,12 @@
             <div class="tabs">
               <ul>
                 <li><a href="#tab-project">The Project</a> </li>
+                <li><a href="#tab-decoder-8">8-Feature Decoder</a> </li>
+                <li><a href="#tab-decoder-16">16-Feature Decoder</a> </li>
+                <li><a href="#tab-decoder-32">32-Feature Decoder</a> </li>
                 <li><a href="#tab-about">About</a> </li>
               </ul>
+              <!-- The Main Interactive Part -->
               <div id='tab-project' style='min-height:300px'>
                 <canvas class='canvas-display no-highlight' id="drawing-canvas" width="300" height="300"></canvas>
                 <hr>
@@ -124,9 +128,16 @@
                   </tr>
                 </table>
               </div>
-              <div id="tab-about" style='min-height:300px'>
-
+              <div id='tab-decoder-8'>
+                <div class="sliders decoder-8-sliders"></div>
               </div>
+              <div id='tab-decoder-16'>
+                <div class="sliders decoder-16-sliders"></div>
+              </div>
+              <div id='tab-decoder-32'>
+                <div class="sliders decoder-32-sliders"></div>
+              </div>
+              <div id="tab-about" style='min-height:300px'></div>
             </div>
           </div>
         </div>
