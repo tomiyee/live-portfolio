@@ -6,7 +6,7 @@ const DRAWING_SCALE = 8;
 const ANIM_WIDTH = 400;
 const BRUSH_RADIUS = min(INPUT_WIDTH, INPUT_HEIGHT)*PIXEL_SCALE / 10;
 
-// All of the Autoencoders involved
+// All of the Models involved
 let autoencoder32, encoder32, decoder32;
 let autoencoder16, encoder16, decoder16;
 let autoencoder8, encoder8, decoder8;
@@ -20,12 +20,19 @@ let shrunk, shrunkCtx;
 
 $(start);
 function start () {
-  // Loads the Tensorflowjs models
-  initModels ();
   // Initializes the Canvases
   initCanvases ();
+  // Loads the Tensorflowjs models
+  initModels ();
+
+  window.addEventListener ('keydown', keyDownHandler);
 }
 
+/**
+ * @function initModels - Loads all of the tensorflow models
+ *
+ * @return {type}  description
+ */
 function initModels () {
 
 }
@@ -135,7 +142,7 @@ function dragHandler (e) {
  */
 function brush (x, y) {
   var grd = inputCtx.createRadialGradient(x, y, 0, x, y, BRUSH_RADIUS);
-  grd.addColorStop(0, rgba(255,255,255,0.25));
+  grd.addColorStop(0, rgba(255,255,255,0.5));
   grd.addColorStop(0.5, rgba(255,255,255,0.1));
   grd.addColorStop(1, rgba(255,255,255,0));
   // Fill with gradient
@@ -145,9 +152,45 @@ function brush (x, y) {
   inputCtx.fill();
 }
 
+/**
+ * @function getInputs - Returns a tensor with the flattened image data to feed to the models.
+ *
+ * @return {type}  description
+ */
+function getInputs () {
+  let inputArray = [];
+  let inputPixelData = shrunkCtx.getImageData (0, 0, shrunk.width, shrunk.height).data;
+  for (let i = 0; i < inputPixelData.length; i += 4)
+    inputArray.push(inputPixelData[i]);
+  return inputArray;
+}
+
+/**
+ * @function shrink - Downscales the input canvas and mirrors the shrunk version
+ * onto the three input canvases
+ *
+ * @return {type}  description
+ */
 function shrink () {
   shrunkCtx.drawImage(input, 0, 0, shrunk.width, shrunk.height);
   input32Ctx.drawImage(shrunk, 0, 0, input32.width, input32.height);
   input16Ctx.drawImage(shrunk, 0, 0, input16.width, input16.height);
   input8Ctx.drawImage(shrunk, 0, 0, input8.width, input8.height);
+}
+
+/**
+ * keyDownHandler - description
+ *
+ * @param  {type} e description
+ * @return {type}   description
+ */
+function keyDownHandler (e) {
+  switch (e.keyCode) {
+    case Keys.ESCAPE:
+    case Keys.C:
+      inputCtx.fillStyle = 'black';
+      inputCtx.fillRect(0, 0, input.width, input.height);
+      shrink();
+      break;
+  }
 }
