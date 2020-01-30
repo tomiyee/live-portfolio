@@ -52,6 +52,7 @@ const Keys = {
   X: 88,
   Y: 89,
   Z: 90,
+  isArrowKeys: (keyCode) => {return [37, 38, 39, 40].indexOf(keyCode) != -1;}
 }
 
 const rgb = (r,g,b) => `rgb(${r},${g},${b})`;
@@ -155,6 +156,20 @@ function round (number, decimals) {
   if (isNaN(decimals))
     decimals = 0;
   return Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals);
+}
+
+/**
+ * @function relativeCoords - Returns an obect with the x and y coordinates of
+ * the mouse event to the given html element
+ *
+ * @param  {MouseEvent}   event   The Mouse Event data
+ * @param  {HTML Element} element The element we want the coordinates relative to
+ * @return {Object}       The x and y coordinates relative to the given element
+ */
+function relativeCoords (event, element) {
+    var x = event.clientX - element.getBoundingClientRect().left;
+    var y = event.clientY - element.getBoundingClientRect().top;
+    return {x, y};
 }
 
 /**
